@@ -3,8 +3,18 @@ import * as Component from "./quartz/components"
 
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
-  afterBody: [],
+  header: [Component.SiteHeaderNav()],
+  afterBody: [
+    Component.ConditionalRender({
+      component: Component.RecentNotes({
+        title: "Continue Reading",
+        limit: 3,
+        showTags: false,
+        filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
+      }),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
+  ],
   footer: Component.Footer({
     links: {
       Home: "/",
@@ -39,66 +49,12 @@ export const defaultContentPageLayout: PageLayout = {
       condition: (page) => page.fileData.slug !== "index",
     }),
   ],
-  left: [
-    Component.PageTitle(),
-    Component.MobileOnly(Component.Spacer()),
-    Component.Flex({
-      components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
-        { Component: Component.Darkmode() },
-        { Component: Component.ReaderMode() },
-      ],
-    }),
-    Component.Explorer({ title: "Signal Map" }),
-  ],
-  right: [
-    Component.ConditionalRender({
-      component: Component.RecentNotes({
-        title: "最新文章",
-        limit: 4,
-        showTags: false,
-        filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
-      }),
-      condition: (page) => page.fileData.slug === "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.RecentNotes({
-        title: "Read Next",
-        limit: 3,
-        showTags: false,
-        filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
-      }),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.DesktopOnly(Component.TableOfContents()),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ConditionalRender({
-      component: Component.Backlinks(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-  ],
+  left: [],
+  right: [],
 }
 
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.BrandIntro(), Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
-  left: [
-    Component.PageTitle(),
-    Component.MobileOnly(Component.Spacer()),
-    Component.Flex({
-      components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
-        { Component: Component.Darkmode() },
-      ],
-    }),
-    Component.Explorer({ title: "Signal Map" }),
-  ],
+  left: [],
   right: [],
 }

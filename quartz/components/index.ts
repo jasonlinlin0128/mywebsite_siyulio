@@ -24,6 +24,7 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import BrandIntro from "./BrandIntro"
+import SiteHeaderNav from "./SiteHeaderNav"
 
 export {
   ArticleTitle,
@@ -52,4 +53,5 @@ export {
   Flex,
   ConditionalRender,
   BrandIntro,
+  SiteHeaderNav,
 }
