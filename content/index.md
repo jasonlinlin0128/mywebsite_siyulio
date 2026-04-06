@@ -81,6 +81,15 @@ title: siyulio
 
 <div class="tech-panel-grid">
   <section class="tech-panel tech-panel-feature">
+    <p class="panel-label">START WITH THIS</p>
+    <h2>如果你只先讀一篇，就先看這篇。</h2>
+    <p>
+      <a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="internal">在傳統製造業導入 AI，最先卡住的不是模型</a>
+      是目前最能代表這個網站的一篇文章。它能最快讓你知道我看待企業 AI 的角度，不是從模型炫技出發，而是從流程、習慣與現場阻力開始。
+    </p>
+  </section>
+
+  <section class="tech-panel tech-panel-feature">
     <p class="panel-label">WHO THIS IS FOR</p>
     <h2>如果你也在公司裡推 AI，這個網站會先對你有用。</h2>
     <p>
@@ -99,8 +108,11 @@ title: siyulio
     <h2>如果你是第一次來，我建議先從這三篇開始。</h2>
     <ul class="signal-list">
       <li><span>先看阻力</span><strong><a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="internal">在傳統製造業導入 AI，最先卡住的不是模型</a></strong></li>
+      <li><span>讀完你會知道</span><strong>為什麼企業 AI 最常卡住的不是技術，而是流程與責任。</strong></li>
       <li><span>再看方法</span><strong><a href="./prompts/如何建立自己的常用指令庫.html" class="internal">如何建立自己的常用指令庫</a></strong></li>
+      <li><span>讀完你會知道</span><strong>怎麼把 AI 變成真的會反覆用到的個人工具，而不是收藏清單。</strong></li>
       <li><span>最後看系統</span><strong><a href="./obsidian-notes/我怎麼用-Obsidian-管理工作中的-AI-知識.html" class="internal">我怎麼用 Obsidian 管理工作中的 AI 知識</a></strong></li>
+      <li><span>讀完你會知道</span><strong>我怎麼把工具、Prompt 與工作經驗整理成可以長期累積的方法。</strong></li>
     </ul>
   </section>
 
@@ -122,5 +134,15 @@ title: siyulio
       <a href="./obsidian-notes/" class="internal">Obsidian 筆記</a>
       <a href="./interests-reading/" class="internal">興趣 / 閱讀</a>
     </div>
+  </section>
+
+  <section class="tech-panel">
+    <p class="panel-label">REPRESENTATIVE POSTS</p>
+    <h2>這三篇最能代表我現在想寫的方向。</h2>
+    <ul class="signal-list">
+      <li><span>企業現場</span><strong><a href="./work-notes/企業內部推-AI-時，最常見的-5-種阻力.html" class="internal">企業內部推 AI 時，最常見的 5 種阻力</a></strong></li>
+      <li><span>工作流</span><strong><a href="./prompts/我目前最常用的-AI-工具組合.html" class="internal">我目前最常用的 AI 工具組合</a></strong></li>
+      <li><span>知識系統</span><strong><a href="./obsidian-notes/我怎麼用-Obsidian-管理工作中的-AI-知識.html" class="internal">我怎麼用 Obsidian 管理工作中的 AI 知識</a></strong></li>
+    </ul>
   </section>
 </div>
