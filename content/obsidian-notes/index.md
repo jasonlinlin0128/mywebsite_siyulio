@@ -8,4 +8,5 @@ title: Obsidian 筆記
 
 - [[../Projects/MyFirstApp/00-Overview.md|MyFirstApp Overview]]
 - [[網站內容盤點與第一批發布清單|網站內容盤點與第一批發布清單]]
+- [[我怎麼用 Obsidian 管理工作中的 AI 知識|我怎麼用 Obsidian 管理工作中的 AI 知識]]
 - 後續會把整理好的筆記逐步移進來
