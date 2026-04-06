@@ -79,6 +79,35 @@ title: siyulio
   </div>
 </div>
 
+<div class="editorial-showcase">
+  <a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="editorial-card editorial-card--feature internal">
+    <img src="./index-ai-grounded.svg" alt="企業 AI 落地的主題視覺，強調流程、責任與習慣才是真正的阻力。" />
+    <div class="editorial-card__body">
+      <p class="editorial-card__label">Feature Essay</p>
+      <h2>企業 AI 真正卡住的地方，不是模型，而是流程與習慣。</h2>
+      <p>從最常見的三種阻力切進去，看現場怎麼真的把 AI 推起來。</p>
+    </div>
+  </a>
+
+  <div class="editorial-showcase__rail">
+    <a href="./prompts/我目前最常用的-AI-工具組合.html" class="editorial-card internal">
+      <img src="./index-tool-stack.svg" alt="Claude Code、Codex 與 NotebookLM 的工具組合視覺。" />
+      <div class="editorial-card__body">
+        <p class="editorial-card__label">Tool Stack</p>
+        <h3>我現在真的在用的 AI 工具組合</h3>
+      </div>
+    </a>
+
+    <a href="./interests-reading/泡咖啡這件事，怎麼幫我整理思緒.html" class="editorial-card internal">
+      <img src="./index-coffee-notes.svg" alt="手沖咖啡與生活節奏的主題視覺。" />
+      <div class="editorial-card__body">
+        <p class="editorial-card__label">Life Feed</p>
+        <h3>除了工作與 AI，我也想把人的部分留下來</h3>
+      </div>
+    </a>
+  </div>
+</div>
+
 <div class="tech-panel-grid">
   <section class="tech-panel tech-panel-feature">
     <p class="panel-label">START WITH THIS</p>

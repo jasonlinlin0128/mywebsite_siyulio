@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" fill="none">
+  <rect width="1200" height="860" rx="34" fill="#0B0907"/>
+  <rect x="18" y="18" width="1164" height="824" rx="24" stroke="url(#frame)" stroke-opacity=".46"/>
+  <circle cx="952" cy="208" r="142" fill="url(#glow)" fill-opacity=".34"/>
+  <g filter="url(#shadow)">
+    <rect x="144" y="154" width="410" height="430" rx="40" fill="#14110D" stroke="#7E6336" stroke-opacity=".72"/>
+    <path d="M276 264C276 233.072 301.072 208 332 208H356C410.124 208 454 251.876 454 306V322C454 385.513 402.513 437 339 437C304.206 437 276 408.794 276 374V264Z" stroke="#E1C487" stroke-width="16"/>
+    <path d="M452 294H498C541.078 294 576 328.922 576 372V372C576 415.078 541.078 450 498 450H454" stroke="#C7A46A" stroke-width="16"/>
+    <path d="M258 514H500" stroke="#E1C487" stroke-width="16" stroke-linecap="round"/>
+    <text x="210" y="672" fill="#FFF6E2" font-family="Inter, Noto Sans TC, sans-serif" font-size="42" font-weight="700">手沖與節奏感</text>
+    <text x="210" y="722" fill="#D8C7A4" font-family="Inter, Noto Sans TC, sans-serif" font-size="23">讓工作之外也保留人的部分</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="648" y="192" width="398" height="188" rx="28" fill="#18130E" stroke="#B99553" stroke-opacity=".78"/>
+    <text x="684" y="242" fill="#EFD89E" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">LIFE FEED</text>
+    <text x="684" y="302" fill="#FFF8E8" font-family="Inter, Noto Sans TC, sans-serif" font-size="40" font-weight="700">不是只有 AI 與工作</text>
+    <text x="684" y="352" fill="#D9C8A6" font-family="Inter, Noto Sans TC, sans-serif" font-size="23">咖啡、閱讀、生活觀察，會讓這個站更像你。</text>
+  </g>
+  <defs>
+    <linearGradient id="frame" x1="18" y1="18" x2="1182" y2="842" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DEBF82"/>
+      <stop offset="1" stop-color="#5A4624"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(952 208) rotate(90) scale(142)">
+      <stop stop-color="#8C5D33"/>
+      <stop offset="1" stop-color="#8C5D33" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="116" y="126" width="958" height="486" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="14"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+</svg>

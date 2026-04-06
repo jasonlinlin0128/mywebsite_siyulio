@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" fill="none">
+  <rect width="1200" height="860" rx="34" fill="#0B0806"/>
+  <rect x="18" y="18" width="1164" height="824" rx="24" stroke="url(#frame)" stroke-opacity=".5"/>
+  <circle cx="186" cy="148" r="112" fill="url(#glowA)" fill-opacity=".5"/>
+  <circle cx="1032" cy="710" r="148" fill="url(#glowB)" fill-opacity=".34"/>
+  <g filter="url(#shadow)">
+    <rect x="88" y="126" width="326" height="204" rx="28" fill="#15110D" stroke="#7B6334" stroke-opacity=".7"/>
+    <text x="124" y="174" fill="#E3C98C" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">REAL WORLD</text>
+    <text x="124" y="236" fill="#FFF6E3" font-family="Inter, Noto Sans TC, sans-serif" font-size="44" font-weight="700">AI 不是展示</text>
+    <text x="124" y="288" fill="#D8C8A7" font-family="Inter, Noto Sans TC, sans-serif" font-size="24">它要接回流程、責任與日常工作。</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="454" y="262" width="302" height="218" rx="30" fill="#1A140E" stroke="#C19A55" stroke-opacity=".82"/>
+    <text x="490" y="308" fill="#EFD89E" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">FRICTION MAP</text>
+    <text x="490" y="368" fill="#FFF8E8" font-family="Inter, Noto Sans TC, sans-serif" font-size="40" font-weight="700">流程</text>
+    <text x="490" y="416" fill="#FFF8E8" font-family="Inter, Noto Sans TC, sans-serif" font-size="40" font-weight="700">責任</text>
+    <text x="490" y="464" fill="#FFF8E8" font-family="Inter, Noto Sans TC, sans-serif" font-size="40" font-weight="700">習慣</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="822" y="136" width="286" height="186" rx="26" fill="#14100C" stroke="#705A30" stroke-opacity=".64"/>
+    <text x="854" y="182" fill="#E3C98C" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">FIELD NOTE</text>
+    <text x="854" y="238" fill="#FFF6E3" font-family="Inter, Noto Sans TC, sans-serif" font-size="36" font-weight="700">最後還不是</text>
+    <text x="854" y="282" fill="#FFF6E3" font-family="Inter, Noto Sans TC, sans-serif" font-size="36" font-weight="700">我要重看一次</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="212" y="566" width="754" height="124" rx="24" fill="#120F0B" stroke="#5E4A24" stroke-opacity=".58"/>
+    <text x="252" y="618" fill="#CFAF72" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">FIRST TASKS TO TRY</text>
+    <text x="252" y="664" fill="#FFF3D8" font-family="Inter, Noto Sans TC, sans-serif" font-size="28" font-weight="700">會議摘要  ·  文件整理  ·  信件改寫  ·  簡報整理</text>
+  </g>
+  <defs>
+    <linearGradient id="frame" x1="18" y1="18" x2="1182" y2="842" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6CC8D"/>
+      <stop offset="1" stop-color="#5A4521"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(186 148) rotate(90) scale(112)">
+      <stop stop-color="#D2A960"/>
+      <stop offset="1" stop-color="#D2A960" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1032 710) rotate(90) scale(148)">
+      <stop stop-color="#D2A960"/>
+      <stop offset="1" stop-color="#D2A960" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="60" y="98" width="1076" height="620" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="14"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+</svg>

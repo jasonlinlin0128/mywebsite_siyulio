@@ -700,6 +700,88 @@ body[data-slug="index"] .page-footer {
   box-shadow: 0 0 10px rgba(243, 215, 154, 0.42);
 }
 
+.editorial-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 1rem;
+  margin: 1rem 0 1.15rem;
+}
+
+.editorial-showcase__rail {
+  display: grid;
+  gap: 1rem;
+}
+
+.editorial-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0;
+  border-radius: 24px;
+  border: 1px solid rgba(243, 215, 154, 0.1);
+  background:
+    linear-gradient(180deg, rgba(15, 12, 9, 0.98), rgba(9, 8, 6, 0.96));
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 244, 223, 0.05);
+  text-decoration: none;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.editorial-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(210, 179, 117, 0.18);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+}
+
+.editorial-card img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 1.28;
+  object-fit: cover;
+}
+
+.editorial-card--feature img {
+  aspect-ratio: 1.42;
+}
+
+.editorial-card__body {
+  padding: 1rem 1.05rem 1.1rem;
+}
+
+.editorial-card__label {
+  margin: 0 0 0.65rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+.editorial-card__body h2,
+.editorial-card__body h3 {
+  margin: 0;
+  font-family: "Outfit", "Noto Sans TC", sans-serif;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.editorial-card__body h2 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.editorial-card__body h3 {
+  font-size: 1.25rem;
+}
+
+.editorial-card__body p:last-child {
+  margin: 0.7rem 0 0;
+  color: var(--darkgray);
+}
+
 .tech-panel-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1007,6 +1089,7 @@ body[data-slug="index"] .page-footer {
   .tech-hero-shell,
   .tech-panel-grid,
   .tech-metrics,
+  .editorial-showcase,
   .article-signal-hero,
   .article-insight-grid,
   .article-task-strip {

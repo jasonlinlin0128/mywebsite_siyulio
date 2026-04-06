@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" fill="none">
+  <rect width="1200" height="860" rx="34" fill="#0A0806"/>
+  <rect x="18" y="18" width="1164" height="824" rx="24" stroke="url(#frame)" stroke-opacity=".5"/>
+  <g filter="url(#shadow)">
+    <rect x="98" y="118" width="320" height="236" rx="28" fill="#15110D" stroke="#745C31" stroke-opacity=".66"/>
+    <text x="132" y="166" fill="#E4CB90" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">STACK 01</text>
+    <text x="132" y="222" fill="#FFF7E6" font-family="Inter, Noto Sans TC, sans-serif" font-size="38" font-weight="700">Claude Code</text>
+    <text x="132" y="274" fill="#D8C7A4" font-family="Inter, Noto Sans TC, sans-serif" font-size="23">快速推進 vibe coding</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="438" y="236" width="326" height="238" rx="30" fill="#1A140E" stroke="#C19A55" stroke-opacity=".82"/>
+    <text x="474" y="284" fill="#EFD89E" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">STACK 02</text>
+    <text x="474" y="340" fill="#FFF8E8" font-family="Inter, Noto Sans TC, sans-serif" font-size="38" font-weight="700">Codex</text>
+    <text x="474" y="392" fill="#D9C8A6" font-family="Inter, Noto Sans TC, sans-serif" font-size="23">把網站與內容真的做完</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="796" y="138" width="300" height="214" rx="28" fill="#14100C" stroke="#705A30" stroke-opacity=".64"/>
+    <text x="828" y="186" fill="#E4CB90" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">STACK 03</text>
+    <text x="828" y="242" fill="#FFF7E6" font-family="Inter, Noto Sans TC, sans-serif" font-size="38" font-weight="700">NotebookLM</text>
+    <text x="828" y="294" fill="#D8C7A4" font-family="Inter, Noto Sans TC, sans-serif" font-size="23">先吸收資料，再整理脈絡</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="158" y="566" width="884" height="128" rx="24" fill="#120F0B" stroke="#5E4A24" stroke-opacity=".58"/>
+    <text x="198" y="616" fill="#CFAF72" font-family="Inter, Noto Sans TC, sans-serif" font-size="18" letter-spacing="3">REAL TASKS</text>
+    <text x="198" y="662" fill="#FFF3D8" font-family="Inter, Noto Sans TC, sans-serif" font-size="28" font-weight="700">會議摘要  ·  待辦整理  ·  信件改寫  ·  文件整理  ·  簡報內容</text>
+  </g>
+  <defs>
+    <linearGradient id="frame" x1="18" y1="18" x2="1182" y2="842" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6CC8D"/>
+      <stop offset="1" stop-color="#5A4521"/>
+    </linearGradient>
+    <filter id="shadow" x="70" y="90" width="1054" height="632" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="14"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.34 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+</svg>
