@@ -1222,9 +1222,9 @@ body:not([data-slug="index"]) .page-footer {
 }
 
 body:not([data-slug="index"]) .article-title {
-  max-width: 14ch;
-  font-size: clamp(3rem, 5.2vw, 5rem);
-  line-height: 0.94;
+  max-width: 16ch;
+  font-size: clamp(2.7rem, 4.7vw, 4.6rem);
+  line-height: 0.96;
 }
 
 body:not([data-slug="index"]) .content-meta,
@@ -1248,8 +1248,8 @@ body:not([data-slug="index"]) .center article > .article-takeaway-box {
 }
 
 body:not([data-slug="index"]) .center article > p:first-child {
-  font-size: 1.24rem;
-  line-height: 1.95;
+  font-size: 1.16rem;
+  line-height: 1.9;
   color: #e2d1ac;
 }
 
@@ -1266,7 +1266,76 @@ body:not([data-slug="index"]) .center article h3 {
 
 body:not([data-slug="index"]) .center article p,
 body:not([data-slug="index"]) .center article li {
-  font-size: 1.03rem;
+  font-size: 1.02rem;
+}
+
+body:not([data-slug="index"]) .page-header {
+  margin-bottom: 1.4rem;
+}
+
+body:not([data-slug="index"]) .breadcrumb-container {
+  margin-bottom: 1rem;
+}
+
+body:not([data-slug="index"]) .breadcrumb-element a,
+body:not([data-slug="index"]) .breadcrumb-element p {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+body:not([data-slug="index"]) .content-meta {
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+body:not([data-slug="index"]) .content-meta > * {
+  border-color: rgba(243, 215, 154, 0.06);
+  background: rgba(255, 244, 223, 0.025);
+}
+
+body:not([data-slug="index"]) .tags {
+  display: none;
+}
+
+body:not([data-slug="index"]) .center article h2 > a,
+body:not([data-slug="index"]) .center article h3 > a {
+  display: none;
+}
+
+body:not([data-slug="index"]) .center article p + p {
+  margin-top: 1.05rem;
+}
+
+body:not([data-slug="index"]) .center article ul,
+body:not([data-slug="index"]) .center article ol {
+  margin-top: 0.9rem;
+}
+
+body:not([data-slug="index"]) .center article li + li {
+  margin-top: 0.45rem;
+}
+
+body:not([data-slug="index"]) .center article blockquote {
+  margin: 1.7rem auto;
+  padding: 0;
+  border-left: 0;
+  background: transparent;
+  border-radius: 0;
+  font-family: "Outfit", "Noto Sans TC", sans-serif;
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #f0d9ad;
+}
+
+body:not([data-slug="index"]) .center article hr {
+  max-width: 780px;
+  margin: 2.4rem auto;
+  border: 0;
+  border-top: 1px solid rgba(243, 215, 154, 0.12);
 }
 
 body[data-slug="index"] .center,
@@ -1499,6 +1568,10 @@ header {
 
 .site-header-nav__links a:hover {
   color: var(--tertiary);
+}
+
+footer p {
+  display: none;
 }
 
 body[data-slug="index"] .center article {
@@ -2031,6 +2104,129 @@ body[data-slug="index"] .center article h3 > a {
   margin-top: 0.8rem;
 }
 
+body[data-slug$="/index"]:not([data-slug="index"]) .page-header {
+  margin-bottom: 1.8rem;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro {
+  max-width: 860px;
+  margin: 0 auto 0.8rem;
+  padding: 0 0 1.4rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro::before,
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro__mark,
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro__meta,
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro__links {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro__title {
+  max-width: 12ch;
+  font-size: clamp(2.2rem, 4vw, 3.7rem);
+  line-height: 0.96;
+  color: #fff6e6;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .brand-intro__copy {
+  margin-top: 0.95rem;
+  max-width: 44rem;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: #d5c3a0;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .page-header .article-title,
+body[data-slug$="/index"]:not([data-slug="index"]) .page-header .content-meta,
+body[data-slug$="/index"]:not([data-slug="index"]) .page-header .breadcrumb-container {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .center article > p:first-child {
+  max-width: 780px;
+  font-size: 1.08rem;
+  color: #dcccac;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .center article h2 {
+  max-width: 780px;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .center article h2 > a {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .page-listing > p {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section-ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section-li {
+  margin: 0;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section {
+  min-height: 14rem;
+  padding: 1.25rem;
+  border-radius: 24px;
+  border: 1px solid rgba(243, 215, 154, 0.1);
+  background:
+    linear-gradient(180deg, rgba(15, 12, 9, 0.98), rgba(9, 8, 6, 0.96));
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 244, 223, 0.04);
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section::after {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section .meta {
+  margin: 0 0 0.85rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section .desc h3 {
+  margin: 0;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section .desc h3 a {
+  display: inline-block;
+  max-width: 12ch;
+  font-family: "Outfit", "Noto Sans TC", sans-serif;
+  font-size: 1.7rem;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: #fff6e6;
+  text-decoration: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .section .tags {
+  display: none;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .page-listing {
+  padding-top: 0.4rem;
+}
+
+body[data-slug$="/index"]:not([data-slug="index"]) .page-footer {
+  display: none;
+}
+
 body[data-slug="index"] .cover-stage,
 body[data-slug="index"] .issue-strip,
 body[data-slug="index"] .feature-grid,
@@ -2110,5 +2306,9 @@ body[data-slug="index"] .afterglow-grid {
   .feature-grid__stack,
   .reading-route__cards {
     gap: 0.85rem;
+  }
+
+  body[data-slug$="/index"]:not([data-slug="index"]) .section-ul {
+    grid-template-columns: 1fr;
   }
 }

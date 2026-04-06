@@ -12,7 +12,10 @@ export const sharedPageComponents: SharedLayout = {
         showTags: false,
         filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
       }),
-      condition: (page) => page.fileData.slug !== "index",
+      condition: (page) => {
+        const slug = page.fileData.slug ?? ""
+        return slug !== "index" && !slug.endsWith("/index")
+      },
     }),
   ],
   footer: Component.Footer({
@@ -28,10 +31,6 @@ export const sharedPageComponents: SharedLayout = {
 
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
-    Component.ConditionalRender({
-      component: Component.BrandIntro(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
       condition: (page) => page.fileData.slug !== "index",
@@ -54,7 +53,7 @@ export const defaultContentPageLayout: PageLayout = {
 }
 
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.BrandIntro(), Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
+  beforeBody: [Component.BrandIntro(), Component.ArticleTitle()],
   left: [],
   right: [],
 }
