@@ -57,7 +57,7 @@ export const defaultContentPageLayout: PageLayout = {
   right: [
     Component.ConditionalRender({
       component: Component.RecentNotes({
-        title: "最新筆記",
+        title: "最新文章",
         limit: 4,
         showTags: false,
         filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
