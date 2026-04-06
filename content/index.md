@@ -1,177 +1,129 @@
 ---
 title: siyulio
+description: Jason Lin 的黑金內容網站，記錄傳統製造業中的 AI 落地、工具整理、Obsidian 筆記系統與手沖咖啡日常。
 ---
 
-<div class="tech-hero-shell">
-  <div class="tech-hero-copy">
-    <p class="tech-kicker">JASON LIN / AI IN MANUFACTURING</p>
-    <h1>我是 Jason，把企業 AI 落地經驗整理成真的能拿來用的方法。</h1>
-    <p class="tech-lead">
-      我是一名在傳統製造業導入 AI 的 00 後。這裡不會主打很高大上的架構圖，而是記錄我怎麼把 AI 放進真實工作流程，
-      包括推專案時的阻力、常用工具與 Prompts、Obsidian 知識整理方式，以及下班後用手沖咖啡讓自己慢下來的日常。
-    </p>
-    <div class="tech-actions">
-      <a href="./work-notes/" class="internal">先看工作心得</a>
-      <a href="./prompts/" class="internal">看 AI 工具與 Prompts</a>
-    </div>
-    <div class="tech-metrics">
-      <div class="metric-card">
-        <span class="metric-label">Role</span>
-        <strong>AI 落地實踐者</strong>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">Context</span>
-        <strong>Manufacturing / Knowledge Work</strong>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">Current Stack</span>
-        <strong>Claude Code / Codex / NotebookLM</strong>
-      </div>
-    </div>
-  </div>
-
-  <div class="tech-hero-visual" aria-hidden="true">
-    <div class="signal-console">
-      <div class="console-topbar">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div class="console-grid">
-        <div class="console-panel console-panel-primary">
-          <small>Main Topic</small>
-          <strong>企業 AI 落地</strong>
-          <p>真正卡住企業導入 AI 的，常常不是模型，而是流程、習慣、驗證責任與組織協作。</p>
-        </div>
-        <div class="console-panel">
-          <small>Real Use Cases</small>
-          <strong>會議摘要 / 信件改寫 / 文件整理 / 簡報生成</strong>
-          <p>我現在最常用 AI 的地方，不是炫技，而是把重複工作變得更快、更清楚。</p>
-        </div>
-        <div class="console-panel mini">
-          <small>Side Feed</small>
-          <strong>Obsidian / Coffee / Reading</strong>
-        </div>
-        <div class="console-panel mini">
-          <small>Status</small>
-          <strong>Shipping Weekly</strong>
-        </div>
-      </div>
-      <div class="scan-line"></div>
-      <div class="console-orb orb-a"></div>
-      <div class="console-orb orb-b"></div>
-    </div>
-  </div>
+<div class="cover-stage">
+<section class="cover-stage__intro">
+<p class="cover-stage__kicker">JASON LIN / AI IN MANUFACTURING</p>
+<h1>把企業裡真的用得上的 AI，整理成可以開始的做法。</h1>
+<p class="cover-stage__lead">我是 Jason，一名在傳統製造業導入 AI 的 00 後。這裡主要寫企業推動 AI 的阻力、工作裡真的會用到的工具與 prompts、Obsidian 筆記系統，還有用手沖咖啡整理思緒的日常。</p>
+<div class="cover-stage__actions">
+<a href="./work-notes/" class="internal">看工作現場</a>
+<a href="./prompts/" class="internal">看工具與 Prompts</a>
+</div>
+<div class="cover-stage__meta">
+<div><span>Focus</span><strong>企業 AI 落地</strong></div>
+<div><span>Method</span><strong>工具整理與知識管理</strong></div>
+<div><span>Current Stack</span><strong>Claude Code / Codex / NotebookLM</strong></div>
+</div>
+</section>
+<aside class="cover-stage__visual" aria-hidden="true">
+<div class="cover-stage__frame">
+<div class="cover-stage__glow cover-stage__glow--one"></div>
+<div class="cover-stage__glow cover-stage__glow--two"></div>
+<div class="cover-stage__caption">
+<span>FIELD NOTES / 2026</span>
+<strong>從工具熱潮回到真正的工作流程</strong>
+</div>
+<div class="cover-stage__tiles">
+<div class="cover-stage__tile cover-stage__tile--wide"><small>Main Theme</small><strong>AI adoption in real teams</strong></div>
+<div class="cover-stage__tile"><small>Prompts</small><strong>Reusable workflows</strong></div>
+<div class="cover-stage__tile"><small>Notes</small><strong>Obsidian systems</strong></div>
+<div class="cover-stage__tile cover-stage__tile--accent"><small>Side Feed</small><strong>Hand-pour coffee &amp; reading</strong></div>
+</div>
+</div>
+</aside>
 </div>
 
-<div class="tech-marquee" aria-hidden="true">
-  <div class="tech-marquee-track">
-    <span>Prompts</span>
-    <span>工作心得</span>
-    <span>興趣 / 閱讀</span>
-    <span>喜好文章</span>
-    <span>Obsidian 筆記</span>
-    <span>Prompts</span>
-    <span>工作心得</span>
-    <span>興趣 / 閱讀</span>
-    <span>喜好文章</span>
-    <span>Obsidian 筆記</span>
-  </div>
+<div class="issue-strip" aria-label="Site topics">
+<span>企業 AI 落地</span>
+<span>Prompts 與工具整理</span>
+<span>Obsidian 筆記系統</span>
+<span>工作心得</span>
+<span>手沖咖啡與閱讀</span>
 </div>
 
-<div class="editorial-showcase">
-  <a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="editorial-card editorial-card--feature internal">
-    <img src="./index-ai-grounded.svg" alt="企業 AI 落地的主題視覺，強調流程、責任與習慣才是真正的阻力。" />
-    <div class="editorial-card__body">
-      <p class="editorial-card__label">Feature Essay</p>
-      <h2>企業 AI 真正卡住的地方，不是模型，而是流程與習慣。</h2>
-      <p>從最常見的三種阻力切進去，看現場怎麼真的把 AI 推起來。</p>
-    </div>
-  </a>
-
-  <div class="editorial-showcase__rail">
-    <a href="./prompts/我目前最常用的-AI-工具組合.html" class="editorial-card internal">
-      <img src="./index-tool-stack.svg" alt="Claude Code、Codex 與 NotebookLM 的工具組合視覺。" />
-      <div class="editorial-card__body">
-        <p class="editorial-card__label">Tool Stack</p>
-        <h3>我現在真的在用的 AI 工具組合</h3>
-      </div>
-    </a>
-
-    <a href="./interests-reading/泡咖啡這件事，怎麼幫我整理思緒.html" class="editorial-card internal">
-      <img src="./index-coffee-notes.svg" alt="手沖咖啡與生活節奏的主題視覺。" />
-      <div class="editorial-card__body">
-        <p class="editorial-card__label">Life Feed</p>
-        <h3>除了工作與 AI，我也想把人的部分留下來</h3>
-      </div>
-    </a>
-  </div>
+<div class="feature-grid">
+<a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="story-card story-card--feature internal">
+<div class="story-card__visual story-card__visual--factory"></div>
+<div class="story-card__content">
+<p class="story-card__eyebrow">Start With This</p>
+<h2>在傳統製造業導入 AI，最先卡住的不是模型</h2>
+<p>如果你只想先讀一篇，先看這篇。它最接近我目前在企業裡真正遇到的現場。</p>
+</div>
+</a>
+<div class="feature-grid__stack">
+<a href="./prompts/" class="story-card internal">
+<div class="story-card__visual story-card__visual--stack"></div>
+<div class="story-card__content">
+<p class="story-card__eyebrow">Tool Method</p>
+<h3>Prompts 與工具整理</h3>
+<p>把常用工作場景拆成可以重複使用的方式，而不是堆一堆零散指令。</p>
+</div>
+</a>
+<a href="./obsidian-notes/" class="story-card internal">
+<div class="story-card__visual story-card__visual--notes"></div>
+<div class="story-card__content">
+<p class="story-card__eyebrow">Knowledge System</p>
+<h3>Obsidian 筆記系統</h3>
+<p>我怎麼把 AI 工作流、專案資料和想法，整理成可以長期維護的知識系統。</p>
+</div>
+</a>
+</div>
 </div>
 
-<div class="tech-panel-grid">
-  <section class="tech-panel tech-panel-feature">
-    <p class="panel-label">START WITH THIS</p>
-    <h2>如果你只先讀一篇，就先看這篇。</h2>
-    <p>
-      <a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="internal">在傳統製造業導入 AI，最先卡住的不是模型</a>
-      是目前最能代表這個網站的一篇文章。它能最快讓你知道我看待企業 AI 的角度，不是從模型炫技出發，而是從流程、習慣與現場阻力開始。
-    </p>
-  </section>
+<div class="home-duo">
+<section class="essay-block">
+<p class="essay-block__label">WHY THIS SITE</p>
+<h2>這不是 AI 新聞整理站，而是一個把現場經驗、工具方法和個人生活放在同一個畫布上的內容網站。</h2>
+<p>我比較在意的不是模型排行榜，而是同事為什麼不願意開始用、流程哪裡接不上、哪些工具真的能減少工作摩擦。這也是我想把內容寫成「能開始用的做法」而不是「看起來很厲害的整理文」的原因。</p>
+</section>
+<section class="briefing-block">
+<p class="essay-block__label">WHAT YOU'LL FIND</p>
+<div class="briefing-list">
+<div><span>Work Notes</span><strong>企業內部推 AI 時，實際會遇到的阻力、誤解與推進方式。</strong></div>
+<div><span>Prompts</span><strong>我真的會留下來反覆使用的 prompts、AI 工具與工作場景。</strong></div>
+<div><span>Obsidian</span><strong>把專案、會議、工具使用經驗整理成可持續維護的知識系統。</strong></div>
+</div>
+</section>
+</div>
 
-  <section class="tech-panel tech-panel-feature">
-    <p class="panel-label">WHO THIS IS FOR</p>
-    <h2>如果你也在公司裡推 AI，這個網站會先對你有用。</h2>
-    <p>
-      如果你正在面對「同仁怕增加工作量」、「痛點不一定能直接套 AI」、「大家沒時間學」這些現實問題，
-      這裡會比一般工具介紹文更接近真實工作現場。
-    </p>
-    <div class="panel-link-row">
-      <a href="./work-notes/" class="internal">工作心得</a>
-      <a href="./prompts/" class="internal">Prompts</a>
-      <a href="./obsidian-notes/" class="internal">Obsidian 筆記</a>
-    </div>
-  </section>
+<section class="reading-route">
+<div class="reading-route__intro">
+<p class="essay-block__label">START HERE</p>
+<h2>第一次來，從這三個入口開始就夠了。</h2>
+</div>
+<div class="reading-route__cards">
+<a href="./work-notes/" class="route-card internal">
+<span>01</span>
+<strong>先看工作現場</strong>
+<p>如果你關心的是企業裡怎麼真的把 AI 推動起來，先從工作心得開始。</p>
+</a>
+<a href="./prompts/" class="route-card internal">
+<span>02</span>
+<strong>再看工具與 Prompts</strong>
+<p>如果你想知道我平常怎麼用 Claude Code、Codex 和 NotebookLM，可以從這裡進。</p>
+</a>
+<a href="./interests-reading/" class="route-card internal">
+<span>03</span>
+<strong>最後看生活感</strong>
+<p>除了 AI，我也想把手沖咖啡、閱讀和整理思緒的節奏留在這個網站裡。</p>
+</a>
+</div>
+</section>
 
-  <section class="tech-panel">
-    <p class="panel-label">START HERE</p>
-    <h2>如果你是第一次來，我建議先從這三篇開始。</h2>
-    <ul class="signal-list">
-      <li><span>先看阻力</span><strong><a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="internal">在傳統製造業導入 AI，最先卡住的不是模型</a></strong></li>
-      <li><span>讀完你會知道</span><strong>為什麼企業 AI 最常卡住的不是技術，而是流程與責任。</strong></li>
-      <li><span>再看方法</span><strong><a href="./prompts/如何建立自己的常用指令庫.html" class="internal">如何建立自己的常用指令庫</a></strong></li>
-      <li><span>讀完你會知道</span><strong>怎麼把 AI 變成真的會反覆用到的個人工具，而不是收藏清單。</strong></li>
-      <li><span>最後看系統</span><strong><a href="./obsidian-notes/我怎麼用-Obsidian-管理工作中的-AI-知識.html" class="internal">我怎麼用 Obsidian 管理工作中的 AI 知識</a></strong></li>
-      <li><span>讀完你會知道</span><strong>我怎麼把工具、Prompt 與工作經驗整理成可以長期累積的方法。</strong></li>
-    </ul>
-  </section>
-
-  <section class="tech-panel">
-    <p class="panel-label">WHY LISTEN</p>
-    <h2>我不是只在整理資訊，而是真的把 AI 放進自己的工作裡。</h2>
-    <p>
-      從會議摘要、錄音整理待辦、信件改寫，到專案文件與簡報內容整理，再到用 Claude Code 快速推進 vibe coding 專案。
-      這些是我真正有在用、也會持續整理成文章的方法。
-    </p>
-  </section>
-
-  <section class="tech-panel">
-    <p class="panel-label">AROUND THE SITE</p>
-    <h2>除了 AI 與工作，這裡也會保留一些人的部分。</h2>
-    <div class="panel-link-stack">
-      <a href="./work-notes/" class="internal">工作心得</a>
-      <a href="./prompts/" class="internal">Prompts</a>
-      <a href="./obsidian-notes/" class="internal">Obsidian 筆記</a>
-      <a href="./interests-reading/" class="internal">興趣 / 閱讀</a>
-    </div>
-  </section>
-
-  <section class="tech-panel">
-    <p class="panel-label">REPRESENTATIVE POSTS</p>
-    <h2>這三篇最能代表我現在想寫的方向。</h2>
-    <ul class="signal-list">
-      <li><span>企業現場</span><strong><a href="./work-notes/企業內部推-AI-時，最常見的-5-種阻力.html" class="internal">企業內部推 AI 時，最常見的 5 種阻力</a></strong></li>
-      <li><span>工作流</span><strong><a href="./prompts/我目前最常用的-AI-工具組合.html" class="internal">我目前最常用的 AI 工具組合</a></strong></li>
-      <li><span>知識系統</span><strong><a href="./obsidian-notes/我怎麼用-Obsidian-管理工作中的-AI-知識.html" class="internal">我怎麼用 Obsidian 管理工作中的 AI 知識</a></strong></li>
-    </ul>
-  </section>
+<div class="afterglow-grid">
+<section class="afterglow-quote">
+<p class="essay-block__label">PERSONAL NOTE</p>
+<blockquote>我想做的不是一個看起來很懂 AI 的網站，而是一個把工作裡真的有用的方法、真的遇到的瓶頸，和我自己的生活質地一起留下來的地方。</blockquote>
+</section>
+<section class="afterglow-panel">
+<p class="essay-block__label">CURRENT RHYTHM</p>
+<ul>
+<li>一週更新一篇，重點放在工作心得、Prompts 與 Obsidian。</li>
+<li>有些文章會是圖文版，讓內容不要只停留在中間一長條文字。</li>
+<li>黑、金、咖啡棕，是我希望這個網站長期維持的視覺語氣。</li>
+</ul>
+</section>
 </div>
