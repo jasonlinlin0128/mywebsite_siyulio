@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mywebsite-siyulio",
+  "compatibility_date": "2026-04-06",
+  "assets": {
+    "directory": "./public",
+    "html_handling": "force-trailing-slash"
+  }
+}
