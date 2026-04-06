@@ -81,10 +81,11 @@ title: siyulio
 
 <div class="tech-panel-grid">
   <section class="tech-panel tech-panel-feature">
-    <p class="panel-label">FEATURED TOPIC</p>
+    <p class="panel-label">WHO THIS IS FOR</p>
     <h2>如果你也在公司裡推 AI，這個網站會先對你有用。</h2>
     <p>
-      我會把企業 AI 推動時最常遇到的阻力、我自己真的在用的工具組合、以及能直接複用的 Prompts 整理成一批可實際帶走的內容。
+      如果你正在面對「同仁怕增加工作量」、「痛點不一定能直接套 AI」、「大家沒時間學」這些現實問題，
+      這裡會比一般工具介紹文更接近真實工作現場。
     </p>
     <div class="panel-link-row">
       <a href="./work-notes/" class="internal">工作心得</a>
@@ -94,18 +95,18 @@ title: siyulio
   </section>
 
   <section class="tech-panel">
-    <p class="panel-label">WHAT YOU WILL FIND</p>
-    <h2>第一次來這裡，你會先看到這三種內容。</h2>
+    <p class="panel-label">START HERE</p>
+    <h2>如果你是第一次來，我建議先從這三篇開始。</h2>
     <ul class="signal-list">
-      <li><span>企業現場</span><strong>AI 導入時真正卡住的地方</strong></li>
-      <li><span>AI 工作流</span><strong>我如何用工具與 Prompts 加速工作</strong></li>
-      <li><span>知識整理</span><strong>我怎麼用 Obsidian 把方法留下來</strong></li>
+      <li><span>先看阻力</span><strong><a href="./work-notes/在傳統製造業導入-AI，最先卡住的不是模型.html" class="internal">在傳統製造業導入 AI，最先卡住的不是模型</a></strong></li>
+      <li><span>再看方法</span><strong><a href="./prompts/如何建立自己的常用指令庫.html" class="internal">如何建立自己的常用指令庫</a></strong></li>
+      <li><span>最後看系統</span><strong><a href="./obsidian-notes/我怎麼用-Obsidian-管理工作中的-AI-知識.html" class="internal">我怎麼用 Obsidian 管理工作中的 AI 知識</a></strong></li>
     </ul>
   </section>
 
   <section class="tech-panel">
-    <p class="panel-label">CURRENT WORKFLOW</p>
-    <h2>我目前最常拿 AI 處理的是這些任務。</h2>
+    <p class="panel-label">WHY LISTEN</p>
+    <h2>我不是只在整理資訊，而是真的把 AI 放進自己的工作裡。</h2>
     <p>
       從會議摘要、錄音整理待辦、信件改寫，到專案文件與簡報內容整理，再到用 Claude Code 快速推進 vibe coding 專案。
       這些是我真正有在用、也會持續整理成文章的方法。
@@ -113,8 +114,8 @@ title: siyulio
   </section>
 
   <section class="tech-panel">
-    <p class="panel-label">ENTRY POINT</p>
-    <h2>如果你是第一次來，建議從這些頁面開始。</h2>
+    <p class="panel-label">AROUND THE SITE</p>
+    <h2>除了 AI 與工作，這裡也會保留一些人的部分。</h2>
     <div class="panel-link-stack">
       <a href="./work-notes/" class="internal">工作心得</a>
       <a href="./prompts/" class="internal">Prompts</a>
