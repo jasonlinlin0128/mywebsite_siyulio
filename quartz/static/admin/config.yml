@@ -1,0 +1,40 @@
+backend:
+  name: github
+  repo: jasonlinlin0128/mywebsite_siyulio
+  branch: v4
+  auth_type: pkce
+  app_id: Ov23ctgRqoAI1N6GxINa
+
+media_folder: "content/images"
+public_folder: "/images"
+
+locale: zh_TW
+
+collections:
+  - name: "blog"
+    label: "文章"
+    label_singular: "文章"
+    folder: "content/Blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "摘要", name: "description", widget: "text", required: false }
+      - { label: "標籤", name: "tags", widget: "list", required: false, hint: "用逗號分隔，例如：AI, 工具評析, 傳統產業" }
+      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
+      - { label: "內文", name: "body", widget: "markdown" }
+
+  - name: "coffee"
+    label: "手沖咖啡"
+    label_singular: "咖啡記錄"
+    folder: "content/Coffee"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "豆子產區", name: "origin", widget: "string", required: false }
+      - { label: "標籤", name: "tags", widget: "list", required: false }
+      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
+      - { label: "內文", name: "body", widget: "markdown" }
