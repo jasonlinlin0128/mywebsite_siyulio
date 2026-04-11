@@ -7,7 +7,7 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [
     Component.ConditionalRender({
       component: Component.RecentNotes({
-        title: "Continue Reading",
+        title: "繼續閱讀",
         limit: 3,
         showTags: false,
         filter: (file) => !!file.slug && file.slug !== "index" && !file.slug.endsWith("/index"),
@@ -21,16 +21,20 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       Home: "/",
-      Prompts: "/prompts/",
-      工作心得: "/work-notes/",
-      興趣閱讀: "/interests-reading/",
-      Obsidian筆記: "/obsidian-notes/",
+      製造業AI: "/manufacturing-ai/",
+      AI新知: "/ai-notes/",
+      手沖咖啡: "/coffee/",
+      個人經歷: "/about/",
     },
   }),
 }
 
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
+    Component.ConditionalRender({
+      component: Component.HomeLanding(),
+      condition: (page) => page.fileData.slug === "index",
+    }),
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
       condition: (page) => page.fileData.slug !== "index",

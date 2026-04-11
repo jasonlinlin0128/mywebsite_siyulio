@@ -1,9 +1,10 @@
 ---
 title: 我目前最常用的 AI 工具組合
 tags:
-  - prompts
+  - ai-notes
   - ai
   - tools
+post_type: article
 ---
 
 對我來說，AI 工具不是越多越好，而是要能真的接進工作與筆記流程裡。

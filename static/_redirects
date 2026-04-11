@@ -1,0 +1,5 @@
+# 舊分類 URL → 新分類 URL（301 永久轉址）
+/work-notes/*        /manufacturing-ai/:splat   301
+/prompts/*           /ai-notes/:splat            301
+/interests-reading/* /coffee/:splat              301
+/obsidian-notes/*    /ai-notes/:splat            301

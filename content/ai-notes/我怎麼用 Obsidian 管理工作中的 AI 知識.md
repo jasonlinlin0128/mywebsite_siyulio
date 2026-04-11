@@ -1,9 +1,10 @@
 ---
 title: 我怎麼用 Obsidian 管理工作中的 AI 知識
 tags:
-  - obsidian-notes
+  - ai-notes
   - ai
   - knowledge-management
+post_type: article
 ---
 
 我會想把 AI 相關的內容收進 Obsidian，不是因為筆記工具本身很酷，而是因為如果不刻意整理，很多有價值的內容都會散在聊天視窗、文件草稿、臨時截圖裡，最後等於沒有留下來。

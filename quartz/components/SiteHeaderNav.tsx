@@ -1,19 +1,47 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { FullSlug, resolveRelative } from "../util/path"
 
+type NavItem = {
+  label: string
+  href: FullSlug
+  matches: (slug: string) => boolean
+}
+
+const navItems: NavItem[] = [
+  {
+    label: "製造業 AI",
+    href: "manufacturing-ai/index" as FullSlug,
+    matches: (slug) => slug.startsWith("manufacturing-ai/"),
+  },
+  {
+    label: "AI 新知",
+    href: "ai-notes/index" as FullSlug,
+    matches: (slug) => slug.startsWith("ai-notes/"),
+  },
+  {
+    label: "手沖咖啡",
+    href: "coffee/index" as FullSlug,
+    matches: (slug) => slug.startsWith("coffee/"),
+  },
+  {
+    label: "個人經歷",
+    href: "about/index" as FullSlug,
+    matches: (slug) => slug.startsWith("about/"),
+  },
+]
+
 function currentSection(slug: string) {
-  if (slug === "index") return "Home"
-  if (slug.startsWith("work-notes/")) return "工作心得"
-  if (slug.startsWith("prompts/")) return "Prompts"
-  if (slug.startsWith("obsidian-notes/")) return "Obsidian 筆記"
-  if (slug.startsWith("interests-reading/")) return "興趣 / 閱讀"
-  if (slug.startsWith("favorite-articles/")) return "喜好文章"
-  return "Article"
+  if (slug === "index") return "首頁"
+  if (slug.endsWith("/index")) {
+    return navItems.find((item) => item.matches(slug))?.label ?? "分類頁"
+  }
+  return navItems.find((item) => item.matches(slug))?.label ?? "文章"
 }
 
 export default (() => {
   function SiteHeaderNav({ fileData }: QuartzComponentProps) {
     const slug = fileData.slug ?? ("index" as FullSlug)
+    const sectionLabel = currentSection(slug)
 
     return (
       <div class="site-header-nav">
@@ -21,19 +49,24 @@ export default (() => {
           <span class="site-header-nav__mark">JL</span>
           <span class="site-header-nav__wordmark">
             <strong>siyulio</strong>
-            <small>Jason Lin</small>
+            <small>AI field notes by Jason Lin</small>
           </span>
         </a>
 
         <nav class="site-header-nav__links" aria-label="Primary">
-          <a href={resolveRelative(slug, "work-notes/index" as FullSlug)}>工作心得</a>
-          <a href={resolveRelative(slug, "prompts/index" as FullSlug)}>Prompts</a>
-          <a href={resolveRelative(slug, "obsidian-notes/index" as FullSlug)}>Obsidian 筆記</a>
-          <a href={resolveRelative(slug, "interests-reading/index" as FullSlug)}>興趣 / 閱讀</a>
+          {navItems.map((item) => (
+            <a
+              href={resolveRelative(slug, item.href)}
+              data-active={item.matches(slug) ? "true" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         <div class="site-header-nav__status">
-          <span>{currentSection(slug)}</span>
+          <span>{sectionLabel}</span>
+          <span>更新中的內容花園</span>
         </div>
       </div>
     )
