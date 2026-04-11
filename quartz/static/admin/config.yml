@@ -11,30 +11,111 @@ public_folder: "/images"
 locale: zh_TW
 
 collections:
-  - name: "blog"
-    label: "文章"
+  # ── 1. 製造業 AI 筆記 ──────────────────────────────────────
+  - name: "manufacturing-ai"
+    label: "製造業 AI 筆記"
     label_singular: "文章"
-    folder: "content/Blog"
+    folder: "content/manufacturing-ai"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
       - { label: "標題", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
       - { label: "摘要", name: "description", widget: "text", required: false }
-      - { label: "標籤", name: "tags", widget: "list", required: false, hint: "用逗號分隔，例如：AI, 工具評析, 傳統產業" }
-      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
-      - { label: "內文", name: "body", widget: "markdown" }
-
-  - name: "coffee"
-    label: "手沖咖啡"
-    label_singular: "咖啡記錄"
-    folder: "content/Coffee"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    fields:
-      - { label: "標題", name: "title", widget: "string" }
-      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "豆子產區", name: "origin", widget: "string", required: false }
       - { label: "標籤", name: "tags", widget: "list", required: false }
       - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
       - { label: "內文", name: "body", widget: "markdown" }
+
+  # ── 2a. AI 新知：深度文章 ──────────────────────────────────
+  - name: "ai-notes-article"
+    label: "AI 新知 — 深度文章"
+    label_singular: "深度文章"
+    folder: "content/ai-notes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "文章類型", name: "post_type", widget: "hidden", default: "article" }
+      - { label: "摘要", name: "description", widget: "text", required: false }
+      - { label: "標籤", name: "tags", widget: "list", required: false }
+      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
+      - { label: "內文", name: "body", widget: "markdown" }
+
+  # ── 2b. AI 新知：連結分享 ──────────────────────────────────
+  - name: "ai-notes-link"
+    label: "AI 新知 — 連結分享 🔗"
+    label_singular: "連結分享"
+    folder: "content/ai-notes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "文章類型", name: "post_type", widget: "hidden", default: "link" }
+      - { label: "連結網址", name: "external_url", widget: "string", hint: "分享的原始連結" }
+      - { label: "短評（3-5 句）", name: "description", widget: "text" }
+      - { label: "標籤", name: "tags", widget: "list", required: false }
+      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
+      - { label: "補充說明（可選）", name: "body", widget: "markdown", required: false }
+
+  # ── 3. 手沖咖啡 ───────────────────────────────────────────
+  - name: "coffee"
+    label: "手沖咖啡"
+    label_singular: "咖啡內容"
+    folder: "content/coffee"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: "內容類型"
+        name: "coffee_type"
+        widget: "select"
+        options:
+          - { label: "☕ 沖煮紀錄", value: "log" }
+          - { label: "🏪 咖啡店走訪", value: "cafe" }
+          - { label: "🎪 展覽紀錄", value: "expo" }
+          - { label: "🛠️ 器材介紹", value: "gear" }
+          - { label: "📖 咖啡知識", value: "knowledge" }
+          - { label: "💭 產業觀點", value: "perspective" }
+      - { label: "摘要", name: "description", widget: "text", required: false }
+      - { label: "標籤", name: "tags", widget: "list", required: false }
+      - { label: "草稿（不公開）", name: "draft", widget: "boolean", default: false }
+      - { label: "內文", name: "body", widget: "markdown" }
+
+  # ── 4. 個人經歷：頁面頂部（關於我）────────────────────────
+  - name: "about-page"
+    label: "個人經歷 — 關於我（頂部）"
+    files:
+      - label: "關於我"
+        name: "about-index"
+        file: "content/about/index.md"
+        fields:
+          - { label: "標題", name: "title", widget: "hidden", default: "個人經歷" }
+          - { label: "摘要", name: "description", widget: "text", required: false }
+          - { label: "內文", name: "body", widget: "markdown" }
+
+  # ── 4b. 個人經歷：時間線項目 ──────────────────────────────
+  - name: "about-timeline"
+    label: "個人經歷 — 時間線"
+    label_singular: "經歷項目"
+    folder: "content/about"
+    create: true
+    slug: "{{slug}}"
+    filter: { field: "layout", value: "timeline-item" }
+    fields:
+      - { label: "標題", name: "title", widget: "string", hint: "例如：某公司 / AI 導入專案 / AWS 證照" }
+      - { label: "Layout", name: "layout", widget: "hidden", default: "timeline-item" }
+      - label: "類別"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "💼 工作經歷", value: "work" }
+          - { label: "🚀 專案", value: "project" }
+          - { label: "📜 證照", value: "cert" }
+          - { label: "🎤 演講 / 分享", value: "talk" }
+          - { label: "📚 學習歷程", value: "learning" }
+      - { label: "開始時間", name: "start_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false }
+      - { label: "結束時間", name: "end_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false, required: false, hint: "進行中的項目可留空" }
+      - { label: "說明", name: "body", widget: "markdown" }

@@ -1,9 +1,10 @@
 ---
 title: 我會留下哪些 Prompt，刪掉哪些 Prompt
 tags:
-  - prompts
+  - ai-notes
   - ai
   - workflow
+post_type: article
 ---
 
 不是每一個用過一次的 Prompt，都值得留下來。
