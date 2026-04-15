@@ -1,8 +1,25 @@
-import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
+// @ts-ignore
+import heroSceneScript from "./scripts/heroScene.inline"
+import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { FullSlug, resolveRelative } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
 import { formatDate, getDate } from "./Date"
 import { getSectionThemeForSlug, sectionThemes } from "./sectionThemes"
+
+// ── Hero scene objects ────────────────────────────────────────────────────────
+// Replace .svg paths with .png once AI-generated assets are ready.
+// To swap: change `ext` to ".png" and drop PNGs into quartz/quartz/static/scene/
+const SCENE_EXT = ".png"
+
+const sceneObjects = [
+  { id: "coffee-bean-1", x: 11, y: 16, size: 70,  rotate: -18 },
+  { id: "coffee-bean-2", x: 82, y: 22, size: 58,  rotate: 32 },
+  { id: "coffee-bean-3", x: 44, y: 78, size: 64,  rotate: -7 },
+  { id: "laptop",        x: 68, y: 62, size: 148, rotate: -5 },
+  { id: "phone",         x: 21, y: 56, size: 90,  rotate: 14 },
+  { id: "headphones",    x: 88, y: 76, size: 106, rotate: -12 },
+  { id: "mug",           x: 7,  y: 82, size: 98,  rotate: 8 },
+]
 
 const featuredSlugs = [
   "manufacturing-ai/在傳統製造業導入-AI，最先卡住的不是模型",
@@ -62,7 +79,7 @@ export default (() => {
     const articles = allFiles.filter(isRealArticle)
     const recentArticles = [...articles]
       .sort((a, b) => (getDateSafe(b)?.getTime() ?? 0) - (getDateSafe(a)?.getTime() ?? 0))
-      .slice(0, 6)
+      .slice(0, 4)
     const featuredArticles = featuredSlugs
       .map((targetSlug) => articles.find((page) => page.slug === targetSlug))
       .filter((page): page is QuartzPluginData => !!page)
@@ -70,6 +87,25 @@ export default (() => {
     return (
       <section class="home-landing" data-section-theme="home">
         <div class="home-landing__hero">
+          {/* Interactive background scene — objects react to mouse cursor */}
+          <div class="home-hero-scene" data-hero-scene="true" aria-hidden="true">
+            <div class="home-hero-scene__field">
+              {sceneObjects.map((o) => (
+                <img
+                  class="hero-object"
+                  data-home-x={o.x}
+                  data-home-y={o.y}
+                  data-rotate={o.rotate}
+                  data-size={o.size}
+                  src={`/static/scene/${o.id}${SCENE_EXT}`}
+                  style={`--size:${o.size}px; left:${o.x}%; top:${o.y}%; transform:translate(-50%,-50%) rotate(${o.rotate}deg);`}
+                  alt=""
+                  loading="eager"
+                />
+              ))}
+            </div>
+          </div>
+
           <div class="home-landing__copy">
             <p class="home-landing__eyebrow">JASON LIN / AI FIELD NOTES</p>
             <h1>把企業裡真的用得上的 AI，整理成可以開始的做法。</h1>
@@ -90,43 +126,62 @@ export default (() => {
             </div>
           </div>
           <div class="home-landing__hero-rail">
-            <div class="home-landing__summary-panel">
+            <div class="home-landing__visual-stage" data-stage-parallax="true">
               <p class="home-landing__panel-label">FIELD SYSTEM</p>
-              <div class="home-landing__summary">
-                <div>
-                  <span>目前已發布</span>
-                  <strong>{articles.length} 篇文章</strong>
-                </div>
-                <div>
-                  <span>主軸內容</span>
-                  <strong>製造業 AI / AI 工具 / 手沖咖啡</strong>
-                </div>
-                <div>
-                  <span>最近更新</span>
-                  <strong>
-                    {recentArticles[0] && getDateSafe(recentArticles[0])
-                      ? formatDate(getDateSafe(recentArticles[0])!, cfg.locale)
-                      : "持續整理中"}
-                  </strong>
-                </div>
+              <div class="home-landing__visual-stage-grid">
+                <div class="home-landing__visual-ring" />
+                {homeSections.map((section, index) => (
+                  <div
+                    class={`home-landing__visual-card home-landing__visual-card--${index + 1}`}
+                    data-section-theme={section.key}
+                    data-parallax-depth={0.9 + index * 0.16}
+                  >
+                    <p>{section.label}</p>
+                    <strong>{section.navLabel}</strong>
+                    <span>{section.status}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="home-landing__visual-caption">
+                <strong>不是把更多東西塞進畫面，而是把每個入口做得更像一個明確場景。</strong>
+                <p>動態感要先建立在節奏、留白與單一主角上，互動才會看起來像設計，不像特效。</p>
               </div>
             </div>
 
-            <div class="home-landing__section-map">
-              {homeSections.map((section) => (
-                <a
-                  href={resolveRelative(slug, section.href)}
-                  class="home-landing__theme-tile"
-                  data-section-theme={section.key}
-                >
-                  <p>{section.label}</p>
-                  <strong>{section.navLabel}</strong>
-                  <span>{section.description}</span>
-                  <small>{section.status}</small>
-                </a>
-              ))}
+            <div class="home-landing__hero-stats">
+              <div>
+                <span>目前已發布</span>
+                <strong>{articles.length} 篇文章</strong>
+              </div>
+              <div>
+                <span>主軸內容</span>
+                <strong>製造業 AI / AI 工具 / 手沖咖啡</strong>
+              </div>
+              <div>
+                <span>最近更新</span>
+                <strong>
+                  {recentArticles[0] && getDateSafe(recentArticles[0])
+                    ? formatDate(getDateSafe(recentArticles[0])!, cfg.locale)
+                    : "持續整理中"}
+                </strong>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div class="home-landing__section-map">
+          {homeSections.map((section) => (
+            <a
+              href={resolveRelative(slug, section.href)}
+              class="home-landing__theme-tile"
+              data-section-theme={section.key}
+            >
+              <p>{section.label}</p>
+              <strong>{section.navLabel}</strong>
+              <span>{section.description}</span>
+              <small>{section.status}</small>
+            </a>
+          ))}
         </div>
 
         <div class="home-landing__feature-grid">
@@ -217,5 +272,6 @@ export default (() => {
     )
   }
 
+  ;(HomeLanding as QuartzComponent).afterDOMLoaded = heroSceneScript
   return HomeLanding
 }) satisfies QuartzComponentConstructor

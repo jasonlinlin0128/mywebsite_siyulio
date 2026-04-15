@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 160" fill="none">
+  <!-- Body -->
+  <rect x="6" y="4" width="68" height="152" rx="16" ry="16" fill="#1A1A1F"/>
+  <rect x="6" y="4" width="68" height="152" rx="16" ry="16" fill="url(#pg1)"/>
+  <!-- Screen -->
+  <rect x="12" y="16" width="56" height="118" rx="10" ry="10" fill="#0A0C14"/>
+  <rect x="12" y="16" width="56" height="118" rx="10" ry="10" fill="url(#ps)"/>
+  <!-- Dynamic island -->
+  <rect x="29" y="22" width="22" height="8" rx="4" fill="#0D0D10"/>
+  <!-- Side buttons -->
+  <rect x="3" y="44" width="3" height="22" rx="1.5" fill="#2A2A32"/>
+  <rect x="3" y="72" width="3" height="14" rx="1.5" fill="#2A2A32"/>
+  <rect x="74" y="56" width="3" height="26" rx="1.5" fill="#2A2A32"/>
+  <!-- Bottom bar -->
+  <rect x="28" y="142" width="24" height="4" rx="2" fill="rgba(255,244,220,0.12)"/>
+  <!-- Highlight -->
+  <ellipse cx="26" cy="28" rx="10" ry="4" fill="rgba(255,244,220,0.07)" transform="rotate(-20,26,28)"/>
+  <defs>
+    <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3C3C46" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0A0A0E" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="ps" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A2438" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#080A10" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+</svg>

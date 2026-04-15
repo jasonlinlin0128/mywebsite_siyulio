@@ -3308,6 +3308,8 @@ body[data-slug^="about/"] {
 }
 
 .home-landing__hero {
+  position: relative;
+  overflow: hidden;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
   gap: 2rem;
   min-height: 32rem;
@@ -3816,5 +3818,51 @@ body:not([data-slug="index"]):not([data-slug$="/index"]) .article-signal-stat sp
   .brand-object {
     animation: none;
     transition: none;
+  }
+}
+
+// ── Home hero interactive scene ───────────────────────────────────────────────
+
+.home-hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.home-hero-scene__field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-object {
+  position: absolute;
+  width: var(--size, 64px);
+  height: var(--size, 64px);
+  object-fit: contain;
+  opacity: 0.35;
+  pointer-events: none;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+  // Amber glow + brightness lift for placeholder SVGs.
+  // When you swap to AI-generated PNGs, tune opacity (0.3–0.4) and remove brightness() to taste.
+  filter: drop-shadow(0 6px 18px rgba(200, 130, 50, 0.2));
+}
+
+// Ensure text + CTAs sit above the scene
+.home-landing__copy,
+.home-landing__hero-rail {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .home-hero-scene {
+    display: none; // hidden on mobile (coarse pointer check in JS handles it, but belt-and-suspenders)
   }
 }
