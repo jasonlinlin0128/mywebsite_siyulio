@@ -9,7 +9,7 @@ import { getSectionThemeForSlug, sectionThemes } from "./sectionThemes"
 // ── Hero scene objects ────────────────────────────────────────────────────────
 // Replace .svg paths with .png once AI-generated assets are ready.
 // To swap: change `ext` to ".png" and drop PNGs into quartz/quartz/static/scene/
-const SCENE_EXT = ".svg"
+const SCENE_EXT = ".png"
 
 const sceneObjects = [
   { id: "coffee-bean-1", x: 11, y: 16, size: 70,  rotate: -18 },

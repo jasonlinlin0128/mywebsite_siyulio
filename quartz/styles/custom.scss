@@ -3843,14 +3843,14 @@ body:not([data-slug="index"]):not([data-slug$="/index"]) .article-signal-stat sp
   width: var(--size, 64px);
   height: var(--size, 64px);
   object-fit: contain;
-  opacity: 0.5;
+  opacity: 0.35;
   pointer-events: none;
   will-change: transform;
   user-select: none;
   -webkit-user-drag: none;
   // Amber glow + brightness lift for placeholder SVGs.
   // When you swap to AI-generated PNGs, tune opacity (0.3–0.4) and remove brightness() to taste.
-  filter: drop-shadow(0 6px 18px rgba(200, 130, 50, 0.25)) brightness(2.2) sepia(0.35);
+  filter: drop-shadow(0 6px 18px rgba(200, 130, 50, 0.2));
 }
 
 // Ensure text + CTAs sit above the scene
