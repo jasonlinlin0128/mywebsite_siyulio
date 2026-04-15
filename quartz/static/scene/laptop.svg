@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none">
+  <!-- Lid (screen) -->
+  <rect x="20" y="10" width="160" height="100" rx="10" ry="10" fill="#1A1A1F"/>
+  <rect x="20" y="10" width="160" height="100" rx="10" ry="10" fill="url(#lg1)"/>
+  <!-- Screen bezel inner -->
+  <rect x="28" y="18" width="144" height="86" rx="6" ry="6" fill="#0D0D12"/>
+  <!-- Screen glow -->
+  <rect x="32" y="22" width="136" height="78" rx="4" ry="4" fill="url(#ls)"/>
+  <!-- Highlight on lid -->
+  <ellipse cx="100" cy="24" rx="42" ry="5" fill="rgba(255,244,220,0.09)"/>
+  <!-- Hinge bar -->
+  <rect x="16" y="108" width="168" height="6" rx="3" fill="#2A2A30"/>
+  <!-- Base -->
+  <rect x="8" y="114" width="184" height="32" rx="7" ry="7" fill="#1E1E24"/>
+  <rect x="8" y="114" width="184" height="32" rx="7" ry="7" fill="url(#lb)"/>
+  <!-- Trackpad -->
+  <rect x="72" y="120" width="56" height="20" rx="4" fill="#16161A" stroke="rgba(255,244,220,0.08)" stroke-width="1"/>
+  <!-- Apple logo hint -->
+  <ellipse cx="100" cy="63" rx="10" ry="12" fill="rgba(255,244,220,0.06)"/>
+  <defs>
+    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A3A42" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0A0A0C" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="ls" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A2840" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#0B0D18" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0A0C15" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="lb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3C3C44" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0E0E12" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+</svg>

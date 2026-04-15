@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <!-- Headband arc -->
+  <path d="M28 100 C28 48 132 48 132 100" stroke="#2A2830" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <path d="M28 100 C28 48 132 48 132 100" stroke="url(#hg)" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- Left ear cup -->
+  <rect x="8" y="94" width="36" height="46" rx="14" fill="#1E1C28"/>
+  <rect x="8" y="94" width="36" height="46" rx="14" fill="url(#hle)"/>
+  <rect x="14" y="100" width="24" height="34" rx="10" fill="#141220" opacity="0.9"/>
+  <!-- Right ear cup -->
+  <rect x="116" y="94" width="36" height="46" rx="14" fill="#1E1C28"/>
+  <rect x="116" y="94" width="36" height="46" rx="14" fill="url(#hre)"/>
+  <rect x="122" y="100" width="24" height="34" rx="10" fill="#141220" opacity="0.9"/>
+  <!-- Cushion hint left -->
+  <ellipse cx="26" cy="117" rx="10" ry="13" fill="rgba(200,160,100,0.12)"/>
+  <!-- Cushion hint right -->
+  <ellipse cx="134" cy="117" rx="10" ry="13" fill="rgba(200,160,100,0.12)"/>
+  <!-- Highlight on band -->
+  <path d="M44 62 C50 50 110 50 116 62" stroke="rgba(255,244,220,0.12)" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <defs>
+    <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A4660"/>
+      <stop offset="100%" stop-color="#1A1826"/>
+    </linearGradient>
+    <linearGradient id="hle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3A3650" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0E0C18" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="hre" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A3650" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0E0C18" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+</svg>
