@@ -28,7 +28,6 @@ export default (() => {
           class="home-hero__focal"
           data-home-hero-focal="true"
           aria-hidden="true"
-          role="presentation"
         >
           <canvas class="home-hero__canvas" />
         </div>
