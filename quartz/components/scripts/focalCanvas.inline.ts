@@ -17,7 +17,6 @@ interface Particle {
   vx: number
   vy: number
   alpha: number
-  hueShift: number
 }
 
 // code-reviewer S3：低電量模式下 loop 用 setTimeout 安排下一幀，此時
@@ -27,6 +26,9 @@ let rafId = 0
 let timeoutId = 0
 let resizeObs: ResizeObserver | null = null
 let scrollListener: (() => void) | null = null
+let perfObserver: PerformanceObserver | null = null
+let lcpFallbackTimeout = 0
+let loopStarted = false
 
 // FPS 降級 rolling avg（spec §7）
 let frameTimes: number[] = []
@@ -73,7 +75,6 @@ function setupFocalCanvas() {
       vx: (Math.random() - 0.5) * 0.18,
       vy: (Math.random() - 0.5) * 0.18,
       alpha: 0.35 + Math.random() * 0.35,
-      hueShift: Math.random() * 20 - 10,
     })
   }
 
@@ -92,6 +93,7 @@ function setupFocalCanvas() {
       if (frameTimes.length > 30) frameTimes.shift()
       if (frameTimes.length === 30) {
         const avg = frameTimes.reduce((a, b) => a + b, 0) / 30
+        // One-way switch: no hysteresis back to high-power. Prevents flapping at threshold.
         if (avg > 22 && !lowPowerMode) {
           lowPowerMode = true
         }
@@ -151,23 +153,39 @@ function setupFocalCanvas() {
   // 先畫第一幀（LCP 之前），再啟動 rAF
   drawFrame(0)
 
-  // spec §9.5: 延後到 LCP 後才啟動 rAF loop
+  // spec §9.5: 延後到 LCP 後才啟動 rAF loop（code-reviewer I1+I2：
+  //   - PO 可能多次觸發（每個 LCP candidate），需 guard 讓 startLoop 僅跑一次
+  //   - prenav 若在 350ms 內到達，需同時 disconnect PO + clearTimeout fallback
+  //     避免稍後 callback 在已 teardown 的狀態重新啟動 rAF loop）
   const startLoop = () => {
+    if (loopStarted) return
+    loopStarted = true
+    // 互取消對方路徑
+    perfObserver?.disconnect()
+    perfObserver = null
+    if (lcpFallbackTimeout) {
+      clearTimeout(lcpFallbackTimeout)
+      lcpFallbackTimeout = 0
+    }
     lastFrame = performance.now()
     rafId = requestAnimationFrame(loop)
   }
   if ("PerformanceObserver" in window) {
     try {
-      new PerformanceObserver((list) => {
+      perfObserver = new PerformanceObserver((list) => {
         if (list.getEntries().some((e) => e.entryType === "largest-contentful-paint")) {
           startLoop()
         }
-      }).observe({ type: "largest-contentful-paint", buffered: true })
+      })
+      perfObserver.observe({ type: "largest-contentful-paint", buffered: true })
+      // Belt-and-braces：PO 支援但 silent（headless / background tab 無 LCP）時，
+      // 350ms fallback 保底啟動 loop；startLoop 的 loopStarted guard 確保不會 double-fire。
+      lcpFallbackTimeout = window.setTimeout(startLoop, 350)
     } catch {
-      setTimeout(startLoop, 350)
+      lcpFallbackTimeout = window.setTimeout(startLoop, 350)
     }
   } else {
-    setTimeout(startLoop, 350)
+    lcpFallbackTimeout = window.setTimeout(startLoop, 350)
   }
 
   // ResizeObserver：容器尺寸改變時重新 layout
@@ -184,6 +202,13 @@ function teardown() {
     clearTimeout(timeoutId)  // low-power fallback 可能 pending 中
     timeoutId = 0
   }
+  if (lcpFallbackTimeout) {
+    clearTimeout(lcpFallbackTimeout)
+    lcpFallbackTimeout = 0
+  }
+  perfObserver?.disconnect()
+  perfObserver = null
+  loopStarted = false
   resizeObs?.disconnect()
   resizeObs = null
   if (scrollListener) {
