@@ -2,7 +2,7 @@ import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
 export const sharedPageComponents: SharedLayout = {
-  head: Component.Head(),
+  head: Component.CustomHead(),
   header: [Component.SiteHeaderNav()],
   afterBody: [
     Component.MotionRuntime(),   // 全站 motion 基礎建設 (Phase 1)
