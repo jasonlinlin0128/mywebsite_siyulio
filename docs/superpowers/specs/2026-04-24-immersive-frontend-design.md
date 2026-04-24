@@ -1,7 +1,7 @@
 # www.siyulio.com 沉浸式前端重設計
 
 - **日期**：2026-04-24
-- **版本**：v2（經 `superpowers:code-reviewer` 深度 review，4 BLOCKER + 9 SERIOUS + 3 MINOR 修復完畢）
+- **版本**：v3（二次 `superpowers:code-reviewer` review 後再修：2 BLOCKER + 4 SERIOUS + 4 MINOR）
 - **作者**：Jason Lin（與 Claude Opus 4.7 共同設計）
 - **狀態**：Design approved，待寫實作 plan
 - **目標專案**：`quartz/`（Quartz 4.5.2 + Preact SSR + markdown）
@@ -9,9 +9,22 @@
 
 ---
 
-## 0. v2 變動摘要
+## 0. 版本變動摘要
 
-相較 v1：
+### v3（最新）— 修 v2 review 找出的 2 BLOCKER + 4 SERIOUS + 4 MINOR
+
+- **§9.3 `loadGsap()` 補齊 race condition 防禦**：檢查 `window.gsap` AND `window.ScrollTrigger`、timeout 機制、prenav 中斷時 reset `loadPromise`、錯誤時允許 retry
+- **§15 layout diff 改成真正可貼上的 TypeScript**（`page.fileData.frontmatter?.["hero-style"]` + `Component.` namespace + `(page) => boolean` signature）
+- **§6.2 新增 navigation-generation token**（防止快速切頁的舊 async handler 在新頁疊加動畫）
+- **§3.1 字體 preload 機制定案**：選 preload stylesheet (`as="style"`) 作為第一步，Phase 4 audit 再決定升級到 self-host woff2
+- **§6.3 popover scroll 改用 MutationObserver**（不改 Quartz upstream `popover.inline.ts`，免去升級 Quartz 時 re-apply patch）
+- **§16 新增 SCSS 清理小節**（`custom.scss` 的 ~167 行 `.home-landing__*` 規則 Phase 2 必須同步刪除/改名）
+- **§9.6 移除「tree-shake Lenis」假設**，改誠實承認全量載入
+- **§9.2 補上 Matter.js 移除帶來的 ~25KB gzipped bundle 縮小**（淨變動其實是 bundle 變小）
+- **§5.3 寫明 TOC active class 規範**（`.active` on `<a>` matching intersecting `<section>` id）
+- **§10 Phase 2 補上 commit 紀律建議**（Matter.js 移除 / HomeHeroApple / Lenis 各一個 commit，方便 bisect）
+
+### v2（前一版）— 修 v1 review 的 4 BLOCKER + 9 SERIOUS + 3 MINOR
 
 - **效能預算整條重寫**（v1 假設 per-route bundle split，Quartz 架構做不到 → 改為 hybrid 遞送：Lenis 走 Quartz pipeline、GSAP 走 static vendored asset + dynamic script tag injection）
 - **文章頁 layout 補上明確的 `quartz.layout.ts` diff**（§15）
@@ -67,7 +80,22 @@
 - **Body**：Noto Sans TC
 - **Code**：JetBrains Mono
 
-**Font preload（v2 新增）**：Outfit 600/700/800 與 Noto Sans TC 400，透過自訂 `Head.tsx` 變體注入 `<link rel="preload" as="font" crossorigin>`，避免首頁 LCP（H1 128px）受 Google Fonts 第三方 DNS 拖慢。
+**Font preload 機制（v3 定案）**：
+
+v2 說要「preload 一個 woff2」但 Google Fonts woff2 URL 含 hash 版本號，硬寫會過期。v3 定案：**Phase 2 先做 stylesheet preload**（低風險、零維護），LCP 若未達標再 Phase 4 升級到 self-host woff2。
+
+```html
+<!-- 在 Head.tsx 自訂變體注入（Phase 2） -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Noto+Sans+TC:wght@400;500&display=swap">
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Noto+Sans+TC:wght@400;500&display=swap">
+```
+
+**兩階段策略**：
+- **Phase 2 (stylesheet preload)**：URL 穩定、零維護、LCP 改善 ~200-400ms
+- **Phase 4 audit 後若 LCP 仍 > 2.5s**：升級到 self-host woff2（下載 Outfit 700/800 + Noto Sans TC 400 的 woff2 放到 `static/vendor/fonts/`，改 `@font-face` 指向本地）— 多 ~150KB 靜態資源但 LCP 再減 200-500ms
 
 ### 3.2 色票
 
@@ -281,7 +309,7 @@ motionConfig: {
 
 **v2 關鍵修正**：
 
-1. **不新增 StickyTOC** — 直接在 `quartz.layout.ts` 把 `Component.TableOfContents()` 放進 `right: []`，加新 SCSS 讓它 `position: sticky; top: 120px` + 當前段落高亮（用既有 `toc.inline.ts` 的 IntersectionObserver 邏輯延伸）。
+1. **不新增 StickyTOC** — 直接在 `quartz.layout.ts` 把 `Component.TableOfContents()` 放進 `right: []`，加新 SCSS 讓它 `position: sticky; top: 120px` + 當前段落高亮。**Active class 規範**（v3 明確）：延伸既有 `toc.inline.ts` 的 IntersectionObserver，當某個 `<section>` 進入 viewport 時，對對應的 `.toc-content a[data-for="{sectionId}"]` 加上 `.active` class（移除其他 `.active`）。CSS 側用 `.toc-content a.active { color: var(--section-accent); font-weight: 600; }`。
 2. **LCP 候選**：ArticleHero 的 H1。Canvas 為 `aria-hidden="true"` + `role="presentation"`（見 §8）。
 3. **Popover 行為**：彈出的預覽需**隱藏 ArticleHero**（見 §6.3）。
 
@@ -301,58 +329,122 @@ motionConfig: {
 - `prenav` event：SPA 導航**前**觸發（`spa.inline.ts:81`）
 - `window.addCleanup(fn)`：註冊清理函式（`spa.inline.ts:38-44`）
 
-### 6.2 初始化順序（v2 明確寫死）
+### 6.2 初始化順序（v3 加入 navigation-generation token）
+
+**v3 問題**：v2 寫的 `async` nav handler 有 race — 快速切頁時舊 handler 的 `await document.fonts.ready` 回來時會在**新頁** DOM 上繼續裝 Lenis/ScrollTrigger，造成疊加或錯置。
+
+**v3 修法**：加 `navGeneration` token，每個 async step 後檢查 token 是否還是自己當初 capture 的版本；若已被新 nav 取代則 abort。
 
 ```ts
-// 所有 hero / motion inline script 共用此 lifecycle
+// 模組層級狀態（由 Quartz inline-script IIFE 包住，全站共用一份）
+let navGeneration = 0
+let lenisInstance: any = null
+let rafId = 0
+let observers: IntersectionObserver[] = []
+
 document.addEventListener('prenav', () => {
-  // 1. 先砍掉所有 animation instance
-  ScrollTrigger?.getAll?.().forEach(t => t.kill())
+  // 1. 版本號 +1：所有正在跑的舊 handler 都會在下一次 check 時 abort
+  navGeneration++
+  // 2. 砍掉所有 animation instance
+  const gsap = (window as any).gsap
+  gsap?.ScrollTrigger?.getAll?.().forEach((t: any) => t.kill())
   lenisInstance?.destroy()
-  observer?.disconnect()
+  lenisInstance = null
+  observers.forEach(o => o.disconnect())
+  observers = []
   cancelAnimationFrame(rafId)
 })
 
 document.addEventListener('nav', async () => {
-  // 2. 等字體載好（避免 ScrollTrigger 讀到錯誤 layout 高度）
-  await document.fonts.ready
+  const myGen = navGeneration  // 在進 async 之前 capture
 
-  // 3. 初始化順序：Lenis → ScrollTrigger → 重新 refresh
-  if (bodyOptsIn('lenis')) {
-    setupLenis()  // Lenis 先裝
+  // 3. 等字體載好（避免 ScrollTrigger 讀到錯誤 layout 高度）
+  await document.fonts.ready
+  if (myGen !== navGeneration) return  // 舊 handler，abort
+
+  // 4. 初始化順序：Lenis → GSAP → ScrollTrigger refresh
+  if (bodyOptsIn('lenis') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setupLenis()
   }
+  if (myGen !== navGeneration) return
 
   if (needsGsap()) {
-    await loadGsap()  // 動態 <script> 注入 vendored GSAP
+    await loadGsap()
+    if (myGen !== navGeneration) return
     setupScrollTriggers()
-    ScrollTrigger.refresh()  // 強制重讀 DOM layout
+    ;(window as any).gsap.ScrollTrigger.refresh()
   }
 
   setupRevealObservers()
   setupCanvasScene()
 
-  // 4. SPA 導航後 focus 管理（a11y）
+  // 5. SPA 導航後 focus 管理（a11y）
   focusFirstHeading()
 })
 ```
 
-### 6.3 Popover × ArticleHero 碰撞（v2 新增）
+**token 檢查點的位置原則**：每個 `await` 之後、以及每個「會產生 side effect」的 setup 之前都要檢查一次。這避免：
+- 舊頁還在載 GSAP 時使用者切到新頁 → 舊 handler 的 `await loadGsap()` 回來時不會再 `setupScrollTriggers()` 裝到新頁 DOM 上
+- 字體載好時使用者已經切頁 → 舊 handler 的 `setupLenis()` 不會執行
+
+### 6.3 Popover × ArticleHero 碰撞（v3 改用 MutationObserver，不動 upstream）
 
 現有 `enablePopovers: true` 會抓目標頁 HTML 塞進 popover 裡。如果 ArticleHero 60vh 在最上面，popover 預覽會**只秀到 hero，不秀內文** → 很大的 UX 退步。
 
-**解法**：
+**v3 修法**：兩層 — CSS 隱藏 hero + **新 inline script** 用 MutationObserver 觀察 popover 出現，滾到第一個有意義的內容。**不改** upstream `quartz/components/scripts/popover.inline.ts`（避免未來 Quartz 升級要 re-apply patch）。
+
+**CSS（`quartz/styles/_popover-immersive.scss`，Phase 1 就位，Phase 3 才生效）**：
 
 ```scss
-// quartz/styles/_popover-immersive.scss
 .popover-inner {
-  .article-hero {
-    display: none;  // popover 預覽不顯示 hero
+  .article-hero,
+  .scroll-progress,
+  .breadcrumbs {
+    display: none;  // popover 預覽只秀文章內容
   }
-  // popover 直接從內文開始顯示
+  // 去掉 beforeBody 後的頂端留白
+  > :first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
 }
 ```
 
-並在 popover script 加一行：`.popover-inner` 掛載後 scroll 到第一個 `<p>` 或 `<h2>`。
+**新 inline script（`popoverScroll.inline.ts`）**：
+
+```ts
+// 不改 upstream popover.inline.ts，用 MutationObserver 觀察 popover 出現
+let mo: MutationObserver | null = null
+
+function setupPopoverScroll() {
+  mo?.disconnect()
+  mo = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const node of Array.from(m.addedNodes)) {
+        if (node instanceof HTMLElement && node.classList.contains('popover-inner')) {
+          // popover DOM 剛插入，下一 frame 再 scroll（等 layout 完成）
+          requestAnimationFrame(() => {
+            const firstContent = node.querySelector('p, h2, h3, pre, ul, ol') as HTMLElement
+            if (firstContent) {
+              const offset = firstContent.offsetTop - 20
+              if (offset > 0) node.scrollTop = offset
+            }
+          })
+        }
+      }
+    }
+  })
+  mo.observe(document.body, { childList: true, subtree: true })
+}
+
+document.addEventListener('nav', setupPopoverScroll)
+window.addEventListener('beforeunload', () => mo?.disconnect())
+```
+
+**為何用 MutationObserver 而不直接改 popover.inline.ts**：
+- Quartz 是 npm / fork 管理，upstream 檔改動等於維護 patch
+- MutationObserver 成本極低（只在 `<body>` 觀察 childList）
+- 未來 popover HTML 結構若改，只要 `.popover-inner` class 還在就能工作
 
 ### 6.4 SPA 導航後 focus 管理（v2 新增）
 
@@ -484,48 +576,95 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 **文章頁**：只付 `postscript.js` 增量（~10KB），**不載 GSAP**。
 
-### 9.3 GSAP 動態載入實作
+### 9.3 GSAP 動態載入實作（v3 補齊 race condition 防禦）
 
-新 `gsapLoader.inline.ts`：
+**v2 兩個 race bug**：
+1. `window.gsap` 存在但 `window.ScrollTrigger` 還沒存在時（`s1.onload` 設完但 `s2.onload` 未完），下一頁早 return → `ReferenceError`
+2. prenav 中斷時 `<script>` 被移除 → `onload` 永遠不 fire → `loadPromise` 永遠 pending → 下次 await 直接 hang
+
+**v3 修法**：雙 global 檢查 + prenav reset + 10 秒 timeout + 錯誤允許 retry。
 
 ```ts
+// quartz/components/scripts/gsapLoader.inline.ts
 let loadPromise: Promise<void> | null = null
 
+function bothLoaded(): boolean {
+  const w = window as any
+  return !!(w.gsap && w.ScrollTrigger)
+}
+
 export function loadGsap(): Promise<void> {
-  if ((window as any).gsap) return Promise.resolve()
+  // (1) 雙檢查：gsap AND ScrollTrigger 都要在
+  if (bothLoaded()) return Promise.resolve()
   if (loadPromise) return loadPromise
 
-  loadPromise = new Promise((resolve, reject) => {
-    const s1 = document.createElement('script')
-    s1.src = '/static/vendor/gsap.min.js'
-    s1.onload = () => {
-      const s2 = document.createElement('script')
-      s2.src = '/static/vendor/ScrollTrigger.min.js'
-      s2.onload = () => {
-        ;(window as any).gsap.registerPlugin((window as any).ScrollTrigger)
+  loadPromise = new Promise<void>((resolve, reject) => {
+    // (2) 10 秒 timeout — 避免 script 被中途移除造成永遠 hang
+    const timeoutId = window.setTimeout(() => {
+      loadPromise = null  // 允許下次 call 重試
+      reject(new Error('GSAP load timeout (10s)'))
+    }, 10000)
+
+    const loadScript = (src: string) =>
+      new Promise<void>((res, rej) => {
+        const s = document.createElement('script')
+        s.src = src
+        s.onload = () => res()
+        s.onerror = () => rej(new Error(`Failed to load ${src}`))
+        document.head.appendChild(s)
+      })
+
+    loadScript('/static/vendor/gsap.min.js')
+      .then(() => loadScript('/static/vendor/ScrollTrigger.min.js'))
+      .then(() => {
+        clearTimeout(timeoutId)
+        const w = window as any
+        w.gsap.registerPlugin(w.ScrollTrigger)
         resolve()
-      }
-      s2.onerror = reject
-      document.head.appendChild(s2)
-    }
-    s1.onerror = reject
-    document.head.appendChild(s1)
+      })
+      .catch((err) => {
+        clearTimeout(timeoutId)
+        loadPromise = null  // (3) 錯誤時 reset，允許下次 retry
+        reject(err)
+      })
   })
 
   return loadPromise
 }
+
+// (4) prenav 中斷時：若 gsap 或 ScrollTrigger 還不齊，reset loader
+document.addEventListener('prenav', () => {
+  if (!bothLoaded()) {
+    loadPromise = null
+  }
+})
 ```
 
-`HomeHeroApple` / `CategoryHero` 的 `afterDOMLoaded` 呼叫：
+**`HomeHeroApple` / `CategoryHero` 的 `afterDOMLoaded` 呼叫（搭配 §6.2 的 nav-gen token）**：
 
 ```ts
 document.addEventListener('nav', async () => {
   if (!document.querySelector('[data-hero-cinematic]')) return
-  await loadGsap()
-  await document.fonts.ready
-  initTimeline()
+  const myGen = navGeneration  // 見 §6.2
+  try {
+    await loadGsap()
+    if (myGen !== navGeneration) return  // 舊 handler，abort
+    await document.fonts.ready
+    if (myGen !== navGeneration) return
+    initTimeline()
+  } catch (err) {
+    console.warn('GSAP load failed, hero degraded to static', err)
+    // 降級路徑：hero 保持第一幀，文字仍可讀
+  }
 })
 ```
+
+**總防禦層級**：
+- Promise-level：timeout 10s → reject
+- Error 處理：reject 後 reset loader，下次 call 能 retry
+- 狀態檢查：每次 early-return 要 AND 檢查兩個 global
+- Race 防禦：prenav 中斷時主動 reset
+- 降級路徑：catch 錯誤不讓頁面白屏，hero 退為靜態
 
 ### 9.4 Vendored asset 準備
 
@@ -545,7 +684,7 @@ quartz/static/vendor/LICENSE-GSAP         (標準 MIT for tools / Webflow licens
   - 首頁：`<h1>` 128px 大字
   - 分類頁：CategoryHero `<h1>` 96px
   - 文章頁：ArticleHero `<h1>` 72px
-- **字體 preload**（關鍵）：在 `Head.tsx` 自訂變體加 `<link rel="preload">`，Outfit 700/800 + Noto Sans TC 400 從 Google Fonts 各 preload 一個 woff2
+- **字體 preload**（v3 定案）：preload Google Fonts **stylesheet**（`as="style"`），詳見 §3.1。Phase 4 audit LCP 若仍未達標再升級到 self-host woff2
 - **Canvas 延後 init 機制**：
   ```ts
   if ('PerformanceObserver' in window) {
@@ -566,7 +705,8 @@ quartz/static/vendor/LICENSE-GSAP         (標準 MIT for tools / Webflow licens
 | LCP（所有頁） | < 2.5s | 字體 preload、canvas 延後到 LCP 後 |
 | INP | < 200ms | GSAP 動態載入、canvas rAF 節流 |
 | CLS | < 0.1 | Hero 高度用 `min-height` 預佔 |
-| `postscript.js` 增量 | ≤ 12 KB gzipped | tree-shake Lenis unused modules |
+| `postscript.js` 增量 | ≤ 15 KB gzipped | 只 import 會用的 Lenis API（不期望 tree-shake） |
+| `postscript.js` **淨變動**（v3 新增） | **-10 KB**（縮小） | 移除 Matter.js ~25KB − 新增 ~15KB |
 | 首次載入 cinematic 頁（含 GSAP） | 額外 ≤ 50 KB gzipped | vendored + CDN edge cache |
 | Canvas 平均 FPS | ≥ 45（30-frame avg） | rolling avg 降級 |
 | Lighthouse Performance | ≥ 90（首頁）/ ≥ 95（文章頁） | 上面所有手段合計 |
@@ -590,7 +730,7 @@ quartz/static/vendor/LICENSE-GSAP         (標準 MIT for tools / Webflow licens
 - `sectionThemes.ts` 擴充 `motionConfig`（含 light mode glow 色）
 - `styles/_motion-tokens.scss`
 - `styles/_popover-immersive.scss`（popover hide article-hero）
-- SPA `prenav`/`nav` hook 骨架（只做 `document.fonts.ready` + focus management，尚未掛任何動畫）
+- SPA `prenav`/`nav` hook 骨架（含 `navGeneration` token + `document.fonts.ready` + focus management，尚未掛任何動畫，見 §6.2）
 - `prefers-reduced-motion` + mobile feature detection 工具函式
 - Light mode accent 色 token 加入
 - `static/vendor/gsap.min.js` + `ScrollTrigger.min.js` 放到 repo（檔案就位，還沒用）
@@ -605,17 +745,27 @@ quartz/static/vendor/LICENSE-GSAP         (標準 MIT for tools / Webflow licens
 
 ### Phase 2｜首頁改造 + Lenis 導入（~7 dev-days → 3.5 週日曆）
 
+**v3 commit 紀律建議**：Phase 2 同時動三件事（Matter.js 移除 / HomeHeroApple / Lenis 導入），若出 bug 不方便 bisect。建議**拆成 4–5 個 commit**，每個都能跑：
+
+1. `feat: 新增 HomeHeroApple 組件骨架，feature flag 關`（Matter.js 還在）
+2. `feat: 新增 focal canvas + sectionCanvas 繪製器，feature flag 關`
+3. `feat: HomeLanding 按 §16 對照表重寫（含 SCSS 遷移）`（Matter.js 這時砍）
+4. `feat: 加入 Lenis smooth scroll + 配 §6.5 search stop/start 介面`
+5. `feat: GSAP 動態載入 + heroCinematic 時間軸 + Head.tsx 字體 preload`
+
+每個 commit 完都能 `npm run build` 成功、基本功能正常。出 bug 可 `git bisect`。
+
 **交付**：
 - **砍掉 Matter.js hero**（現有 `heroScene.inline.ts` 的 7 個飄浮物件）
 - `HomeHeroApple.tsx`（純字 + 單一 focal canvas）
 - `scripts/heroCinematic.inline.ts`（GSAP timeline，動態 load GSAP）
 - `scripts/sectionCanvas.inline.ts`（canvas 繪製，vanilla）
-- `HomeLanding.tsx` 按 §16 對照表重寫
+- `HomeLanding.tsx` 按 §16 對照表重寫（含 SCSS 遷移 §16.2）
 - Pillars section 靠 IntersectionObserver staggered reveal（無 pin）
 - Stats count-up
 - Lenis 首次啟動（搭配 Matter.js 移除，沒有互相打架風險）
-- 自訂 `Head.tsx` 變體加字體 preload
-- `styles/_home-apple.scss`
+- 自訂 `Head.tsx` 變體加字體 stylesheet preload（§3.1）
+- `styles/_home-apple.scss` + `custom.scss` 清理 (§16.2)
 
 **驗收**：
 - 首頁 LCP < 2.5s
@@ -637,9 +787,10 @@ quartz/static/vendor/LICENSE-GSAP         (標準 MIT for tools / Webflow licens
 - `quartz.layout.ts` 按 §15 改 layout
 - `cover:` / `accent:` / `hero-style:` frontmatter 支援
 - `hero-style: none` 行為
-- `styles/toc.scss` 擴充（`position: sticky` + active section 高亮）
+- `styles/toc.scss` 擴充（`position: sticky` + active section 高亮 + §5.3 的 `.toc-content a.active` 規則）
 - Sticky TOC 在 `right: []` 就位
-- Popover 預覽 CSS rule 生效（§6.3）
+- Popover 預覽 CSS rule 生效（§6.3 的 `_popover-immersive.scss`）
+- **新 `scripts/popoverScroll.inline.ts`**（§6.3，MutationObserver scroll 到第一個內容元素）
 
 **驗收**：
 - 每個分類頁獨立個性
@@ -762,57 +913,85 @@ export const defaultListPageLayout: PageLayout = {
 }
 ```
 
-### 15.2 新版
+### 15.2 新版（v3 改為可直接貼上的 TypeScript）
+
+**v2 問題**：寫成了 pseudocode（`condition: slug !== "index" && frontmatter[...]`），不符合 `ConditionalRender` 實際簽名 `condition: (props: QuartzComponentProps) => boolean`。v3 改為真實可 compile 的 TypeScript。
 
 ```ts
+import { PageLayout, SharedLayout } from "./quartz/cfg"
+import * as Component from "./quartz/components"
+
+// 共用 helper：判斷頁面是否不是首頁 + hero-style 不為 none
+const isNonIndex = (page: any) => page.fileData.slug !== "index"
+const heroStyleNone = (page: any) => page.fileData.frontmatter?.["hero-style"] === "none"
+
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
-    // 首頁維持 HomeLanding 入口（Phase 2 內部重寫）
-    ConditionalRender({ component: HomeLanding(), condition: slug === "index" }),
-    // 文章頁：Breadcrumbs + ArticleHero 取代原本的 Breadcrumbs/ArticleTitle/ContentMeta
-    ConditionalRender({
-      component: Breadcrumbs(),
-      condition: slug !== "index" && frontmatter["hero-style"] !== "none"
+    // 首頁：HomeLanding（Phase 2 內部重寫，入口保持不動）
+    Component.ConditionalRender({
+      component: Component.HomeLanding(),
+      condition: (page) => page.fileData.slug === "index",
     }),
-    ConditionalRender({
-      component: ArticleHero(),  // 新組件，內含 title + meta
-      condition: slug !== "index" && frontmatter["hero-style"] !== "none"
+    // 非首頁且 hero-style !== "none"：Breadcrumbs + ArticleHero（新組件）
+    Component.ConditionalRender({
+      component: Component.Breadcrumbs(),
+      condition: (page) => isNonIndex(page) && !heroStyleNone(page),
     }),
-    // hero-style: none 的頁面走極簡 fallback
-    ConditionalRender({
-      component: ArticleTitle(),
-      condition: slug !== "index" && frontmatter["hero-style"] === "none"
+    Component.ConditionalRender({
+      component: Component.ArticleHero(),  // 新組件，內含 title + meta + section-themed canvas
+      condition: (page) => isNonIndex(page) && !heroStyleNone(page),
     }),
-    // TagList 移到 afterBody 附近，不進 hero 區
-    ConditionalRender({ component: TagList(), condition: slug !== "index" }),
+    // hero-style: "none" 的頁面走極簡 fallback（Breadcrumbs + 純 ArticleTitle）
+    Component.ConditionalRender({
+      component: Component.Breadcrumbs(),
+      condition: (page) => isNonIndex(page) && heroStyleNone(page),
+    }),
+    Component.ConditionalRender({
+      component: Component.ArticleTitle(),
+      condition: (page) => isNonIndex(page) && heroStyleNone(page),
+    }),
+    // TagList 保留在所有非首頁
+    Component.ConditionalRender({
+      component: Component.TagList(),
+      condition: isNonIndex,
+    }),
   ],
   left: [],
   right: [
-    DesktopOnly(TableOfContents()),  // 新增右欄 sticky TOC
+    // v3 修正：真實使用 Component.DesktopOnly + Component.TableOfContents
+    Component.DesktopOnly(Component.TableOfContents()),
   ],
 }
 
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [
-    Breadcrumbs(),     // 新增
-    CategoryHero(),    // 新組件，吸收 BrandIntro + ArticleTitle 功能
+    Component.Breadcrumbs(),
+    Component.CategoryHero(),  // 新組件，吸收 BrandIntro + ArticleTitle 功能
   ],
   left: [],
   right: [],
 }
 ```
 
+**v3 關鍵修正**：
+- 加 `import * as Component from "./quartz/components"` 開頭，跟現有 `quartz.layout.ts:2` 一致
+- `condition` 改成真實 `(page) => boolean` function signature
+- `frontmatter["hero-style"]` 改成 `page.fileData.frontmatter?.["hero-style"]`（Optional chaining 避免沒 frontmatter 的頁面炸掉）
+- `DesktopOnly(...)` / `TableOfContents()` 都加上 `Component.` namespace
+
 ### 15.3 被取代/重構的組件
 
 - `BrandIntro.tsx`：功能併入 `CategoryHero`，組件保留但不再進 layout（可刪但 Phase 4 再決定）
-- `ArticleTitle.tsx`：仍用於 `hero-style: none` 的極簡 fallback，不刪
+- `ArticleTitle.tsx`：仍用於 `hero-style: none` 的極簡 fallback，**不刪**
 - `ContentMeta.tsx`：功能併入 `ArticleHero`，組件同 `BrandIntro` 處理
 
 ---
 
-## 16. `HomeLanding.tsx` 舊區塊 → 新區塊對照表（v2 新增）
+## 16. `HomeLanding.tsx` 舊區塊 → 新區塊對照表
 
-| 舊區塊（v1 current） | 新區塊（v2 target） | 動作 |
+### 16.1 TSX 區塊對照
+
+| 舊區塊（current） | 新區塊（target） | 動作 |
 |------------------|-----------------|------|
 | `.home-hero-scene` + 7 個 Matter.js 物件 | `.home-hero__focal` 單一 canvas | **取代** |
 | `.home-landing__copy`（eyebrow + h1 + lead + signals + actions） | `.home-hero__copy`（放大型 + 重排） | **保留+重樣式** |
@@ -824,6 +1003,30 @@ export const defaultListPageLayout: PageLayout = {
 | `.home-landing__shelves` | — | **刪除**（與 Pillars 重複） |
 
 **Matter.js 移除**：`quartz/components/scripts/heroScene.inline.ts` 在 Phase 2 砍掉。`package.json` 移除 `matter-js` 依賴（若有）。
+
+### 16.2 SCSS 清理（v3 新增）
+
+`quartz/styles/custom.scss` 含 ~167 行 `.home-landing__*` 規則。Phase 2 必須同步處理，否則變死碼還可能跟新 class 意外碰撞。
+
+**操作原則**：
+- 新 SCSS 寫到 **新檔** `quartz/styles/_home-apple.scss`（BEM 新命名）
+- 舊 `.home-landing__*` 在 `custom.scss` 裡 **同 commit 刪除**（跟 `HomeLanding.tsx` 重寫一起進 Phase 2）
+
+**對照刪除/遷移清單**（以 `custom.scss` 現有規則為準）：
+
+| 舊 class / 規則群 | 動作 | 對應新檔 |
+|-----------------|------|---------|
+| `.home-landing`（wrapper） | 保留名稱但重樣式 | `_home-apple.scss` `.home-landing` |
+| `.home-landing__hero`, `.home-landing__copy`, `.home-landing__eyebrow`, `.home-landing__lead`, `.home-landing__signals`, `.home-landing__actions` | 遷移 + 改名 | `_home-apple.scss` `.home-hero__*` |
+| `.home-hero-scene`, `.home-hero-scene__field`, `.hero-object`, `.hero-object[data-*]` | **全刪**（Matter.js 移除） | — |
+| `.home-landing__hero-rail`, `.home-landing__visual-stage*`, `.home-landing__visual-card*`, `.home-landing__visual-ring`, `.home-landing__visual-caption`, `.home-landing__panel-label` | **全刪**（概念改成 pillars） | — |
+| `.home-landing__hero-stats` | 遷移 + 改名 | `_home-apple.scss` `.home-stats-strip` |
+| `.home-landing__section-map`, `.home-landing__theme-tile` | **全刪**（併入 pillars） | — |
+| `.home-landing__feature-grid`, `.home-landing__feature-card`, `.is-primary` | 遷移 + 改名 | `_home-apple.scss` `.home-featured*` |
+| `.home-landing__recent*`, `.home-landing__section-heading`, `.home-landing__section-label` | 遷移 + 改名 | `_home-apple.scss` `.home-recent*` |
+| `.home-landing__shelves`, `.home-landing__shelf*` | **全刪** | — |
+
+**驗證**：Phase 2 完成後 `grep "home-landing__" quartz/styles/` 應只剩 `.home-landing` 一個 wrapper class（如果還要保留），或完全沒有。
 
 ---
 
