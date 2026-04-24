@@ -19,7 +19,7 @@ function bothLoaded(): boolean {
   return !!(window.gsap && window.ScrollTrigger)
 }
 
-export function loadGsap(): Promise<void> {
+function loadGsap(): Promise<void> {
   // (1) 雙檢查：gsap AND ScrollTrigger 都要在
   if (bothLoaded()) return Promise.resolve()
   if (loadPromise) return loadPromise

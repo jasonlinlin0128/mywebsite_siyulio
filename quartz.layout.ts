@@ -5,6 +5,7 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [Component.SiteHeaderNav()],
   afterBody: [
+    Component.MotionRuntime(),   // 全站 motion 基礎建設 (Phase 1)
     Component.ConditionalRender({
       component: Component.RecentNotes({
         title: "繼續閱讀",

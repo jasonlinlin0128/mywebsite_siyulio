@@ -35,7 +35,7 @@ function focusFirstHeading() {
   }
 }
 
-export function currentGen() {
+function currentGen() {
   return navGeneration
 }
 
