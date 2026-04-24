@@ -57,8 +57,16 @@ async function setupHeroCinematic() {
   const myGen = window.__nav?.currentGen?.() ?? 0
   const staleNav = () => myGen !== (window.__nav?.currentGen?.() ?? 0)
 
+  // code-reviewer M3：__gsapLoader 理論上由 Phase 1 gsapLoader.inline.ts 一定
+  // 先註冊，但 non-null assertion (!) 會在 Phase 1 script 意外被移除時噴
+  // cryptic `Cannot read properties of undefined`。顯式 check 給可讀診斷。
+  if (!window.__gsapLoader) {
+    console.warn("[heroCinematic] window.__gsapLoader missing — skipping")
+    return
+  }
+
   try {
-    await window.__gsapLoader!.loadGsap()
+    await window.__gsapLoader.loadGsap()
     if (staleNav()) return
 
     await document.fonts.ready
@@ -87,6 +95,11 @@ async function setupHeroCinematic() {
     const tl = gsap.timeline({
       defaults: { duration: 1.2, ease: APPLE_EASE },
     })
+    // code-reviewer M1：timeline 無 scrub/trigger 所以不會 leak listener，但
+    // 若使用者在 ~2s 進場窗內快速 SPA 切頁，timeline 仍會繼續 tick 到完成
+    // 才被 GC，浪費幾 frame。把 .kill() 包進 scrollTriggers 陣列讓 teardown
+    // 一起處理，免這短暫 tick。
+    scrollTriggers.push({ kill: () => tl.kill() })
     tl.from(copy.querySelector(".home-hero__eyebrow"), { y: 18, opacity: 0, duration: 0.6 })
       .from(copy.querySelector(".home-hero__title"), { y: 32, opacity: 0 }, "-=0.4")
       .from(copy.querySelector(".home-hero__lead"), { y: 24, opacity: 0, duration: 0.8 }, "-=0.7")
