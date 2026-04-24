@@ -222,6 +222,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   function hideSearch() {
     container.classList.remove("active")
+    ;(window as any).__lenis?.start()
     searchBar.value = "" // clear the input when we dismiss the search
     if (sidebar) sidebar.style.zIndex = ""
     removeAllChildren(results)
@@ -234,6 +235,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   }
 
   function showSearch(searchTypeNew: SearchType) {
+    ;(window as any).__lenis?.stop()
     searchType = searchTypeNew
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
