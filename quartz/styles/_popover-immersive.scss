@@ -1,0 +1,21 @@
+// Popover × ArticleHero 碰撞防治（spec §6.3）
+// 當 popover 預覽抓到一篇文章的 HTML 時，它會連 ArticleHero 一起抓
+// 進 .popover-inner。這份 CSS 讓 popover 內不顯示 hero 區塊，直接
+// 從文章內容開始。
+// 另見 Phase 3 的 scripts/popoverScroll.inline.ts（用 MutationObserver
+// scroll 到第一個內容元素）。
+
+.popover-inner {
+  // Phase 3 才會有這些 class，現在是 dormant
+  .article-hero,
+  .scroll-progress,
+  .breadcrumbs {
+    display: none;
+  }
+
+  // 去掉 beforeBody 後的頂端留白
+  > :first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}

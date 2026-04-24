@@ -12,6 +12,15 @@ export type SceneObject = {
   reactive?: boolean
 }
 
+export type CanvasRenderer = "geometric-lines" | "particle-flow" | "steam-curves"
+
+export type MotionConfig = {
+  canvasRenderer: CanvasRenderer
+  glowColorDark: string     // 暗模式 glow 色（通常是 section accent 加 alpha）
+  glowColorLight: string    // 亮模式 glow 色
+  particleDensity: number   // Canvas 粒子數量（~20-80）
+}
+
 export type SectionTheme = {
   key: Exclude<SectionKey, "home">
   slugPrefix: `${string}/`
@@ -27,6 +36,7 @@ export type SectionTheme = {
   signals: string[]
   sceneInteractive: boolean
   sceneObjects: SceneObject[]
+  motionConfig: MotionConfig
 }
 
 export const homeTheme = {
@@ -58,6 +68,12 @@ export const sectionThemes: SectionTheme[] = [
       { variant: "module", x: 68, y: 66, size: 104, rotate: 8, depth: 1.15 },
       { variant: "node", x: 86, y: 78, size: 42, rotate: 0, depth: 1.1 },
     ],
+    motionConfig: {
+      canvasRenderer: "geometric-lines",
+      glowColorDark: "rgba(200, 169, 107, 0.24)",
+      glowColorLight: "rgba(122, 90, 32, 0.18)",
+      particleDensity: 30,
+    },
   },
   {
     key: "ai-notes",
@@ -81,6 +97,12 @@ export const sectionThemes: SectionTheme[] = [
       { variant: "pill", x: 58, y: 56, size: 112, rotate: 8, depth: 1.2 },
       { variant: "pulse", x: 80, y: 72, size: 92, rotate: 0, depth: 0.95 },
     ],
+    motionConfig: {
+      canvasRenderer: "particle-flow",
+      glowColorDark: "rgba(123, 140, 199, 0.24)",
+      glowColorLight: "rgba(58, 77, 138, 0.18)",
+      particleDensity: 60,
+    },
   },
   {
     key: "coffee",
@@ -106,6 +128,12 @@ export const sectionThemes: SectionTheme[] = [
       { variant: "bean", x: 74, y: 62, size: 82, rotate: 16, depth: 1, reactive: true },
       { variant: "bean", x: 56, y: 82, size: 72, rotate: -20, depth: 0.85, reactive: true },
     ],
+    motionConfig: {
+      canvasRenderer: "steam-curves",
+      glowColorDark: "rgba(180, 135, 106, 0.26)",
+      glowColorLight: "rgba(92, 58, 28, 0.18)",
+      particleDensity: 20,
+    },
   },
   {
     key: "about",
@@ -128,6 +156,12 @@ export const sectionThemes: SectionTheme[] = [
       { variant: "satellite", x: 78, y: 66, size: 30, rotate: 0, depth: 1.05 },
       { variant: "trace", x: 70, y: 26, size: 96, rotate: 18, depth: 0.8 },
     ],
+    motionConfig: {
+      canvasRenderer: "geometric-lines",
+      glowColorDark: "rgba(160, 160, 160, 0.18)",
+      glowColorLight: "rgba(80, 80, 80, 0.12)",
+      particleDensity: 20,
+    },
   },
 ]
 

@@ -26,6 +26,7 @@ import ConditionalRender from "./ConditionalRender"
 import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
+import MotionRuntime from "./MotionRuntime"
 
 export {
   ArticleTitle,
@@ -56,4 +57,5 @@ export {
   BrandIntro,
   SiteHeaderNav,
   HomeLanding,
+  MotionRuntime,
 }
