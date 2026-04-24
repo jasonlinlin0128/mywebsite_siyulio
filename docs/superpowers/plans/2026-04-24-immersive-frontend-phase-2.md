@@ -979,7 +979,7 @@ build 後首頁視覺 **質變**：hero 變成新版、Matter.js 物件完全消
 Replace `quartz/components/HomeLanding.tsx` content with:
 
 ```tsx
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { FullSlug, resolveRelative } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
 import { formatDate, getDate } from "./Date"
@@ -1047,6 +1047,11 @@ export default (() => {
         ? formatDate(getDateSafe(mostRecent)!, cfg.locale)
         : "持續整理中"
 
+    // spec §5.1 v2「Three Pillars」只 render 3 個內容主軸（不含 about）。
+    // sectionThemes 含 4 個 entry，需過濾 about 以對齊 _home-apple.scss 的
+    // .home-pillars grid-template-columns: repeat(3, ...) 設計。
+    const pillarThemes = sectionThemes.filter((t) => t.key !== "about")
+
     return (
       <div class="home-landing" data-section-theme="home">
         <HeroComponent {...props} />
@@ -1069,7 +1074,7 @@ export default (() => {
         </section>
 
         <section class="home-pillars">
-          {sectionThemes.map((section) => (
+          {pillarThemes.map((section) => (
             <a
               href={resolveRelative(slug, section.href)}
               class="home-pillars__card"
@@ -1115,6 +1120,7 @@ export default (() => {
           <div class="home-recent__list">
             {recentArticles.map((page) => {
               const theme = getSectionThemeForSlug(page.slug)
+              const date = getDateSafe(page)
               return (
                 <a
                   href={resolveRelative(slug, page.slug! as FullSlug)}
@@ -1124,7 +1130,11 @@ export default (() => {
                 >
                   <div class="home-recent__meta">
                     <span>{theme?.navLabel}</span>
-                    <time>{getDateSafe(page) ? formatDate(getDateSafe(page)!, cfg.locale) : ""}</time>
+                    {date ? (
+                      <time datetime={date.toISOString()}>{formatDate(date, cfg.locale)}</time>
+                    ) : (
+                      <time />
+                    )}
                   </div>
                   <strong>{page.frontmatter?.title}</strong>
                   <p>{summarize(page)}</p>
