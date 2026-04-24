@@ -1258,97 +1258,166 @@ wc -l quartz/styles/custom.scss
 
 - [ ] **Step 2: 寫刪除腳本 `.verify/strip-home-landing.mjs`（一次性，不 commit）**
 
-Create `.verify/strip-home-landing.mjs`（`.verify/` 已 gitignored，Phase 1 沿用）:
+Create `.verify/strip-home-landing.mjs`（`.verify/` 在 Task 4 已加進 `.gitignore`）:
 
 ```js
-// 一次性 SCSS block stripper。
-// 讀 quartz/styles/custom.scss，逐段 tokenize（selector → {body}），
-// 把 selector 匹配到 /\.home-landing(\b|__)|\.home-hero-scene(\b|__)|\.hero-object(\b|__)/ 的
-// 整個 block（含巢狀）丟掉，其他原樣輸出。brace-balance counter 處理
-// @media 裡的巢狀 rule block。
+// 一次性 SCSS block stripper v3 —— recursive + selector-list aware + empty-at-rule cleanup。
+//
+// v1 缺陷：只在頂層 tokenize，@media { ... } 裡面直接 memcpy，media query 裡的
+// .home-landing__* 沒被刪；selector list 整塊殺會誤刪同組的無辜 selector。
+// v2 解了這兩個問題，但留下兩個瑕疵：
+//   (a) @media 裡所有 child 都被殺時，留下空 `@media (...) {}`；
+//   (b) selector list 重組成 `.foo{...}`（無空格、}} 擠一起），可讀性差。
+// v3 修：
+//   (a) at-rule 處理完 body 若 body trim 後是空的，整個 at-rule 丟掉；
+//   (b) selector list 若有部分被 filter，用 ",\n" 重組並在 `{` 前補空格，
+//       body 前後保留原本的 \n；
+//   (c) 最後用 normalize 清掉多重空行。
 import fs from "node:fs"
 
 const src = fs.readFileSync("quartz/styles/custom.scss", "utf8")
 const PATTERN = /\.home-landing(\b|__)|\.home-hero-scene(\b|__)|\.hero-object(\b|__)/
 
-let out = ""
-let i = 0
-const N = src.length
+function processScope(scope) {
+  let out = ""
+  let i = 0
+  const N = scope.length
 
-function readUntilBrace() {
-  // 讀到下一個 { 或 ; 或 EOF
-  let start = i
-  while (i < N && src[i] !== "{" && src[i] !== ";") i++
-  return src.slice(start, i)
-}
-
-function skipBalancedBlock() {
-  // 目前在 { 上，讀到對應的 } 並丟掉
-  if (src[i] !== "{") throw new Error("not at {")
-  let depth = 0
-  while (i < N) {
-    if (src[i] === "{") depth++
-    else if (src[i] === "}") {
-      depth--
-      if (depth === 0) { i++; return }
+  function findBalanced(pos) {
+    if (scope[pos] !== "{") throw new Error("findBalanced: not at {")
+    let depth = 0
+    let j = pos
+    while (j < N) {
+      const ch = scope[j]
+      if (ch === "{") depth++
+      else if (ch === "}") {
+        depth--
+        if (depth === 0) return j
+      } else if (ch === "/" && scope[j + 1] === "*") {
+        j += 2
+        while (j < N && !(scope[j] === "*" && scope[j + 1] === "/")) j++
+        j++
+      } else if (ch === "/" && scope[j + 1] === "/") {
+        while (j < N && scope[j] !== "\n") j++
+        continue
+      } else if (ch === '"' || ch === "'") {
+        const quote = ch
+        j++
+        while (j < N && scope[j] !== quote) {
+          if (scope[j] === "\\") j++
+          j++
+        }
+      }
+      j++
     }
-    i++
+    throw new Error("unbalanced")
   }
-}
 
-function copyBalancedBlock() {
-  if (src[i] !== "{") throw new Error("not at {")
-  let depth = 0
   while (i < N) {
-    out += src[i]
-    if (src[i] === "{") depth++
-    else if (src[i] === "}") {
-      depth--
+    const segStart = i
+    let sawBrace = false
+    while (i < N) {
+      const ch = scope[i]
+      if (ch === "{") { sawBrace = true; break }
+      if (ch === ";") { i++; break }
+      if (ch === "/" && scope[i + 1] === "*") {
+        i += 2
+        while (i < N && !(scope[i] === "*" && scope[i + 1] === "/")) i++
+        i += 2
+        continue
+      }
+      if (ch === "/" && scope[i + 1] === "/") {
+        while (i < N && scope[i] !== "\n") i++
+        continue
+      }
+      if (ch === '"' || ch === "'") {
+        const quote = ch
+        i++
+        while (i < N && scope[i] !== quote) {
+          if (scope[i] === "\\") i++
+          i++
+        }
+        i++
+        continue
+      }
+      if (ch === "}") break
       i++
-      if (depth === 0) return
+    }
+
+    if (!sawBrace) {
+      out += scope.slice(segStart, i)
+      if (i < N && scope[i] === "}") break
       continue
     }
-    i++
-  }
-}
 
-while (i < N) {
-  // 讀 selector 段
-  const selStart = i
-  while (i < N && src[i] !== "{" && src[i] !== "}") i++
+    const rawSelector = scope.slice(segStart, i)
+    const blockEnd = findBalanced(i)
+    const rawBody = scope.slice(i + 1, blockEnd)
+    i = blockEnd + 1
 
-  if (i >= N) {
-    out += src.slice(selStart)
-    break
-  }
+    const trimmedSel = rawSelector.trim()
 
-  const selector = src.slice(selStart, i)
-
-  if (src[i] === "}") {
-    // 單獨 } — 直接輸出
-    out += selector + "}"
-    i++
-    continue
-  }
-
-  // i 停在 {
-  if (PATTERN.test(selector)) {
-    // 丟掉 selector + balanced block
-    skipBalancedBlock()
-    // 順手吃掉後面可能的空白 + 換行（保持檔案整齊）
-    while (i < N && (src[i] === "\n" || src[i] === " " || src[i] === "\t")) {
-      if (src[i] === "\n") { out += "\n"; i++; break }
-      i++
+    if (trimmedSel.startsWith("@")) {
+      const newBody = processScope(rawBody)
+      if (newBody.trim() === "") {
+        if (i < N && scope[i] === "\n") i++
+        continue
+      }
+      out += rawSelector + "{" + ensureTrailingNewline(newBody) + "}"
+      continue
     }
-  } else {
-    // 保留 selector + balanced block
-    out += selector
-    copyBalancedBlock()
+
+    const parts = splitSelectorList(rawSelector)
+    const kept = parts.filter((p) => !PATTERN.test(p))
+
+    if (kept.length === 0) {
+      if (i < N && scope[i] === "\n") i++
+      continue
+    }
+
+    if (kept.length === parts.length) {
+      const newBody = processScope(rawBody)
+      out += rawSelector + "{" + newBody + "}"
+    } else {
+      const leadingMatch = rawSelector.match(/^(\s*)/)
+      const leading = leadingMatch ? leadingMatch[1] : ""
+      const trimmedParts = kept.map((p) => p.trim())
+      const newSelector = leading + trimmedParts.join(",\n" + leading) + " "
+      const newBody = processScope(rawBody)
+      out += newSelector + "{" + newBody + "}"
+    }
   }
+
+  return out
 }
 
-// 收斂連續三個以上的空白行成兩個
+function ensureTrailingNewline(s) {
+  if (s.length === 0) return s
+  const tail = s.slice(-40)
+  if (/\n\s*$/.test(tail)) return s
+  return s.replace(/[ \t]*$/, "") + "\n"
+}
+
+function splitSelectorList(sel) {
+  const parts = []
+  let depth = 0
+  let start = 0
+  for (let k = 0; k < sel.length; k++) {
+    const ch = sel[k]
+    if (ch === "(" || ch === "[") depth++
+    else if (ch === ")" || ch === "]") depth--
+    else if (ch === "," && depth === 0) {
+      parts.push(sel.slice(start, k))
+      start = k + 1
+    }
+  }
+  parts.push(sel.slice(start))
+  return parts
+}
+
+let out = processScope(src)
 out = out.replace(/\n{4,}/g, "\n\n\n")
+if (!out.endsWith("\n")) out += "\n"
 
 fs.writeFileSync("quartz/styles/custom.scss", out, "utf8")
 console.log("done")
