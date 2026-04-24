@@ -1,8 +1,8 @@
 // Lenis smooth scroll reset (spec §6.5)
-// 由 lenis.inline.ts 在啟動時把 html.lenis + html.lenis-smooth class 掛上
-// （Lenis 1.x 預設 wrapper = document.documentElement 的行為）。
-// mobile / reduced-motion / body data opt-out 路徑下 Lenis 不啟動，
-// html 不帶這些 class → 以下規則全部不匹配 → 沿用原生 scroll。
+// Lenis 1.x constructor 會自動在 document.documentElement 掛上 .lenis /
+// .lenis-smooth / .lenis-stopped class（library 內建行為，非 lenis.inline.ts
+// 手動加）。mobile / reduced-motion / body data opt-out 路徑下 Lenis 不
+// 啟動，html 不帶這些 class → 以下規則全部不匹配 → 沿用原生 scroll。
 
 html.lenis,
 html.lenis body {

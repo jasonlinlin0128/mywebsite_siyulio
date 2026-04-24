@@ -11,7 +11,6 @@ declare const window: Window & {
   __motion?: {
     prefersReducedMotion: () => boolean
     isMobileViewport: () => boolean
-    bodyOptsIn: (flag: string) => boolean
   }
   __lenis?: {
     stop: () => void
