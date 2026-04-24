@@ -1,4 +1,4 @@
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { FullSlug, resolveRelative } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
 import { formatDate, getDate } from "./Date"
@@ -65,6 +65,7 @@ export default (() => {
       mostRecent && getDateSafe(mostRecent)
         ? formatDate(getDateSafe(mostRecent)!, cfg.locale)
         : "持續整理中"
+    const pillarThemes = sectionThemes.filter((t) => t.key !== "about")
 
     return (
       <div class="home-landing" data-section-theme="home">
@@ -88,7 +89,7 @@ export default (() => {
         </section>
 
         <section class="home-pillars">
-          {sectionThemes.map((section) => (
+          {pillarThemes.map((section) => (
             <a
               href={resolveRelative(slug, section.href)}
               class="home-pillars__card"
@@ -134,6 +135,7 @@ export default (() => {
           <div class="home-recent__list">
             {recentArticles.map((page) => {
               const theme = getSectionThemeForSlug(page.slug)
+              const date = getDateSafe(page)
               return (
                 <a
                   href={resolveRelative(slug, page.slug! as FullSlug)}
@@ -143,7 +145,11 @@ export default (() => {
                 >
                   <div class="home-recent__meta">
                     <span>{theme?.navLabel}</span>
-                    <time>{getDateSafe(page) ? formatDate(getDateSafe(page)!, cfg.locale) : ""}</time>
+                    {date ? (
+                      <time datetime={date.toISOString()}>{formatDate(date, cfg.locale)}</time>
+                    ) : (
+                      <time />
+                    )}
                   </div>
                   <strong>{page.frontmatter?.title}</strong>
                   <p>{summarize(page)}</p>
