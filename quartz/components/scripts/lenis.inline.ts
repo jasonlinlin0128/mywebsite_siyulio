@@ -16,6 +16,10 @@ declare const window: Window & {
     stop: () => void
     start: () => void
     isActive: () => boolean
+    // categoryScene.inline.ts 用 on('scroll', ScrollTrigger.update) 把 Lenis
+    // 的 RAF 餵給 GSAP ScrollTrigger，否則 scrub 動畫會跟原生 scrollY 失步
+    on: (event: string, fn: (...args: any[]) => void) => void
+    off: (event: string, fn: (...args: any[]) => void) => void
   }
 }
 
@@ -57,6 +61,10 @@ function setupLenis() {
     stop: () => lenis?.stop(),
     start: () => lenis?.start(),
     isActive: () => !!lenis,
+    // 直接 delegate 給 Lenis 原生 emitter — categoryScene 用 on('scroll', ...)
+    // 把每幀 scroll 同步給 GSAP ScrollTrigger
+    on: (event, fn) => lenis?.on(event as any, fn),
+    off: (event, fn) => lenis?.off(event as any, fn),
   }
 }
 
