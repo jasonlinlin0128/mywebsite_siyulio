@@ -13,7 +13,8 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.CustomHead(),
   header: [Component.SiteHeaderNav()],
   afterBody: [
-    Component.MotionRuntime(),   // 全站 motion 基礎建設 (Phase 1+2+3)
+    Component.ScrollProgress(),  // Phase 4 — 1px 頂部進度條 (spec §5.3)
+    Component.MotionRuntime(),   // 全站 motion 基礎建設 (Phase 1+2+3+4)
     Component.ConditionalRender({
       component: Component.RecentNotes({
         title: "繼續閱讀",

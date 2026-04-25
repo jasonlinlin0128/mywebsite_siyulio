@@ -32,6 +32,7 @@ interface RendererFn {
 }
 
 // ── 1. geometric-lines（manufacturing-ai 主題）──────────────────────────────
+// 等距斜線 + 反向交叉線 + 中央 radial glow + 線條 shadowBlur 給「光纖」感
 function renderGeometricLines(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -41,10 +42,23 @@ function renderGeometricLines(
 ): void {
   ctx.clearRect(0, 0, w, h)
 
-  const spacing = Math.max(48, w / Math.max(8, config.particleDensity))
+  // 中央 radial glow 先打底（給線條一個明亮中心對比）
+  const cx = w * 0.65
+  const cy = h * 0.5
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.55)
+  grad.addColorStop(0, config.glowColor)
+  grad.addColorStop(0.4, config.glowColor.replace(/[\d.]+\)$/, "0.15)"))
+  grad.addColorStop(1, "rgba(0, 0, 0, 0)")
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, w, h)
+
+  // 主對角線（左上 → 右下）+ shadowBlur 給線條 glow
+  const spacing = Math.max(56, w / Math.max(8, config.particleDensity))
   const drift = (t * 0.012) % spacing
+  ctx.shadowColor = config.glowColor
+  ctx.shadowBlur = 8
   ctx.strokeStyle = config.glowColor
-  ctx.lineWidth = 1
+  ctx.lineWidth = 1.5
   ctx.lineCap = "round"
 
   for (let i = -h; i < w + h; i += spacing) {
@@ -54,13 +68,17 @@ function renderGeometricLines(
     ctx.stroke()
   }
 
-  const cx = w * 0.7
-  const cy = h * 0.5
-  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.4)
-  grad.addColorStop(0, config.glowColor)
-  grad.addColorStop(1, "rgba(0, 0, 0, 0)")
-  ctx.fillStyle = grad
-  ctx.fillRect(0, 0, w, h)
+  // 反向交叉線（右上 → 左下）— 較弱的 alpha 形成編織格紋
+  ctx.strokeStyle = config.glowColor.replace(/[\d.]+\)$/, "0.25)")
+  ctx.lineWidth = 1
+  for (let i = -h; i < w + h; i += spacing * 1.6) {
+    ctx.beginPath()
+    ctx.moveTo(i + drift + h, 0)
+    ctx.lineTo(i + drift, h)
+    ctx.stroke()
+  }
+
+  ctx.shadowBlur = 0
 }
 
 // ── 2. particle-flow（ai-notes 主題）────────────────────────────────────────
@@ -88,8 +106,8 @@ function renderParticleFlow(
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
-        r: 1 + Math.random() * 2,
-        alpha: 0.3 + Math.random() * 0.4,
+        r: 1.2 + Math.random() * 2.5,
+        alpha: 0.5 + Math.random() * 0.5,
       })),
     }
     canvas[PARTICLE_STATE_KEY] = state
@@ -97,22 +115,38 @@ function renderParticleFlow(
 
   ctx.clearRect(0, 0, w, h)
 
-  const grad = ctx.createLinearGradient(0, 0, w, h)
-  grad.addColorStop(0, config.glowColor)
-  grad.addColorStop(1, "rgba(0, 0, 0, 0)")
-  ctx.fillStyle = grad
+  // 雙層 radial gradient 背景（取代單一 linear）
+  const cx1 = w * 0.3
+  const cy1 = h * 0.4
+  const grad1 = ctx.createRadialGradient(cx1, cy1, 0, cx1, cy1, Math.max(w, h) * 0.5)
+  grad1.addColorStop(0, config.glowColor)
+  grad1.addColorStop(0.5, config.glowColor.replace(/[\d.]+\)$/, "0.2)"))
+  grad1.addColorStop(1, "rgba(0, 0, 0, 0)")
+  ctx.fillStyle = grad1
   ctx.fillRect(0, 0, w, h)
 
+  const cx2 = w * 0.7
+  const cy2 = h * 0.65
+  const grad2 = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, Math.max(w, h) * 0.4)
+  grad2.addColorStop(0, config.glowColor.replace(/[\d.]+\)$/, "0.4)"))
+  grad2.addColorStop(1, "rgba(0, 0, 0, 0)")
+  ctx.fillStyle = grad2
+  ctx.fillRect(0, 0, w, h)
+
+  // 粒子加 glow halo
+  ctx.shadowColor = config.glowColor.replace(/[\d.]+\)$/, "0.9)")
   for (const p of state.particles) {
     p.x += p.vx
     p.y += p.vy
     if (p.x < 0 || p.x > w) p.vx *= -1
     if (p.y < 0 || p.y > h) p.vy *= -1
+    ctx.shadowBlur = p.r * 4
     ctx.beginPath()
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
     ctx.fillStyle = `rgba(255, 247, 234, ${p.alpha})`
     ctx.fill()
   }
+  ctx.shadowBlur = 0
 }
 
 // ── 3. steam-curves（coffee 主題）──────────────────────────────────────────
@@ -125,34 +159,54 @@ function renderSteamCurves(
 ): void {
   ctx.clearRect(0, 0, w, h)
 
+  // 暖底光暈（兩層）
   const cx = w * 0.5
-  const cy = h * 0.7
-  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.5)
+  const cy = h * 0.75
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.6)
   grad.addColorStop(0, config.glowColor)
+  grad.addColorStop(0.4, config.glowColor.replace(/[\d.]+\)$/, "0.18)"))
   grad.addColorStop(1, "rgba(0, 0, 0, 0)")
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, w, h)
 
-  const curveCount = Math.max(3, Math.floor(config.particleDensity / 8))
-  ctx.strokeStyle = config.glowColor
-  ctx.lineWidth = 1.5
+  // 蒸氣曲線：N 條 sin wave + shadowBlur 給「光纖蒸氣」感
+  const curveCount = Math.max(5, Math.floor(config.particleDensity / 4))
+  ctx.shadowColor = config.glowColor.replace(/[\d.]+\)$/, "0.8)")
+  ctx.shadowBlur = 12
+  ctx.lineCap = "round"
 
   for (let i = 0; i < curveCount; i++) {
     const phase = (t * 0.0006) + i * 0.7
-    const xCenter = w * (0.2 + (i / curveCount) * 0.6)
-    const amplitude = 18 + i * 6
+    const xCenter = w * (0.15 + (i / curveCount) * 0.7)
+    const amplitude = 20 + i * 5
+    const lineAlpha = 0.85 - i * 0.08
+    ctx.strokeStyle = config.glowColor.replace(/[\d.]+\)$/, `${lineAlpha})`)
+    ctx.lineWidth = 2 - i * 0.15
 
     ctx.beginPath()
-    for (let y = h; y > 0; y -= 4) {
+    for (let y = h; y > 0; y -= 3) {
       const progress = (h - y) / h
       const x = xCenter + Math.sin(progress * Math.PI * 2 + phase) * amplitude * progress
       if (y === h) ctx.moveTo(x, y)
       else ctx.lineTo(x, y)
     }
-    ctx.globalAlpha = 0.6 - i * 0.1
     ctx.stroke()
   }
-  ctx.globalAlpha = 1
+
+  // 細白色高光 spark — 在曲線交織處點綴
+  ctx.shadowBlur = 6
+  ctx.shadowColor = "rgba(255, 247, 234, 0.6)"
+  for (let i = 0; i < 4; i++) {
+    const phase = (t * 0.0008) + i * 1.4
+    const x = w * (0.25 + (i / 4) * 0.5) + Math.sin(phase) * 30
+    const y = h * (0.4 + Math.cos(phase) * 0.2)
+    ctx.beginPath()
+    ctx.arc(x, y, 1.2, 0, Math.PI * 2)
+    ctx.fillStyle = "rgba(255, 247, 234, 0.8)"
+    ctx.fill()
+  }
+
+  ctx.shadowBlur = 0
 }
 
 const renderers: Record<SectionCanvasRenderer, RendererFn> = {
@@ -186,6 +240,9 @@ function render(host: HTMLElement, config: SectionCanvasConfig): () => void {
   let frameTimes: number[] = []
   let lowPowerMode = false
 
+  // 先抓 renderer 給 resize() callback 用
+  const renderer = renderers[config.renderer]
+
   function resize() {
     const rect = host.getBoundingClientRect()
     w = Math.max(1, rect.width)
@@ -196,10 +253,11 @@ function render(host: HTMLElement, config: SectionCanvasConfig): () => void {
     canvas!.style.height = `${h}px`
     ctx!.scale(dpr, dpr)
     delete (canvas as any)[PARTICLE_STATE_KEY]
+    // canvas.width = N 會清空 canvas → 立即重畫一幀避免空白
+    // （reduced-motion 路徑沒 rAF loop，不重畫會永遠空白）
+    renderer(ctx!, w, h, lastFrame || 0, config)
   }
   resize()
-
-  const renderer = renderers[config.renderer]
 
   function loop(t: number) {
     if (document.hidden) {

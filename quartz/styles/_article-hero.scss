@@ -18,7 +18,8 @@
   isolation: isolate;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--article-hero-accent, var(--dark)) 18%, transparent) 0%,
+    color-mix(in srgb, var(--article-hero-accent, var(--dark)) 28%, transparent) 0%,
+    color-mix(in srgb, var(--article-hero-accent, var(--dark)) 8%, transparent) 50%,
     transparent 100%
   );
 
@@ -26,7 +27,7 @@
 
   &[data-section-theme="ai-notes"] { --article-hero-accent: var(--section-accent-ai-notes); }
   &[data-section-theme="coffee"]   { --article-hero-accent: var(--section-accent-coffee); }
-  &[data-section-theme="about"]    { --article-hero-accent: rgba(160, 160, 160, 0.6); }
+  &[data-section-theme="about"]    { --article-hero-accent: var(--section-accent-about); }
 
   @media all and (max-width: 767px) {
     min-height: 40vh;
@@ -46,7 +47,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    opacity: 0.85;
+    opacity: 1;
   }
 }
 
@@ -146,6 +147,22 @@
 
 @media (prefers-reduced-motion: reduce) {
   .article-hero { transition: none; }
+}
+
+// spec §8.6：高對比模式下 hero 漸層加強、section-badge 邊框與文字加粗對比
+@media (prefers-contrast: more) {
+  .article-hero {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--article-hero-accent) 50%, transparent) 0%,
+      color-mix(in srgb, var(--article-hero-accent) 18%, transparent) 50%,
+      transparent 100%
+    );
+  }
+  .section-badge {
+    border-color: var(--article-hero-accent);
+    background: color-mix(in srgb, var(--article-hero-accent) 18%, transparent);
+  }
 }
 
 @media (forced-colors: active) {

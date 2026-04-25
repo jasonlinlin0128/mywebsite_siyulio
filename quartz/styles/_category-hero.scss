@@ -1,4 +1,4 @@
-// CategoryHero 樣式（spec §5.2）
+// CategoryHero 樣式（spec §5.2）— v2 視覺升級
 // 取代 BrandIntro。布局：左側 copy / 右側 scene stage（單欄 mobile）
 // 場景物件由 sectionThemes.sceneObjects 走 SSR，inline.ts 用 GSAP scroll-scrub 編隊
 
@@ -19,7 +19,7 @@
   --category-hero-accent: var(--section-accent-manufacturing);
   &[data-section-theme="ai-notes"] { --category-hero-accent: var(--section-accent-ai-notes); }
   &[data-section-theme="coffee"]   { --category-hero-accent: var(--section-accent-coffee); }
-  &[data-section-theme="about"]    { --category-hero-accent: rgba(160, 160, 160, 0.6); }
+  &[data-section-theme="about"]    { --category-hero-accent: var(--section-accent-about); }
 
   @media all and (max-width: 767px) {
     grid-template-columns: 1fr;
@@ -62,21 +62,65 @@
   opacity: 0.82;
 }
 
+// ── Scene stage — 加 ambient gradient mesh 背景 ─────────────────────────────
+// 在 stage 後面疊三個錯位的 radial gradient 形成漸層霧、+ subtle dashed
+// blueprint grid（spec §5.2 + Apple 風 + Oryzo 工具藍圖感）
 .category-hero__stage {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 320px;
+  min-height: 360px;
   aspect-ratio: 5 / 4;
-  max-height: min(60vh, 520px);
+  max-height: min(60vh, 560px);
 
   @media all and (max-width: 767px) {
     aspect-ratio: 16 / 10;
     max-height: 32vh;
     order: -1;
   }
+
+  // ambient gradient mesh — 給 stage 加層次感
+  // 第三個 radial 用 currentColor 自動 theme（dark→light tint, light→dark tint）
+  // 取代之前的 hardcode rgba(255,247,234,0.04) — 在亮模式下 cream-on-cream 變不可見
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 25% 30%,
+        color-mix(in srgb, var(--category-hero-accent) 18%, transparent) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 75% 70%,
+        color-mix(in srgb, var(--category-hero-accent) 12%, transparent) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 60% 40%,
+        color-mix(in srgb, currentColor 5%, transparent) 0%,
+        transparent 35%
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // subtle dashed blueprint grid（Oryzo 風）— currentColor 自動 theme
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px);
+    background-size: 20% 20%;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
+// ── Scene 物件 — Apple 3D-disc 質感 + idle float animation ─────────────────
 .category-scene-object {
   position: absolute;
   width: var(--size, 80px);
@@ -85,30 +129,198 @@
   top: var(--y, 50%);
   transform: translate(-50%, -50%) rotate(var(--rotate, 0deg));
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 30%,
-    color-mix(in srgb, var(--category-hero-accent) 80%, white) 0%,
-    color-mix(in srgb, var(--category-hero-accent) 30%, transparent) 70%
-  );
-  opacity: 0.6;
   pointer-events: none;
+  z-index: 1;
+  // Multi-stop gradient mimicking 3D disc with light from upper-left
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      color-mix(in srgb, var(--category-hero-accent) 95%, white) 0%,
+      color-mix(in srgb, var(--category-hero-accent) 70%, transparent) 35%,
+      color-mix(in srgb, var(--category-hero-accent) 40%, transparent) 65%,
+      color-mix(in srgb, var(--category-hero-accent) 10%, transparent) 100%
+    );
+  // accent glow halo via filter (cheaper than box-shadow at large blur)
+  filter:
+    drop-shadow(0 0 24px color-mix(in srgb, var(--category-hero-accent) 35%, transparent))
+    drop-shadow(0 8px 32px rgba(0, 0, 0, 0.4));
+  // Idle gentle float — 每物件 delay 不同避免齊頭並進，靠 nth-child / index seed
+  animation: category-scene-float 14s ease-in-out infinite;
+  animation-delay: calc(var(--idle-delay, 0s));
 
-  &[data-variant="module"]    { border-radius: 8px; aspect-ratio: 1.2 / 1; }
-  &[data-variant="ring"]      { background: none; border: 2px solid var(--category-hero-accent); opacity: 0.5; }
-  &[data-variant="node"]      { border-radius: 50%; transform-origin: center; }
-  &[data-variant="beam"]      { border-radius: 6px; height: 4px; aspect-ratio: auto; width: var(--size); background: linear-gradient(90deg, transparent, var(--category-hero-accent), transparent); opacity: 0.7; }
-  &[data-variant="pill"]      { border-radius: 999px; aspect-ratio: 2 / 1; }
-  &[data-variant="pulse"]     { background: radial-gradient(circle, var(--category-hero-accent) 0%, transparent 70%); }
-  &[data-variant="spark"]     { border-radius: 2px; transform-origin: center; opacity: 0.7; }
-  &[data-variant="bean"]      { border-radius: 30% 70% 70% 30% / 60% 60% 40% 40%; }
-  &[data-variant="orbit"]     { background: none; border: 1px solid color-mix(in srgb, var(--category-hero-accent) 50%, transparent); opacity: 0.4; }
-  &[data-variant="core"]      { border-radius: 50%; opacity: 0.85; }
-  &[data-variant="satellite"] { border-radius: 50%; opacity: 0.5; }
-  &[data-variant="trace"]     { background: none; border-top: 1px dashed color-mix(in srgb, var(--category-hero-accent) 40%, transparent); height: 2px; aspect-ratio: auto; width: var(--size); opacity: 0.45; }
+  // 各 variant 微調 — keep CategoryHero spec §5.2 個性
+  &[data-variant="module"]    {
+    border-radius: 14px;
+    aspect-ratio: 1.2 / 1;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--category-hero-accent) 75%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 30%, transparent) 100%
+      );
+  }
+  &[data-variant="ring"]      {
+    background: none;
+    border: 2px dashed color-mix(in srgb, var(--category-hero-accent) 70%, transparent);
+    box-shadow:
+      inset 0 0 24px color-mix(in srgb, var(--category-hero-accent) 20%, transparent),
+      0 0 32px color-mix(in srgb, var(--category-hero-accent) 25%, transparent);
+    filter: none;
+  }
+  &[data-variant="node"]      {
+    border-radius: 50%;
+    background:
+      radial-gradient(
+        circle at 30% 25%,
+        color-mix(in srgb, var(--category-hero-accent) 100%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 60%, transparent) 50%,
+        transparent 100%
+      );
+  }
+  &[data-variant="beam"]      {
+    height: 3px;
+    aspect-ratio: auto;
+    width: var(--size);
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--category-hero-accent) 90%, white) 50%,
+      transparent 100%
+    );
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--category-hero-accent) 50%, transparent));
+  }
+  &[data-variant="pill"]      {
+    border-radius: 999px;
+    aspect-ratio: 2.4 / 1;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--category-hero-accent) 85%, white) 0%,
+      color-mix(in srgb, var(--category-hero-accent) 40%, transparent) 100%
+    );
+  }
+  &[data-variant="pulse"]     {
+    background:
+      radial-gradient(
+        circle,
+        color-mix(in srgb, var(--category-hero-accent) 95%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 50%, transparent) 30%,
+        transparent 70%
+      );
+    animation: category-scene-pulse 6s ease-in-out infinite;
+  }
+  &[data-variant="spark"]     {
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--category-hero-accent) 90%, white);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--category-hero-accent) 70%, transparent));
+  }
+  &[data-variant="bean"]      {
+    border-radius: 30% 70% 70% 30% / 60% 60% 40% 40%;
+    background:
+      radial-gradient(
+        circle at 35% 30%,
+        color-mix(in srgb, var(--category-hero-accent) 85%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 40%, transparent) 70%
+      );
+  }
+  &[data-variant="orbit"]     {
+    background: none;
+    border: 1px dashed color-mix(in srgb, var(--category-hero-accent) 50%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--category-hero-accent) 12%, transparent);
+    filter: none;
+    // 比其他 object 大、做為「軌道環」
+  }
+  &[data-variant="core"]      {
+    border-radius: 50%;
+    // disc-highlight-1 為 theme-aware 高光：dark mode 用 cream，light mode 用深色
+    background:
+      radial-gradient(
+        circle at 30% 25%,
+        var(--disc-highlight-1) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 90%, white) 30%,
+        color-mix(in srgb, var(--category-hero-accent) 60%, transparent) 70%,
+        transparent 100%
+      );
+    filter:
+      drop-shadow(0 0 32px color-mix(in srgb, var(--category-hero-accent) 60%, transparent))
+      drop-shadow(0 4px 16px rgba(0, 0, 0, 0.5));
+  }
+  &[data-variant="satellite"] {
+    border-radius: 50%;
+    background:
+      radial-gradient(
+        circle at 30% 25%,
+        color-mix(in srgb, var(--category-hero-accent) 80%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 30%, transparent) 70%
+      );
+  }
+  &[data-variant="trace"]     {
+    background: none;
+    border-top: 1px dashed color-mix(in srgb, var(--category-hero-accent) 60%, transparent);
+    height: 1px;
+    aspect-ratio: auto;
+    width: var(--size);
+    filter: none;
+  }
+
+  // 偽隨機 idle delay — 用 nth-child 給每個物件不同階段
+  &:nth-child(1)  { --idle-delay: 0s; }
+  &:nth-child(2)  { --idle-delay: -2s; }
+  &:nth-child(3)  { --idle-delay: -4s; }
+  &:nth-child(4)  { --idle-delay: -6s; }
+  &:nth-child(5)  { --idle-delay: -8s; }
+  &:nth-child(6)  { --idle-delay: -10s; }
+  &:nth-child(7)  { --idle-delay: -12s; }
+  &:nth-child(8)  { --idle-delay: -1s; }
+}
+
+// 12s float — 緩慢 Y bob + tiny rotation drift（GSAP scroll-scrub 會 override
+// 這個 transform，所以 idle animation 只在用戶不滾時可見）
+@keyframes category-scene-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(var(--rotate, 0deg));
+  }
+  50% {
+    transform: translate(-50%, calc(-50% - 8px)) rotate(calc(var(--rotate, 0deg) + 2deg));
+  }
+}
+
+@keyframes category-scene-pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) rotate(var(--rotate, 0deg)) scale(1); }
+  50%      { opacity: 0.9; transform: translate(-50%, -50%) rotate(var(--rotate, 0deg)) scale(1.08); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .category-scene-object { transition: none; }
+  .category-scene-object {
+    animation: none !important;
+    transition: none;
+  }
+}
+
+// spec §8.6：高對比模式下，加強 scene 物件可見度，但收掉 ambient mesh
+// 這層裝飾感（會干擾辨識）。dashed 藍圖格線改為更清楚的 currentColor。
+@media (prefers-contrast: more) {
+  .category-hero__stage {
+    &::before { display: none; }
+    &::after {
+      background-image:
+        linear-gradient(to right, color-mix(in srgb, currentColor 18%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in srgb, currentColor 18%, transparent) 1px, transparent 1px);
+    }
+  }
+
+  .category-scene-object {
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        color-mix(in srgb, var(--category-hero-accent) 100%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 90%, transparent) 50%,
+        transparent 100%
+      );
+    filter:
+      drop-shadow(0 0 16px color-mix(in srgb, var(--category-hero-accent) 70%, transparent))
+      drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+  }
 }
 
 @media (forced-colors: active) {

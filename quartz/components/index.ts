@@ -24,13 +24,13 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
-import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
 import HomeHeroApple from "./HomeHeroApple"
 import ArticleHero from "./ArticleHero"
 import CategoryHero from "./CategoryHero"
 import SectionBadge from "./SectionBadge"
+import ScrollProgress from "./ScrollProgress"
 import MotionRuntime from "./MotionRuntime"
 
 export {
@@ -60,12 +60,12 @@ export {
   Comments,
   Flex,
   ConditionalRender,
-  BrandIntro,
   SiteHeaderNav,
   HomeLanding,
   HomeHeroApple,
   ArticleHero,
   CategoryHero,
   SectionBadge,
+  ScrollProgress,
   MotionRuntime,
 }

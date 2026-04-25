@@ -103,28 +103,40 @@ function setupFocalCanvas() {
 
     ctx!.clearRect(0, 0, w, h)
 
-    // 漸層光暈（中心 → 邊緣 fade），暖金色
+    // 主漸層光暈（中心 → 邊緣 fade）— 暖金色，alpha 拉高至 0.65（原 0.42）
     const cx = w * (0.52 + 0.04 * Math.sin(t * 0.0006))
     const cy = h * (0.5 + 0.03 * Math.cos(t * 0.0005) + scrollProgress * 0.08)
     const rMax = Math.hypot(w, h) * 0.7
     const grad = ctx!.createRadialGradient(cx, cy, 0, cx, cy, rMax)
-    grad.addColorStop(0, `rgba(200, 169, 107, ${0.42 - scrollProgress * 0.2})`)
-    grad.addColorStop(0.35, `rgba(200, 169, 107, ${0.2 - scrollProgress * 0.1})`)
+    grad.addColorStop(0, `rgba(220, 190, 130, ${0.65 - scrollProgress * 0.25})`)
+    grad.addColorStop(0.35, `rgba(200, 169, 107, ${0.32 - scrollProgress * 0.12})`)
     grad.addColorStop(1, "rgba(200, 169, 107, 0)")
     ctx!.fillStyle = grad
     ctx!.fillRect(0, 0, w, h)
 
-    // 粒子
+    // 第二層 offset 副光暈（添加深度 / mesh 感）
+    const cx2 = w * (0.3 + 0.05 * Math.cos(t * 0.0004))
+    const cy2 = h * (0.4 + 0.04 * Math.sin(t * 0.0007))
+    const grad2 = ctx!.createRadialGradient(cx2, cy2, 0, cx2, cy2, rMax * 0.6)
+    grad2.addColorStop(0, `rgba(200, 169, 107, ${0.25 - scrollProgress * 0.1})`)
+    grad2.addColorStop(1, "rgba(200, 169, 107, 0)")
+    ctx!.fillStyle = grad2
+    ctx!.fillRect(0, 0, w, h)
+
+    // 粒子加 shadowBlur halo — 給每個粒子發光感
+    ctx!.shadowColor = "rgba(220, 190, 130, 0.85)"
     for (const p of particles) {
       p.x += p.vx
       p.y += p.vy
       if (p.x < 0 || p.x > w) p.vx *= -1
       if (p.y < 0 || p.y > h) p.vy *= -1
+      ctx!.shadowBlur = p.r * 5
       ctx!.beginPath()
       ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-      ctx!.fillStyle = `rgba(255, 247, 234, ${p.alpha * (1 - scrollProgress * 0.4)})`
+      ctx!.fillStyle = `rgba(255, 247, 234, ${p.alpha * (1 - scrollProgress * 0.3)})`
       ctx!.fill()
     }
+    ctx!.shadowBlur = 0
   }
 
   function loop(t: number) {
@@ -189,7 +201,13 @@ function setupFocalCanvas() {
   }
 
   // ResizeObserver：容器尺寸改變時重新 layout
-  resizeObs = new ResizeObserver(() => resize())
+  // 此時 closures (particles / scrollProgress / lastFrame) 都已 init，可以
+  // 在 ResizeObserver callback 重畫一幀；reduced-motion 路徑沒 rAF loop，
+  // 不重畫會永遠空白
+  resizeObs = new ResizeObserver(() => {
+    resize()
+    drawFrame(lastFrame || 0)
+  })
   resizeObs.observe(host)
 
   // visibilitychange：隱藏 tab 時已在 loop 內 guard，不需額外 listener
