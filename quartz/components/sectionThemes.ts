@@ -70,8 +70,8 @@ export const sectionThemes: SectionTheme[] = [
     ],
     motionConfig: {
       canvasRenderer: "geometric-lines",
-      glowColorDark: "rgba(200, 169, 107, 0.24)",
-      glowColorLight: "rgba(122, 90, 32, 0.18)",
+      glowColorDark: "rgba(200, 169, 107, 0.55)",
+      glowColorLight: "rgba(122, 90, 32, 0.38)",
       particleDensity: 30,
     },
   },
@@ -99,8 +99,8 @@ export const sectionThemes: SectionTheme[] = [
     ],
     motionConfig: {
       canvasRenderer: "particle-flow",
-      glowColorDark: "rgba(123, 140, 199, 0.24)",
-      glowColorLight: "rgba(58, 77, 138, 0.18)",
+      glowColorDark: "rgba(123, 140, 199, 0.55)",
+      glowColorLight: "rgba(58, 77, 138, 0.38)",
       particleDensity: 60,
     },
   },
@@ -130,8 +130,8 @@ export const sectionThemes: SectionTheme[] = [
     ],
     motionConfig: {
       canvasRenderer: "steam-curves",
-      glowColorDark: "rgba(180, 135, 106, 0.26)",
-      glowColorLight: "rgba(92, 58, 28, 0.18)",
+      glowColorDark: "rgba(180, 135, 106, 0.55)",
+      glowColorLight: "rgba(92, 58, 28, 0.38)",
       particleDensity: 20,
     },
   },
