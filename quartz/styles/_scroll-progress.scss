@@ -18,6 +18,11 @@
   @media (forced-colors: active) {
     background: CanvasText;
   }
+  // 高對比：實心 manufacturing accent + 加粗到 3px，閱讀進度更清楚
+  @media (prefers-contrast: more) {
+    background: var(--section-accent-manufacturing);
+    height: 3px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
