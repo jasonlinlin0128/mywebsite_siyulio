@@ -1,0 +1,54 @@
+// About 頁 portrait 變體（spec §5.4）
+// 條件：data-section-theme="about" + data-has-cover="true"
+// 把 article-hero__cover 從「絕對定位背景」改成「圓形 portrait card」
+// 跟文字並列（不再蓋）
+
+.article-hero[data-section-theme="about"][data-has-cover="true"] {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
+  grid-template-rows: 1fr;
+  gap: clamp(1.5rem, 3vw, 2.4rem);
+  align-items: center;
+  padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+
+  .article-hero__cover {
+    position: relative;
+    inset: auto;
+    z-index: 1;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    background-size: cover;
+    background-position: center;
+
+    &::after {
+      // 軟陰影 / glow 用 box-shadow 而非 absolute pseudo
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--article-hero-accent) 30%, transparent) 0%,
+        transparent 100%
+      );
+      z-index: -1;
+    }
+  }
+
+  .article-hero__copy {
+    justify-self: stretch;
+  }
+
+  @media all and (max-width: 767px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+
+    .article-hero__cover {
+      max-width: 200px;
+      max-height: 200px;
+      justify-self: center;
+    }
+  }
+}

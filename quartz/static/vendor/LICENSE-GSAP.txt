@@ -1,0 +1,11 @@
+GSAP (GreenSock Animation Platform) by GreenSock.
+https://greensock.com
+
+Since November 2024 (Webflow acquisition), GSAP and its plugins
+(including ScrollTrigger) are free for commercial use under GSAP's
+standard license. No "Business Green" Club membership required.
+
+See: https://greensock.com/licensing/
+
+This site (www.siyulio.com) uses GSAP 3.12.7 as a vendored static
+asset for scroll-driven animations on homepage and category pages.

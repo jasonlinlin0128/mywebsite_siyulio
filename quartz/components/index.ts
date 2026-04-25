@@ -6,6 +6,7 @@ import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
 import ReaderMode from "./ReaderMode"
 import Head from "./Head"
+import CustomHead from "./CustomHead"
 import PageTitle from "./PageTitle"
 import ContentMeta from "./ContentMeta"
 import Spacer from "./Spacer"
@@ -23,9 +24,14 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
-import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
+import HomeHeroApple from "./HomeHeroApple"
+import ArticleHero from "./ArticleHero"
+import CategoryHero from "./CategoryHero"
+import SectionBadge from "./SectionBadge"
+import ScrollProgress from "./ScrollProgress"
+import MotionRuntime from "./MotionRuntime"
 
 export {
   ArticleTitle,
@@ -35,6 +41,7 @@ export {
   Darkmode,
   ReaderMode,
   Head,
+  CustomHead,
   PageTitle,
   ContentMeta,
   Spacer,
@@ -53,7 +60,12 @@ export {
   Comments,
   Flex,
   ConditionalRender,
-  BrandIntro,
   SiteHeaderNav,
   HomeLanding,
+  HomeHeroApple,
+  ArticleHero,
+  CategoryHero,
+  SectionBadge,
+  ScrollProgress,
+  MotionRuntime,
 }

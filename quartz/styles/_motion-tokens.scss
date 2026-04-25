@@ -1,0 +1,81 @@
+// Motion system tokens (spec §3.4 + §3.2 light-mode accents)
+// -----------------------------------------------------------
+
+// Duration
+$motion-duration-fast:  0.4s;   // 微動作
+$motion-duration-base:  0.6s;   // 標準 reveal
+$motion-duration-slow:  1.2s;   // hero 開場
+
+// Easing — Apple 標準
+$motion-easing:         cubic-bezier(0.22, 1, 0.36, 1);
+
+// Stagger / viewport trigger offset
+$motion-stagger:        80ms;
+$motion-reveal-offset:  12%;
+
+// Section accent — dark mode (spec §3.2 對比度實測通過)
+$section-accent-manufacturing-dark: #c8a96b;
+$section-accent-ai-notes-dark:      #7b8cc7;
+// coffee 暗底色從 #a47148 (4.55:1) 提到 #b4876a (6.04:1) 留緩衝 (spec §13 決策 #5)
+$section-accent-coffee-dark:        #b4876a;
+
+// Section accent — light mode (v3 新增)
+$section-accent-manufacturing-light: #7a5a20;
+$section-accent-ai-notes-light:      #3a4d8a;
+$section-accent-coffee-light:        #5c3a1c;
+
+// About — solid theme-aware accent（取代 _category-hero.scss 之前 hardcode
+// 的 rgba(160,160,160,0.7)，alpha 會跟 color-mix(...,X%, transparent) 疊加
+// 讓 about-hero 物件變幾乎看不見）
+$section-accent-about-dark:  #b3b8c2;
+$section-accent-about-light: #4a4f5c;
+
+// 3D-disc 特殊高光（core variant）— 在亮模式底色為 cream 時
+// 用 cream 高光會看不見，因此切換為深色高光
+$disc-highlight-1-dark:  rgba(255, 247, 234, 0.95);
+$disc-highlight-1-light: rgba(40, 30, 12, 0.85);
+
+// CSS custom properties for runtime access
+:root {
+  --motion-duration-fast: #{$motion-duration-fast};
+  --motion-duration-base: #{$motion-duration-base};
+  --motion-duration-slow: #{$motion-duration-slow};
+  --motion-easing: #{$motion-easing};
+  --motion-stagger: #{$motion-stagger};
+
+  --section-accent-manufacturing: #{$section-accent-manufacturing-light};
+  --section-accent-ai-notes:      #{$section-accent-ai-notes-light};
+  --section-accent-coffee:        #{$section-accent-coffee-light};
+  --section-accent-about:         #{$section-accent-about-light};
+  --disc-highlight-1:             #{$disc-highlight-1-light};
+}
+
+html[saved-theme="dark"] {
+  --section-accent-manufacturing: #{$section-accent-manufacturing-dark};
+  --section-accent-ai-notes:      #{$section-accent-ai-notes-dark};
+  --section-accent-coffee:        #{$section-accent-coffee-dark};
+  --section-accent-about:         #{$section-accent-about-dark};
+  --disc-highlight-1:             #{$disc-highlight-1-dark};
+}
+
+// data-reveal entry animation (Phase 1 只有定義，沒元素用)
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--motion-duration-base) var(--motion-easing),
+    transform var(--motion-duration-base) var(--motion-easing);
+
+  &.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s linear;
+  }
+}
