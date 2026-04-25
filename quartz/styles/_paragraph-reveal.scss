@@ -1,0 +1,24 @@
+// 文章段落 reveal — 比 Phase 1 全域 [data-reveal] 更輕（spec §10 Phase 4）
+// Phase 1 _motion-tokens.scss 全域 [data-reveal]：opacity 0→1 + translateY 12px → 0，
+// 這裡覆寫文章內 [data-reveal] 用更短時間 + 更小位移（避閱讀時被 motion 干擾）
+
+article [data-reveal] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-easing),
+    transform var(--motion-duration-fast) var(--motion-easing);
+
+  &.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  article [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.15s linear;
+  }
+}

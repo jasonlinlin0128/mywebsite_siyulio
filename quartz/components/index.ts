@@ -31,6 +31,7 @@ import HomeHeroApple from "./HomeHeroApple"
 import ArticleHero from "./ArticleHero"
 import CategoryHero from "./CategoryHero"
 import SectionBadge from "./SectionBadge"
+import ScrollProgress from "./ScrollProgress"
 import MotionRuntime from "./MotionRuntime"
 
 export {
@@ -67,5 +68,6 @@ export {
   ArticleHero,
   CategoryHero,
   SectionBadge,
+  ScrollProgress,
   MotionRuntime,
 }

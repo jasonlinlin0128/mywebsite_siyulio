@@ -6,6 +6,8 @@
 @use "./_article-hero.scss"; // Phase 3 新增
 @use "./_category-hero.scss"; // Phase 3 新增
 @use "./_toc-sticky.scss";   // Phase 3 新增
+@use "./_scroll-progress.scss";   // Phase 4 新增
+@use "./_paragraph-reveal.scss";  // Phase 4 新增
 
 body {
   overflow-x: hidden;
