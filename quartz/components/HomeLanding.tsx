@@ -54,13 +54,18 @@ export default (() => {
     const { fileData, allFiles, cfg } = props
     const slug = fileData.slug ?? ("index" as FullSlug)
     const articles = allFiles.filter(isRealArticle)
-    const recentArticles = [...articles]
-      .sort((a, b) => (getDateSafe(b)?.getTime() ?? 0) - (getDateSafe(a)?.getTime() ?? 0))
-      .slice(0, 4)
     const featuredArticles = featuredSlugs
       .map((targetSlug) => articles.find((page) => page.slug === targetSlug))
       .filter((page): page is QuartzPluginData => !!page)
-    const mostRecent = recentArticles[0]
+    // 全文章按日期排序，給「最近更新」stat 用（不能排除 featured，否則 stat
+    // 會錯把較舊的非-featured 文章當成最後更新）
+    const allSortedByDate = [...articles].sort(
+      (a, b) => (getDateSafe(b)?.getTime() ?? 0) - (getDateSafe(a)?.getTime() ?? 0),
+    )
+    // 「繼續閱讀」排除 featured 避免同篇文章在首頁出現兩次（同篇 card UI 重複）
+    const featuredSlugSet = new Set(featuredArticles.map((p) => p.slug))
+    const recentArticles = allSortedByDate.filter((p) => !featuredSlugSet.has(p.slug)).slice(0, 4)
+    const mostRecent = allSortedByDate[0]
     const lastUpdated =
       mostRecent && getDateSafe(mostRecent)
         ? formatDate(getDateSafe(mostRecent)!, cfg.locale)
