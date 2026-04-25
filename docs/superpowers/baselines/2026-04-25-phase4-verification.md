@@ -29,16 +29,33 @@ Phase 4 增量極小（兩個 inline script + 4 個 SCSS partial 都很輕量）
 
 ## 手動逐項驗證 — Phase 4 新功能
 
+由 Claude in Chrome MCP 在 reduced-motion ON 環境（user OS）跑了大部分驗證：
+
 | # | 項目 | 路徑 | 結果 | 備註 |
 |---|-----|------|------|------|
-| 1 | ScrollProgress 1px top bar | 任一頁 | ✓/✗ | scroll 時跟著前進，三色漸層 |
-| 2 | ScrollProgress 對 reduced-motion 行為 | 任一頁 + DevTools emulation | ✓/✗ | 無 width transition (突跳)，仍正常顯示 |
-| 3 | 文章段落 reveal | 任一文章 + scroll | ✓/✗ | p / h2 / h3 等段落淡入 (translateY 6px) |
-| 4 | 段落 reveal reduced-motion | 任一文章 + emulation | ✓/✗ | 直接顯示，無 translateY，0.15s linear 短淡 |
-| 5 | 404 頁 Apple 風 | `/non-existent-page` | ✓/✗ | 大字 404 三色漸層 + 兩顆 CTA + 暖光暈 |
-| 6 | 404 forced-colors fallback | DevTools forced-colors emulation | ✓/✗ | 大字回到 CanvasText 純色 |
-| 7 | About portrait（cover frontmatter） | `/about` 並設 `cover:` | ✓/✗ | 圓形 portrait card 跟文字並列 |
-| 8 | About 沒 cover → minimal | `/about` 無 cover | ✓/✗ | 純 title + meta，無 hero |
+| 1 | ScrollProgress 1px top bar | 首頁 | ✓ | 修了 bug — page-footer display:none 隱藏問題，inline script append 到 body root；scroll 1500/3143 → ratio 0.63 → width 1001px 確認 rendering |
+| 2 | ScrollProgress 對 reduced-motion 行為 | 任一頁 + reduced ON | ✓ | width 變化但無 CSS transition |
+| 3 | 文章段落 reveal | manufacturing-ai 文章 | ✓ | 52 個段落元素 setAttribute data-reveal，scrollReveal 接手 |
+| 4 | 段落 reveal reduced-motion | reduced ON 環境 | ✓ | scrollReveal 在 reduced 時直接 add `.revealed` 不動畫 |
+| 5 | 404 頁 Apple 風 | `/404.html` | ✓ | 大字 "404" 三色漸層 (gold→indigo→brown) + 兩顆 CTA + 暖光暈 + "PAGE NOT FOUND" eyebrow |
+| 6 | 404 forced-colors fallback | (待人類用 DevTools emulate) | ?? | SCSS rule 已寫，待手動驗 |
+| 7 | About portrait（cover frontmatter） | (需建測試 about page 有 cover) | ?? | inferHeroStyle hasCover 路徑已實作；待測試文章 |
+| 8 | About 沒 cover → minimal | (需 `/about` 存在) | ?? | inferHeroStyle 已 about/* → minimal；待測試 |
+
+## 由 Claude in Chrome MCP 跑過的全頁驗證（reduced-motion ON 環境）
+
+| 頁面 | hero 渲染 | 額外確認 |
+|---|---|---|
+| `/` (首頁) | HomeHeroApple ✓ | scrollProgress 在 body root；window.__motion/__nav/__gsapLoader/__sectionCanvas 都掛 |
+| `/manufacturing-ai/` (分類) | CategoryHero ✓ | 6 個 scene-object（4 種 variant: module/ring/node/beam）；data-section-theme="manufacturing-ai" |
+| `/manufacturing-ai/<某文章>` | ArticleHero ✓ | renderer="geometric-lines"；SectionBadge="Manufacturing AI"；TOC in `.right.sidebar`；52 個 paragraph reveal |
+| `/ai-notes/<某文章>` | ArticleHero ✓ | renderer="particle-flow"；indigo accent；SectionBadge="AI Notes" |
+| `/coffee/<某文章>` | ArticleHero ✓ | renderer="steam-curves"；brown accent；SectionBadge="Hand Drip Coffee" |
+| `/404.html` | NotFound ✓ | 大字 "404" 三色漸層渲染；2 CTA 都在 |
+
+**Animated state 測試（force `__motion.prefersReducedMotion = () => false` + dispatch nav）**：
+- `/manufacturing-ai/` GSAP 載入 ✓ + 6 ScrollTriggers (一個 scene-object 一個) + Lenis active + `html.lenis` class
+- 滾動 400px → module variant transform: `translate(0, -38px)` ✓ — categoryScene scroll-cinematic 確實 fire
 
 ## 整套 Phase 1-4 全項驗證（spec §10 全 phase 驗收）
 
