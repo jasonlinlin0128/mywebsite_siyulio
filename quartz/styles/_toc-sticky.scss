@@ -1,0 +1,32 @@
+// Sticky TableOfContents（spec §5.3）
+
+.right.sidebar .toc {
+  position: sticky;
+  top: clamp(1rem, 4vh, 7.5rem);
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &:hover {
+    scrollbar-color: rgba(255, 247, 234, 0.18) transparent;
+  }
+}
+
+.right.sidebar {
+  --toc-active-color: var(--article-hero-accent, var(--dark));
+}
+
+.toc-content a.active.active {
+  color: var(--toc-active-color);
+  font-weight: 600;
+  transition: color var(--motion-duration-fast) var(--motion-easing);
+}
+
+.toc-content a.in-view:not(.active) {
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-content a.active { transition: none; }
+}

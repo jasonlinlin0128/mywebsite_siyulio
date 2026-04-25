@@ -1,0 +1,116 @@
+// CategoryHero 樣式（spec §5.2）
+// 取代 BrandIntro。布局：左側 copy / 右側 scene stage（單欄 mobile）
+// 場景物件由 sectionThemes.sceneObjects 走 SSR，inline.ts 用 GSAP scroll-scrub 編隊
+
+@use "./_motion-tokens";
+
+.category-hero {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 75vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.8rem);
+  align-items: center;
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 6rem);
+  overflow: hidden;
+  isolation: isolate;
+
+  --category-hero-accent: var(--section-accent-manufacturing);
+  &[data-section-theme="ai-notes"] { --category-hero-accent: var(--section-accent-ai-notes); }
+  &[data-section-theme="coffee"]   { --category-hero-accent: var(--section-accent-coffee); }
+  &[data-section-theme="about"]    { --category-hero-accent: rgba(160, 160, 160, 0.6); }
+
+  @media all and (max-width: 767px) {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 3rem 1.2rem;
+    gap: 1.6rem;
+  }
+}
+
+.category-hero__copy {
+  display: grid;
+  gap: 1rem;
+  max-width: 36rem;
+  align-content: center;
+}
+
+.category-hero__eyebrow {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.75;
+  color: var(--category-hero-accent);
+}
+
+.category-hero__title {
+  margin: 0;
+  font-family: var(--headerFont), "Outfit", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+}
+
+.category-hero__copy-text {
+  margin: 0;
+  font-size: clamp(1rem, 1.1vw, 1.15rem);
+  line-height: 1.65;
+  opacity: 0.82;
+}
+
+.category-hero__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  aspect-ratio: 5 / 4;
+  max-height: min(60vh, 520px);
+
+  @media all and (max-width: 767px) {
+    aspect-ratio: 16 / 10;
+    max-height: 32vh;
+    order: -1;
+  }
+}
+
+.category-scene-object {
+  position: absolute;
+  width: var(--size, 80px);
+  aspect-ratio: 1;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  transform: translate(-50%, -50%) rotate(var(--rotate, 0deg));
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--category-hero-accent) 80%, white) 0%,
+    color-mix(in srgb, var(--category-hero-accent) 30%, transparent) 70%
+  );
+  opacity: 0.6;
+  pointer-events: none;
+
+  &[data-variant="module"]    { border-radius: 8px; aspect-ratio: 1.2 / 1; }
+  &[data-variant="ring"]      { background: none; border: 2px solid var(--category-hero-accent); opacity: 0.5; }
+  &[data-variant="node"]      { border-radius: 50%; transform-origin: center; }
+  &[data-variant="beam"]      { border-radius: 6px; height: 4px; aspect-ratio: auto; width: var(--size); background: linear-gradient(90deg, transparent, var(--category-hero-accent), transparent); opacity: 0.7; }
+  &[data-variant="pill"]      { border-radius: 999px; aspect-ratio: 2 / 1; }
+  &[data-variant="pulse"]     { background: radial-gradient(circle, var(--category-hero-accent) 0%, transparent 70%); }
+  &[data-variant="spark"]     { border-radius: 2px; transform-origin: center; opacity: 0.7; }
+  &[data-variant="bean"]      { border-radius: 30% 70% 70% 30% / 60% 60% 40% 40%; }
+  &[data-variant="orbit"]     { background: none; border: 1px solid color-mix(in srgb, var(--category-hero-accent) 50%, transparent); opacity: 0.4; }
+  &[data-variant="core"]      { border-radius: 50%; opacity: 0.85; }
+  &[data-variant="satellite"] { border-radius: 50%; opacity: 0.5; }
+  &[data-variant="trace"]     { background: none; border-top: 1px dashed color-mix(in srgb, var(--category-hero-accent) 40%, transparent); height: 2px; aspect-ratio: auto; width: var(--size); opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-scene-object { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .category-hero__stage { display: none; }
+}
