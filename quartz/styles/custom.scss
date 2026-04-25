@@ -3,6 +3,9 @@
 @use "./_popover-immersive.scss";
 @use "./_lenis.scss";        // Phase 2 新增（Lenis library reset；spec §6.5）
 @use "./_home-apple.scss";   // 新增（Task 3 後才有 DOM 對應）
+@use "./_article-hero.scss"; // Phase 3 新增
+@use "./_category-hero.scss"; // Phase 3 新增
+@use "./_toc-sticky.scss";   // Phase 3 新增
 
 body {
   overflow-x: hidden;

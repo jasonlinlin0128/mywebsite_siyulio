@@ -28,6 +28,9 @@ import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
 import HomeHeroApple from "./HomeHeroApple"
+import ArticleHero from "./ArticleHero"
+import CategoryHero from "./CategoryHero"
+import SectionBadge from "./SectionBadge"
 import MotionRuntime from "./MotionRuntime"
 
 export {
@@ -61,5 +64,8 @@ export {
   SiteHeaderNav,
   HomeLanding,
   HomeHeroApple,
+  ArticleHero,
+  CategoryHero,
+  SectionBadge,
   MotionRuntime,
 }

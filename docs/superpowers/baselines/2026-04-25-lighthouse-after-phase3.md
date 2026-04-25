@@ -1,0 +1,66 @@
+# Phase 3 完成後 Lighthouse 分數
+
+日期：2026-04-25
+Phase 3 HEAD：`406d3d9`
+Chrome 版本：（人類執行時填入）
+Lighthouse 版本：（同上）
+
+## 首頁 `/`
+
+| 指標 | Phase 1 | Phase 2 | Phase 3 | diff vs Phase 2 |
+|-----|--------|--------|--------|----|
+| Performance | ?? | ?? | ?? | ?? |
+| Accessibility | ?? | ?? | ?? | ?? |
+| Best Practices | ?? | ?? | ?? | ?? |
+| SEO | ?? | ?? | ?? | ?? |
+| LCP (ms) | ?? | ?? | ?? | ?? |
+| CLS | ?? | ?? | ?? | ?? |
+| INP (ms) | ?? | ?? | ?? | ?? |
+
+## 分類頁 `/manufacturing-ai/`
+
+| 指標 | Phase 1 | Phase 2 | Phase 3 | diff vs Phase 2 |
+|-----|--------|--------|--------|----|
+| Performance | ?? | ?? | ?? | ?? |
+| Accessibility | ?? | ?? | ?? | ?? |
+| Best Practices | ?? | ?? | ?? | ?? |
+| SEO | ?? | ?? | ?? | ?? |
+| LCP (ms) | ?? | ?? | ?? | ?? |
+| CLS | ?? | ?? | ?? | ?? |
+| INP (ms) | ?? | ?? | ?? | ?? |
+
+## 文章頁 `/manufacturing-ai/<某篇>/`
+
+| 指標 | Phase 1 | Phase 2 | Phase 3 | diff vs Phase 2 |
+|-----|--------|--------|--------|----|
+| Performance | ?? | ?? | ?? | ?? |
+| Accessibility | ?? | ?? | ?? | ?? |
+| Best Practices | ?? | ?? | ?? | ?? |
+| SEO | ?? | ?? | ?? | ?? |
+| LCP (ms) | ?? | ?? | ?? | ?? |
+| CLS | ?? | ?? | ?? | ?? |
+| INP (ms) | ?? | ?? | ?? | ?? |
+
+## spec §9.6 目標對照
+
+| 指標 | 目標 | 首頁 | 分類頁 | 文章頁 | Pass? |
+|-----|------|----|------|------|-------|
+| LCP | < 2.5s | ?? | ?? | ?? | ?? |
+| INP | < 200ms | ?? | ?? | ?? | ?? |
+| CLS | < 0.1 | ?? | ?? | ?? | ?? |
+| Performance ≥ 90（首頁） | 90 | ?? | — | — | ?? |
+| Performance ≥ 95（文章頁） | 95 | — | — | ?? | ?? |
+| Accessibility ≥ 95 | 95 | ?? | ?? | ?? | ?? |
+| postscript.js gzip 淨變動 vs Phase 2 | < +5KB | +1.6 KB | (same) | (same) | ✓ (already filled) |
+
+## 備註
+
+Phase 3 主要新成本：
+- ArticleHero canvas（每篇文章一個 sectionCanvas instance，rAF + 30-frame FPS avg）
+- CategoryHero scroll-cinematic（GSAP 動態載入，僅分類首頁 desktop reduced-motion-off）
+- Sticky TOC IntersectionObserver active observer（純 class 變化、無動畫，CPU 成本極低）
+
+預期：
+- 文章頁 LCP 略升（多了 hero canvas，但 LCP 元素仍是 H1 文字）
+- 分類頁 GSAP 載入只發生在 reduced-motion off + desktop，mobile / 降級路徑分數應持平
+- 首頁不變（HomeLanding 沒動）
