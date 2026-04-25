@@ -6,6 +6,7 @@ import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
 import ReaderMode from "./ReaderMode"
 import Head from "./Head"
+import CustomHead from "./CustomHead"
 import PageTitle from "./PageTitle"
 import ContentMeta from "./ContentMeta"
 import Spacer from "./Spacer"
@@ -26,6 +27,7 @@ import ConditionalRender from "./ConditionalRender"
 import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
+import HomeHeroApple from "./HomeHeroApple"
 import MotionRuntime from "./MotionRuntime"
 
 export {
@@ -36,6 +38,7 @@ export {
   Darkmode,
   ReaderMode,
   Head,
+  CustomHead,
   PageTitle,
   ContentMeta,
   Spacer,
@@ -57,5 +60,6 @@ export {
   BrandIntro,
   SiteHeaderNav,
   HomeLanding,
+  HomeHeroApple,
   MotionRuntime,
 }

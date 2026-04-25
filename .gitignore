@@ -10,3 +10,5 @@ private/
 .replit
 replit.nix
 .quartz-*.log
+.verify/
+.claude/
