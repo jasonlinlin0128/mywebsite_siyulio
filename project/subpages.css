@@ -1,0 +1,70 @@
+/* sub-pages base — applies the .final tokens and Vercel glow at the body level */
+@import url('styles.css');
+
+html, body { margin:0; padding:0; }
+body {
+  font-family: "Noto Sans TC", -apple-system, system-ui, sans-serif;
+  background: rgb(7,7,7);
+}
+
+/* Particle field sits at z:0; content stacks above */
+.final { position: relative; z-index: 1; background: transparent !important; }
+.final > * { position: relative; }
+
+/* Inherit .final token system on .final, identical to siyulio-final.html */
+.final {
+  --bg: rgb(11,11,11);
+  --surface-1: rgb(21,21,21);
+  --surface-2: rgb(29,29,29);
+  --border: rgba(255,255,255,0.075);
+  --border-strong: rgba(255,255,255,0.15);
+  --text: #f5f3ee;
+  --text-muted: rgba(245, 243, 238, 0.62);
+  --text-faint: rgba(245, 243, 238, 0.38);
+  --accent: oklch(0.82 0.13 79);
+  --accent-soft: rgba(232, 200, 120, 0.10);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.final .nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 0; border-bottom: 1px solid var(--border);
+}
+.final .nav-links { display: flex; gap: 32px; }
+.final .nav-link {
+  font-family: var(--font-tc); font-weight: 400; font-size: 14px;
+  color: var(--text-muted); cursor: default; transition: color .15s;
+}
+.final .nav-link:hover { color: var(--text); }
+.final .nav-link.active { color: var(--accent); }
+.final .nav-cta {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--border-strong); color: var(--text);
+  background: transparent; cursor: default; transition: all .18s;
+}
+.final .nav-cta:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 24px rgba(232, 200, 120, 0.20); }
+
+/* Vercel glow on cards */
+.final .card {
+  position: relative; border-radius: 14px;
+  background: var(--surface-1); border: 1px solid var(--border);
+  isolation: isolate; overflow: hidden; transition: border-color .25s;
+}
+.final .card::before {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(232, 200, 120, 0.20), transparent 55%);
+  opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 0;
+}
+.final .card::after {
+  content: ""; position: absolute; inset: 1px; border-radius: 13px;
+  background: var(--surface-1); z-index: 0;
+}
+.final .card > * { position: relative; z-index: 1; }
+.final .card:hover::before { opacity: 1; }
+.final .card:hover { border-color: rgba(232, 200, 120, 0.28); }
+
+.final .container { max-width: 1180px; margin: 0 auto; padding: 0 56px; }

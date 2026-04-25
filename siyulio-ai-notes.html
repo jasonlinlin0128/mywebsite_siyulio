@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 新知 · siyulio</title>
+<meta name="description" content="真正接進工作的 AI 工具與方法，不是新聞、不是評測，是長期使用後留下來的東西。" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="site">
+
+  <!-- Navigation -->
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <div class="logo-mark">JL</div>
+          <div class="logo-text">
+            <span class="logo-name">siyulio</span>
+            <span class="logo-sub">AI field notes by Jason Lin</span>
+          </div>
+        </a>
+        <div class="nav-links">
+          <a href="siyulio-mfg.html"      class="nav-link">製造業 AI</a>
+          <a href="siyulio-ai-notes.html" class="nav-link active">AI 新知</a>
+          <a href="siyulio-coffee.html"   class="nav-link">手沖咖啡</a>
+          <a href="siyulio-about.html"    class="nav-link">個人經歷</a>
+        </div>
+        <div class="nav-actions">
+          <button data-theme-toggle class="theme-toggle" title="切換到亮色模式 (T)">
+            <svg class="icon-sun"  width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a href="siyulio-sitemap.html" class="nav-cta">Curated Signal Map →</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page hero + tag filter -->
+  <section class="container" style="padding-top:96px; padding-bottom:48px;">
+    <div class="col gap-24" style="max-width:760px;">
+      <div class="flex" style="align-items:center; gap:12px; color:var(--text-faint); font-size:14px; font-weight:300;">
+        <span style="width:24px; height:1px; background:var(--accent); display:inline-block; flex-shrink:0;"></span>
+        <span>AI Notes · 我自己每週在用的</span>
+      </div>
+      <h1 class="h1" style="font-size:56px; line-height:1.18; font-weight:800;">
+        工具流、<span class="accent-text">Prompt</span>，<br>跟我留下來的工作方式
+      </h1>
+      <p class="body" style="font-size:17px;">
+        這裡的內容更新得最頻繁，多半是我自己這週在用、覺得值得留下來的工具或方法。不會評每一個熱門工具，只寫真的接進工作流的。
+      </p>
+    </div>
+
+    <!-- Tag filter -->
+    <div class="flex" style="gap:8px; flex-wrap:wrap; margin-top:48px;" id="tag-filter">
+      <button class="tag-pill active" data-tag="全部">全部</button>
+      <button class="tag-pill" data-tag="工具評析">工具評析</button>
+      <button class="tag-pill" data-tag="Prompt">Prompt</button>
+      <button class="tag-pill" data-tag="知識管理">知識管理</button>
+      <button class="tag-pill" data-tag="工作流">工作流</button>
+      <button class="tag-pill" data-tag="Claude">Claude</button>
+      <button class="tag-pill" data-tag="Obsidian">Obsidian</button>
+    </div>
+  </section>
+
+  <!-- Featured article -->
+  <section class="container" style="padding-bottom:32px;">
+    <div class="card" style="padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;" data-tags="工具評析">
+      <div class="thumb" style="aspect-ratio:4/3;"></div>
+      <div class="col gap-16">
+        <div class="eyebrow">工具評析 · LATEST</div>
+        <h2 class="h2" style="font-size:30px;">我目前最常用的 AI 工具組合</h2>
+        <p class="body">對我來說，AI 工具不是越多越好，而是要能真的接進工作與筆記流程裡。</p>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:8px; letter-spacing:0.08em;">
+          2026/04/22 · 繼續閱讀 →
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article grid -->
+  <section class="container" style="padding-bottom:96px;">
+    <div class="two-col" id="article-grid">
+
+      <div class="card" data-tags="Prompt">
+        <div class="eyebrow">Prompt</div>
+        <h3 class="h3 mt-16" style="font-size:19px; line-height:1.45;">如何建立自己的常用指令庫</h3>
+        <p class="body-sm mt-12">我在工作中最常遇到的問題，不是沒有 AI 工具可用，而是每次都要重新想一次怎麼下指令。</p>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:24px; letter-spacing:0.08em;">2026/04/14</div>
+      </div>
+
+      <div class="card" data-tags="知識管理 Obsidian">
+        <div class="eyebrow">知識管理</div>
+        <h3 class="h3 mt-16" style="font-size:19px; line-height:1.45;">我怎麼用 Obsidian 管理工作中的 AI 知識</h3>
+        <p class="body-sm mt-12">如果不刻意整理，很多有價值的內容都會散在聊天視窗、文件草稿、臨時截圖裡。</p>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:24px; letter-spacing:0.08em;">2026/04/10 · 6 min</div>
+      </div>
+
+      <div class="card" data-tags="Prompt">
+        <div class="eyebrow">Prompt</div>
+        <h3 class="h3 mt-16" style="font-size:19px; line-height:1.45;">我會留下哪些 Prompt，刪掉哪些 Prompt</h3>
+        <p class="body-sm mt-12">如果什麼都存，最後只會得到一個越來越難找、也越來越不想打開的 Prompt 倉庫。</p>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:24px; letter-spacing:0.08em;">2026/04/02</div>
+      </div>
+
+      <div class="card" data-tags="工作流 Claude">
+        <div class="eyebrow">工作流</div>
+        <h3 class="h3 mt-16" style="font-size:19px; line-height:1.45;">用 Claude 整理會議記錄的三層流程</h3>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:24px; letter-spacing:0.08em;">2026/03/28 · 5 min</div>
+      </div>
+
+      <div class="card" data-tags="工具評析">
+        <div class="eyebrow">工具評析</div>
+        <h3 class="h3 mt-16" style="font-size:19px; line-height:1.45;">換了三套向量資料庫之後我學到什麼</h3>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:24px; letter-spacing:0.08em;">2026/03/15 · 7 min</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sub footer -->
+  <div class="container">
+    <div class="sub-footer">
+      <div>© 2026 Jason Lin · siyulio.com</div>
+      <div class="sub-footer-links">
+        <a href="index.html">首頁</a>
+        <a href="siyulio-mfg.html">製造業 AI</a>
+        <a href="siyulio-coffee.html">手沖咖啡</a>
+        <a href="siyulio-about.html">個人經歷</a>
+        <a href="siyulio-sitemap.html">Signal Map</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.site -->
+
+<script src="particle-field.js"></script>
+<script src="enhancements.js"></script>
+<script>
+// Tag filter for AI Notes page
+(function () {
+  var pills  = document.querySelectorAll('#tag-filter .tag-pill');
+  var cards  = document.querySelectorAll('#article-grid .card');
+  var active = '全部';
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      active = pill.dataset.tag;
+      pills.forEach(function (p) { p.classList.toggle('active', p.dataset.tag === active); });
+      cards.forEach(function (card) {
+        var tags = card.dataset.tags || '';
+        card.style.display = (active === '全部' || tags.includes(active)) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

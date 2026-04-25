@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>siyulio.com — 美觀升級三方向</title>
+
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  html, body { margin:0; padding:0; background:#f0eee9; }
+  body { font-family: "Noto Sans TC", -apple-system, system-ui, sans-serif; }
+  /* Each artboard renders a full mini-site, so set its inner box to its own background */
+  .artboard-stage { width: 100%; height: 100%; overflow: hidden; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bgDepth": 42,
+  "borderStrength": 75,
+  "accentHue": 75,
+  "showTweaks": true
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection
+          id="overview"
+          title="siyulio.com — 三個美觀升級方向"
+          subtitle="保守精修 · Linear 風 · Vercel 風 — 點擊右上展開圖標進入 fullscreen 細看"
+        >
+          <DCArtboard id="dir-a" label="A · Refined Original — 把現有的做精" width={1280} height={2400}>
+            <div className="artboard-stage">
+              <DirectionA tweaks={t} />
+            </div>
+          </DCArtboard>
+
+          <DCArtboard id="dir-b" label="B · Quiet Luxury — Linear 風的安靜深度" width={1280} height={2400}>
+            <div className="artboard-stage">
+              <DirectionB tweaks={t} />
+            </div>
+          </DCArtboard>
+
+          <DCArtboard id="dir-c" label="C · Interactive Glow — Vercel 風的金色光暈" width={1280} height={2400}>
+            <div className="artboard-stage">
+              <DirectionC tweaks={t} />
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="notes"
+          title="設計取捨筆記"
+          subtitle="三個方向各自的 trade-off 與你可能想知道的細節"
+        >
+          <DCArtboard id="notes-card" label="Design notes" width={920} height={720}>
+            <div style={{padding: 56, fontFamily: '"Noto Sans TC", system-ui', fontSize: 14, lineHeight: 1.75, color: '#2a251f', background:'#fafaf6', height:'100%', boxSizing:'border-box'}}>
+              <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.16em', color:'#9a7a35'}}>DESIGN NOTES</div>
+              <h2 style={{fontWeight: 900, fontSize: 28, margin:'12px 0 24px', letterSpacing:'-0.01em'}}>三個方向都解了什麼</h2>
+
+              <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: 32}}>
+                <div>
+                  <div style={{fontWeight:700, fontSize:16, marginBottom:8}}>A · Refined Original</div>
+                  <p style={{margin:'0 0 12px', color:'#444'}}>保留現有 DNA：浮動膠囊 nav、星塵金光、左圖右文 hero。</p>
+                  <ul style={{margin:0, padding:'0 0 0 18px', color:'#444'}}>
+                    <li>留白加大 1.5 倍</li>
+                    <li>背景 #0a0a0a，卡片 #131313</li>
+                    <li>邊框 8% 白</li>
+                    <li>Hover：淡淡上浮</li>
+                  </ul>
+                  <p style={{margin:'12px 0 0', color:'#888', fontSize:13}}>適合：你想保持品牌延續，只升級質感。</p>
+                </div>
+
+                <div>
+                  <div style={{fontWeight:700, fontSize:16, marginBottom:8}}>B · Quiet Luxury (Linear)</div>
+                  <p style={{margin:'0 0 12px', color:'#444'}}>頂貼 hairline nav、巨大 headline、極克制金色、表格式 list。</p>
+                  <ul style={{margin:0, padding:'0 0 0 18px', color:'#444'}}>
+                    <li>背景 #08090b（最深）</li>
+                    <li>邊框 6% 白（最細）</li>
+                    <li>金色只在 eyebrow / 強調字</li>
+                    <li>Hover：背景漸層下沉</li>
+                  </ul>
+                  <p style={{margin:'12px 0 0', color:'#888', fontSize:13}}>適合：技術專業形象、長期閱讀體驗。</p>
+                </div>
+
+                <div>
+                  <div style={{fontWeight:700, fontSize:16, marginBottom:8}}>C · Interactive Glow (Vercel)</div>
+                  <p style={{margin:'0 0 12px', color:'#444'}}>大型對比 headline、卡片金色關鍵字、滑鼠追蹤光暈邊框。</p>
+                  <ul style={{margin:0, padding:'0 0 0 18px', color:'#444'}}>
+                    <li>純黑背景 #000</li>
+                    <li>金色 CTA + 強調字</li>
+                    <li>卡片 hover：金色光暈追蹤滑鼠</li>
+                    <li>三欄 + 大特色卡 list</li>
+                  </ul>
+                  <p style={{margin:'12px 0 0', color:'#888', fontSize:13}}>適合：你想要互動感、有重量、第一眼抓人。</p>
+                </div>
+              </div>
+
+              <div style={{marginTop: 32, padding:'16px 20px', background:'#f3f0e8', border:'1px solid #e0d8c8', borderRadius: 10}}>
+                <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:11, letterSpacing:'0.14em', color:'#9a7a35', marginBottom:6}}>BUILT-IN TWEAKS</div>
+                <div style={{color:'#333'}}>右上角 Tweaks 開關可以即時調整：背景深度、邊框強度、金色色相。三個方向會同步響應，方便你比較。</div>
+              </div>
+            </div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel>
+        <TweakSection label="深度 · Depth" />
+        <TweakSlider
+          label="背景深度"
+          value={t.bgDepth} min={0} max={120} step={1}
+          onChange={(v) => setTweak('bgDepth', v)}
+        />
+        <TweakSlider
+          label="邊框強度"
+          value={t.borderStrength} min={20} max={250} step={5}
+          onChange={(v) => setTweak('borderStrength', v)}
+        />
+
+        <TweakSection label="色彩 · Color" />
+        <TweakSlider
+          label="金色色相"
+          value={t.accentHue} min={40} max={120} step={1}
+          onChange={(v) => setTweak('accentHue', v)}
+        />
+
+        <TweakSection label="提示" />
+        <div style={{fontSize:11, color:'rgba(41,38,27,.6)', lineHeight:1.55}}>
+          滑動以即時調整三個方向。改完拉到喜歡的數值後，可以告訴我哪個方向 + 哪些參數要保留，我會做最終版。
+        </div>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>

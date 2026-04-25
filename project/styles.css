@@ -1,0 +1,534 @@
+/* siyulio.com — three direction explorations
+   Black/gold base, system uses CSS custom properties so Tweaks can drive everything live. */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Type */
+  --font-tc: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Gold (shared across directions, but each direction uses it differently) */
+  --gold-100: #f4e4b8;
+  --gold-200: #e8c878;
+  --gold-300: #c9a14a;
+  --gold-400: #9a7a35;
+  --gold-500: #6b5424;
+  --gold-glow: rgba(232, 200, 120, 0.35);
+}
+
+/* ─── Direction A · Refined Original ─────────────────────────── */
+.dir-a {
+  --bg: #0a0a0a;
+  --surface-1: #131313;
+  --surface-2: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #f5f3ee;
+  --text-muted: rgba(245, 243, 238, 0.62);
+  --text-faint: rgba(245, 243, 238, 0.38);
+  --accent: #e8c878;
+  --accent-soft: rgba(232, 200, 120, 0.12);
+  font-family: var(--font-tc);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ─── Direction B · Linear Quiet Luxury ───────────────────────── */
+.dir-b {
+  --bg: #08090b;
+  --surface-1: #0f1012;
+  --surface-2: #141518;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --text: #ededed;
+  --text-muted: rgba(237, 237, 237, 0.55);
+  --text-faint: rgba(237, 237, 237, 0.32);
+  --accent: #d4b878;
+  --accent-soft: rgba(212, 184, 120, 0.08);
+  font-family: var(--font-tc);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ─── Direction C · Vercel Interactive Glow ───────────────────── */
+.dir-c {
+  --bg: #000000;
+  --surface-1: #0c0c0c;
+  --surface-2: #111111;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-faint: rgba(255, 255, 255, 0.36);
+  --accent: #f0d488;
+  --accent-soft: rgba(240, 212, 136, 0.10);
+  font-family: var(--font-tc);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ─── Shared building blocks ──────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.eyebrow-muted {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 500;
+}
+
+.h1 {
+  font-family: var(--font-tc);
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.h2 {
+  font-family: var(--font-tc);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  margin: 0;
+}
+
+.h3 {
+  font-family: var(--font-tc);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--text);
+  margin: 0;
+}
+
+.body {
+  font-family: var(--font-tc);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.body-sm {
+  font-family: var(--font-tc);
+  font-weight: 300;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ─── Hero starscape (CSS-drawn placeholder for the gold dust image) ─── */
+.starscape {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(180, 140, 70, 0.55) 0%, rgba(120, 90, 40, 0.25) 30%, rgba(20, 14, 6, 0.9) 70%, #050402 100%);
+}
+.starscape::before {
+  /* fine star layer */
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255, 240, 200, 0.95), transparent 60%),
+    radial-gradient(1px 1px at 28% 78%, rgba(255, 240, 200, 0.7), transparent 60%),
+    radial-gradient(1px 1px at 47% 35%, rgba(255, 240, 200, 0.85), transparent 60%),
+    radial-gradient(1.4px 1.4px at 64% 58%, rgba(255, 240, 200, 0.95), transparent 60%),
+    radial-gradient(1px 1px at 82% 28%, rgba(255, 240, 200, 0.6), transparent 60%),
+    radial-gradient(1px 1px at 88% 72%, rgba(255, 240, 200, 0.8), transparent 60%),
+    radial-gradient(1.2px 1.2px at 38% 88%, rgba(255, 240, 200, 0.65), transparent 60%),
+    radial-gradient(1px 1px at 18% 50%, rgba(255, 240, 200, 0.5), transparent 60%),
+    radial-gradient(1.6px 1.6px at 72% 18%, rgba(255, 240, 200, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 56% 82%, rgba(255, 240, 200, 0.6), transparent 60%);
+}
+.starscape::after {
+  /* warm vignette */
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0,0,0,0.55) 95%);
+  pointer-events: none;
+}
+
+/* ─── Pill / chip ─── */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-tc);
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: transparent;
+  transition: border-color .18s, color .18s, background .18s;
+}
+.chip:hover { border-color: var(--border-strong); color: var(--text); }
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: var(--font-tc);
+  font-weight: 500;
+  font-size: 14px;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: all .18s ease;
+}
+.btn-primary {
+  background: var(--text);
+  color: #0a0a0a;
+}
+.btn-primary:hover { background: #fff; transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.btn-ghost:hover { background: var(--surface-1); border-color: rgba(255,255,255,0.25); }
+.btn-gold {
+  background: linear-gradient(180deg, var(--gold-200), var(--gold-300));
+  color: #1a1206;
+  font-weight: 600;
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232, 200, 120, 0.25); }
+
+/* ─── Cards (each direction overrides) ─── */
+.card {
+  position: relative;
+  border-radius: 14px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  padding: 36px;
+  transition: border-color .25s, transform .25s, background .25s;
+}
+
+/* Direction A: simple lift */
+.dir-a .card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  background: var(--surface-2);
+}
+
+/* Direction B: Linear-style — extremely subtle, just border + slight bg shift */
+.dir-b .card {
+  border-radius: 12px;
+  padding: 32px;
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--bg) 100%);
+}
+.dir-b .card:hover {
+  border-color: var(--border-strong);
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+}
+
+/* Direction C: Vercel-style — radial cursor-tracking glow on the border */
+.dir-c .card {
+  border-radius: 14px;
+  padding: 36px;
+  background: var(--surface-1);
+  isolation: isolate;
+  overflow: hidden;
+}
+.dir-c .card::before {
+  /* glow layer — uses --mx/--my (set via JS) for cursor tracking */
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    480px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(240, 212, 136, 0.18),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+  z-index: 0;
+}
+.dir-c .card::after {
+  /* inner mask so the glow only shows on the border (1px ring) */
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(14px - 1px);
+  background: var(--surface-1);
+  z-index: 0;
+}
+.dir-c .card > * { position: relative; z-index: 1; }
+.dir-c .card:hover::before { opacity: 1; }
+.dir-c .card:hover { border-color: rgba(240, 212, 136, 0.25); }
+
+/* ─── Navbars (per direction) ─── */
+.nav-a {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding: 10px 12px 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: linear-gradient(180deg, rgba(40, 30, 12, 0.6), rgba(20, 14, 6, 0.6));
+  backdrop-filter: blur(20px);
+}
+
+.nav-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.nav-b .nav-links { display: flex; gap: 28px; }
+
+.nav-c {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.nav-link {
+  font-family: var(--font-tc);
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: default;
+  transition: color .15s;
+}
+.nav-link:hover { color: var(--text); }
+.nav-link.active { color: var(--text); }
+
+/* CTA pill in nav */
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  cursor: default;
+  transition: all .18s;
+}
+.nav-cta:hover {
+  background: rgba(232, 200, 120, 0.18);
+  box-shadow: 0 0 24px var(--gold-glow);
+}
+
+/* ─── Logo block ─── */
+.logo {
+  display: flex; align-items: center; gap: 12px;
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2a1f0e, #4a3818);
+  border: 1px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-200);
+  letter-spacing: 0.05em;
+}
+.logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+.logo-name { font-weight: 600; font-size: 14px; color: var(--text); }
+.logo-sub { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); letter-spacing: 0.04em; }
+
+/* ─── Article list rows ─── */
+.row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+  transition: background .18s, padding .18s;
+}
+.row:hover { background: var(--surface-1); padding-left: 16px; padding-right: 16px; }
+.row .cat {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 4px;
+}
+.row .row-title {
+  font-family: var(--font-tc);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.row .row-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 8px;
+}
+
+/* ─── Stat ─── */
+.stat-num {
+  font-family: var(--font-tc);
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+
+/* ─── Reading view (article body) ─── */
+.prose p {
+  font-family: var(--font-tc);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin: 0 0 1.4em;
+}
+.prose h2 {
+  font-family: var(--font-tc);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--text);
+  margin: 2em 0 0.8em;
+}
+.prose blockquote {
+  border-left: 2px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin: 1.5em 0;
+  color: var(--text);
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* divider */
+.hr-faint {
+  height: 1px;
+  background: var(--border);
+  border: 0;
+  margin: 0;
+}
+
+/* mini visual placeholder card (replaces the starscape on smaller cards) */
+.thumb {
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(200, 160, 80, 0.4) 0%, rgba(80, 60, 30, 0.2) 40%, rgba(10, 8, 4, 0.95) 80%);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.thumb::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 25% 30%, rgba(255, 240, 200, 0.7), transparent 60%),
+    radial-gradient(1.2px 1.2px at 60% 65%, rgba(255, 240, 200, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 80% 35%, rgba(255, 240, 200, 0.5), transparent 60%),
+    radial-gradient(1.4px 1.4px at 40% 75%, rgba(255, 240, 200, 0.7), transparent 60%);
+}
+
+/* utility */
+.flex { display: flex; }
+.col { display: flex; flex-direction: column; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+.gap-48 { gap: 48px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-48 { margin-top: 48px; }
+.mt-64 { margin-top: 64px; }
+.mt-80 { margin-top: 80px; }
+
+/* artboard wrapping container */
+.page {
+  width: 100%;
+  min-height: 100%;
+  padding: 0;
+}
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+.container-tight {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+/* hero grid */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+}
+
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* tag dot */
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+/* footer */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 56px 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-tc);
+  font-size: 13px;
+  color: var(--text-faint);
+}
+.footer-links { display: flex; gap: 28px; }

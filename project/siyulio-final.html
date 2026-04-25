@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>siyulio.com — 最終整合版</title>
+
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  html, body { margin:0; padding:0; }
+  body {
+    font-family: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: rgb(7,7,7);
+    transition: background .25s;
+  }
+  body.theme-light { background: #faf8f3; }
+  body.theme-light #particle-field { display: none; }
+  body.theme-light .starscape {
+    background:
+      radial-gradient(ellipse at 50% 55%, rgba(232, 200, 120, 0.20) 0%, rgba(232, 200, 120, 0.08) 35%, rgba(245, 241, 232, 0.5) 70%, #faf8f3 100%);
+  }
+  body.theme-light .starscape::before, body.theme-light .starscape::after { display: none; }
+  body.theme-light .gold-cursor { mix-blend-mode: normal; }
+  /* Particle field sits at z:0; all real content stacks above */
+  .final { position: relative; z-index: 1; background: transparent !important; }
+  .final > * { position: relative; }
+  /* Final-merge tuning: Linear hairline nav, Vercel glow hover.
+     Inherits all .dir-c card styles (cursor-tracking glow). */
+  .final {
+    /* Color tokens — using your saved Tweaks values:
+       bgDepth: 42  → bg ≈ rgb(7,7,7)
+       borderStrength: 75 → border 7.5% white
+       accentHue: 75 (gold-amber)
+    */
+    --bg: rgb(7,7,7);
+    --surface-1: rgb(17,17,17);
+    --surface-2: rgb(25,25,25);
+    --border: rgba(255,255,255,0.075);
+    --border-strong: rgba(255,255,255,0.15);
+    --text: #f5f3ee;
+    --text-muted: rgba(245, 243, 238, 0.62);
+    --text-faint: rgba(245, 243, 238, 0.38);
+    --accent: oklch(0.82 0.13 75);
+    --accent-soft: rgba(232, 200, 120, 0.10);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Linear-style nav (from B) */
+  .final .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .final .nav-links { display: flex; gap: 32px; }
+  .final .nav-link {
+    font-family: var(--font-tc);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: default;
+    transition: color .15s;
+  }
+  .final .nav-link:hover { color: var(--text); }
+  .final .nav-link.active { color: var(--text); }
+  .final .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    background: transparent;
+    cursor: default;
+    transition: all .18s;
+  }
+  .final .nav-cta:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 24px rgba(232, 200, 120, 0.20);
+  }
+
+  /* Vercel cursor-tracking glow hover (from C) — applied to ALL cards */
+  .final .card {
+    position: relative;
+    border-radius: 14px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    padding: 36px;
+    isolation: isolate;
+    overflow: hidden;
+    transition: border-color .25s;
+  }
+  .final .card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      300px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(232, 200, 120, 0.16),
+      transparent 55%
+    );
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .final .card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 13px;
+    background: var(--surface-1);
+    z-index: 0;
+    transition: background .25s;
+  }
+  .final .card > * { position: relative; z-index: 1; }
+  .final .card:hover::before { opacity: 1; }
+  .final .card:hover { border-color: rgba(232, 200, 120, 0.28); }
+
+  /* Article row hover — also gets a subtle glow trail */
+  .final .row-wrap {
+    border-bottom: 1px solid var(--border);
+  }
+  .final .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 140px 1fr 110px;
+    gap: 32px;
+    padding: 28px 24px;
+    align-items: baseline;
+    cursor: default;
+    transition: background .25s;
+    border-radius: 10px;
+    margin: 4px 0;
+  }
+  .final .row:hover {
+    background:
+      radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(232,200,120,0.08), transparent 60%),
+      linear-gradient(180deg, rgba(232,200,120,0.025), transparent);
+  }
+
+  /* Custom gold cursor (low priority — desktop only) */
+  @media (hover: hover) and (pointer: fine) {
+    .final, .final * { cursor: none; }
+    .final input, .final textarea, .final [contenteditable] { cursor: text; }
+  }
+  .gold-cursor {
+    position: fixed; top: 0; left: 0; width: 16px; height: 16px;
+    border: 1.5px solid oklch(0.82 0.13 75);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width .15s, height .15s, border-color .15s, background .15s;
+    z-index: 9999;
+    mix-blend-mode: difference;
+  }
+  .gold-cursor.hover { width: 36px; height: 36px; background: rgba(232,200,120,0.12); border-color: oklch(0.86 0.15 75); }
+  .gold-cursor-dot {
+    position: fixed; top: 0; left: 0; width: 4px; height: 4px;
+    background: oklch(0.86 0.15 75);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+  }
+
+  /* Pulse keyframes */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  /* Keyboard shortcut overlay */
+  .kbd-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10001;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .kbd-panel {
+    background: rgb(15,15,15); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 36px 44px; min-width: 420px;
+    color: #f5f3ee; font-family: "Noto Sans TC", -apple-system, system-ui, sans-serif;
+  }
+  .kbd-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .kbd-row:last-child { border-bottom: none; }
+  .kbd-key {
+    display: inline-block; padding: 4px 10px; border-radius: 6px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace; font-size: 12px;
+    color: oklch(0.82 0.13 75);
+    margin-left: 6px;
+  }
+  .final .row .cat {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .final .row .row-title {
+    font-family: var(--font-tc);
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--text);
+    margin: 0 0 6px;
+    transition: color .18s;
+  }
+  .final .row:hover .row-title { color: var(--accent); }
+  .final .row .row-date {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-align: right;
+  }
+
+  /* Buttons — gold primary with hover lift */
+  .final .btn-gold-primary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 22px; border-radius: 10px;
+    background: var(--accent);
+    color: rgb(20, 16, 8);
+    font-family: var(--font-tc); font-weight: 600; font-size: 14px;
+    border: 1px solid var(--accent);
+    transition: transform .18s, box-shadow .25s, filter .18s;
+    box-shadow: 0 0 0 0 rgba(232,200,120,0);
+  }
+  .final .btn-gold-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 8px 28px rgba(232,200,120,0.28), 0 0 0 1px rgba(232,200,120,0.4);
+  }
+  .final .btn-ghost {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 22px; border-radius: 10px;
+    background: transparent; color: var(--text);
+    font-family: var(--font-tc); font-weight: 500; font-size: 14px;
+    border: 1px solid var(--border-strong);
+    transition: border-color .18s, color .18s, background .18s;
+  }
+  .final .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* Three-col cards: equal min-height for even baseline */
+  .final .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .final .three-col > a > .card { min-height: 220px; display: flex; flex-direction: column; }
+
+  /* Theme toggle button hover */
+  .final .theme-toggle:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    background: var(--accent-soft);
+  }
+
+  /* Footer subscribe alignment */
+  .final .footer-input {
+    flex: 1; padding: 0 14px; height: 40px; border-radius: 8px;
+    border: 1px solid var(--border-strong); background: transparent;
+    color: var(--text); font-family: inherit; font-size: 13px; outline: none;
+    transition: border-color .18s;
+  }
+  .final .footer-input:focus { border-color: var(--accent); }
+  .final .footer-subscribe-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 40px; padding: 0 18px; border-radius: 8px;
+    background: var(--accent); color: rgb(20,16,8);
+    font-family: var(--font-tc); font-weight: 600; font-size: 13px;
+    border: 1px solid var(--accent);
+    cursor: pointer; transition: filter .18s, box-shadow .25s;
+  }
+  .final .footer-subscribe-btn:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 4px 16px rgba(232,200,120,0.25);
+  }
+
+  .final .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 56px;
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="particle-field.js"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const ARTICLES = [
+  { cat: "MANUFACTURING AI", title: "在傳統製造業導入 AI，最先卡住的不是模型", date: "2026 / 04 / 25",
+    excerpt: "很多人談 AI 落地都從模型聊起，但真正讓專案推不動的，是流程、組織、與一線人員的注意力。" },
+  { cat: "AI NOTES", title: "我目前最常用的 AI 工具組合", date: "2026 / 04 / 22",
+    excerpt: "對我來說，AI 工具不是越多越好，而是要能真的接進工作與筆記流程裡。" },
+  { cat: "HAND DRIP COFFEE", title: "泡咖啡這件事，怎麼幫我整理思緒", date: "2026 / 04 / 18",
+    excerpt: "我原本以為泡咖啡只是工作之外的休閒，後來才慢慢發現，它對我最大的價值，反而是把節奏慢下來。" },
+  { cat: "AI NOTES", title: "如何建立自己的常用指令庫", date: "2026 / 04 / 14",
+    excerpt: "我在工作中最常遇到的問題，不是沒有 AI 工具可用，而是每次都要重新想一次怎麼下指令。" },
+  { cat: "AI NOTES", title: "我怎麼用 Obsidian 管理工作中的 AI 知識", date: "2026 / 04 / 10",
+    excerpt: "我會想把 AI 相關的內容收進 Obsidian，是因為如果不刻意整理，很多有價值的內容都會散在聊天視窗、文件草稿、臨時截圖裡。" },
+  { cat: "MANUFACTURING AI", title: "當主管、使用者、推動者想的都不一樣時，AI 專案怎麼推", date: "2026 / 04 / 05",
+    excerpt: "我越來越覺得，很多 AI 專案推不起來，不是因為模型不夠強，而是因為同一個專案裡的三種角色，想的根本不是同一件事。" },
+];
+
+const NAV_ITEMS = ["製造業 AI", "AI 新知", "手沖咖啡", "個人經歷"];
+
+// Cursor-tracking glow card
+function GlowCard({ children, className = "", style }) {
+  const ref = React.useRef(null);
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  };
+  return (
+    <div ref={ref} className={`card ${className}`} style={style} onMouseMove={onMove}>
+      {children}
+    </div>
+  );
+}
+
+// Same on rows
+function GlowRow({ children, style }) {
+  const ref = React.useRef(null);
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  };
+  return <div ref={ref} className="row" style={style} onMouseMove={onMove}>{children}</div>;
+}
+
+function Logo() {
+  return (
+    <div className="logo">
+      <div className="logo-mark">JL</div>
+      <div className="logo-text">
+        <div className="logo-name">siyulio</div>
+        <div className="logo-sub">AI field notes by Jason Lin</div>
+      </div>
+    </div>
+  );
+}
+
+function Nav({ theme, onToggleTheme }) {
+  const items = [
+    { label:"製造業 AI", href:"siyulio-mfg.html" },
+    { label:"AI 新知", href:"siyulio-ai-notes.html" },
+    { label:"手沖咖啡", href:"siyulio-coffee.html" },
+    { label:"個人經歷", href:"siyulio-about.html" },
+  ];
+  return (
+    <div className="container">
+      <nav className="nav">
+        <a href="siyulio-final.html" style={{textDecoration:'none', color:'inherit'}}><Logo /></a>
+        <div className="nav-links">
+          {items.map((it,i)=>(
+            <a key={i} href={it.href} className="nav-link" style={{textDecoration:'none'}}>{it.label}</a>
+          ))}
+        </div>
+        <div style={{display:'flex', alignItems:'center', gap:12}}>
+          <button onClick={onToggleTheme} title="切換主題 (T)" className="theme-toggle" style={{
+            background:'transparent', border:'1px solid var(--border-strong)',
+            width:36, height:36, borderRadius:999, color:'var(--text-muted)',
+            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center',
+            transition:'all .18s'
+          }}>
+            {theme === 'dark' ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            )}
+          </button>
+          <a href="siyulio-sitemap.html" className="nav-cta" style={{textDecoration:'none'}}>Curated Signal Map →</a>
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+function Hero({ tweaks }) {
+  // Linear-leaning hero: large headline + side panel "Now writing"
+  return (
+    <section className="container" style={{paddingTop: 120, paddingBottom: 96}}>
+      <div className="col gap-32">
+        <div style={{display:'flex', alignItems:'center', gap:12, color:'var(--text-faint)', fontSize:14, fontFamily:'var(--font-tc)', fontWeight:300}}>
+          <span style={{width:24, height:1, background:'var(--accent)', display:'inline-block'}}></span>
+          <span>Jason Lin 的 AI 現場筆記</span>
+        </div>
+        <h1 className="h1" style={{fontSize: tweaks.heroSize, maxWidth: 920, lineHeight: 1.13, fontWeight: tweaks.headingWeight}}>
+          把企業裡真的<span style={{color:'var(--accent)'}}>用得上的</span> AI，<br/>
+          整理成可以開始的做法。
+        </h1>
+        <p className="body" style={{maxWidth: 620, fontSize: 17}}>
+          我在傳統製造業做 AI 落地，橫跨軟體開發與 PM。這裡不是 AI 新聞站，而是一個把現場經驗、工具方法與生活感受慢慢寫清楚的地方。
+        </p>
+        <div className="flex gap-12 mt-16">
+          <a href="siyulio-mfg.html" className="btn btn-gold-primary" style={{textDecoration:'none'}}>先看製造業 AI →</a>
+          <a href="siyulio-ai-notes.html" className="btn btn-ghost" style={{textDecoration:'none'}}>再看 AI 新知</a>
+        </div>
+      </div>
+
+      <div className="mt-80" style={{display:'grid', gridTemplateColumns:'1.6fr 1fr', gap: 24, alignItems:'stretch'}}>
+        <div className="starscape" style={{minHeight: 360}} />
+        <GlowCard style={{padding: 36, display:'flex', flexDirection:'column', gap: 16}}>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <div className="eyebrow">NOW WRITING</div>
+            <div style={{display:'flex', alignItems:'center', gap:6, fontSize:11, fontFamily:'var(--font-mono)', color:'var(--accent)'}}>
+              <span style={{width:6, height:6, borderRadius:'50%', background:'var(--accent)', boxShadow:'0 0 8px var(--accent)', animation:'pulse 2s ease-in-out infinite'}}></span>
+              <span>IN PROGRESS</span>
+            </div>
+          </div>
+          <div className="h3" style={{fontSize: 22, lineHeight: 1.4}}>
+            下一篇：把 AI 試行專案<br/>變成日常工作流
+          </div>
+          <p className="body-sm" style={{margin:0}}>
+            從 PoC 到日常導入的 6 個關鍵節點。
+          </p>
+          <div style={{marginTop:8}}>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'baseline', fontFamily:'var(--font-tc)', fontSize:12, fontWeight:400, color:'var(--text-faint)', marginBottom:8, fontVariantNumeric:'tabular-nums', whiteSpace:'nowrap'}}>
+              <span>第 4 / 6 段</span>
+              <span style={{fontFamily:'var(--font-mono)', color:'var(--accent)', fontSize:11}}>67%</span>
+            </div>
+            <div style={{height:3, background:'var(--border)', borderRadius:2, overflow:'hidden'}}>
+              <div style={{width:'67%', height:'100%', background:'linear-gradient(90deg, var(--accent), oklch(0.86 0.13 90))', borderRadius:2, boxShadow:'0 0 8px var(--accent)'}}></div>
+            </div>
+          </div>
+          <div style={{fontFamily:'var(--font-mono)', fontSize:11, color:'var(--text-faint)', letterSpacing:'0.06em', marginTop:4}}>EXPECTED 2026 / 04 / END</div>
+        </GlowCard>
+      </div>
+    </section>
+  );
+}
+
+function Categories() {
+  const cats = [
+    { eyebrow:"MANUFACTURING AI", title:"製造業 AI", desc:"落地阻力、流程拆解、協作現場與導入節奏。", count:"12", read:"6 min avg", href:"siyulio-mfg.html" },
+    { eyebrow:"AI NOTES", title:"AI 新知", desc:"工具評析、Prompt 方法、值得保留的工作流。", count:"18", read:"5 min avg", href:"siyulio-ai-notes.html" },
+    { eyebrow:"HAND DRIP COFFEE", title:"手沖咖啡", desc:"沖煮日誌、器材收藏、豆子風味與生活節奏。", count:"7", read:"3 min avg", href:"siyulio-coffee.html" },
+  ];
+  return (
+    <section className="container" style={{paddingTop: 56, paddingBottom: 56}}>
+      <div className="three-col">
+        {cats.map((c,i) => (
+          <a key={i} href={c.href} style={{textDecoration:'none', color:'inherit'}}>
+            <GlowCard>
+              <div className="eyebrow">{c.eyebrow}</div>
+              <h3 className="h3 mt-16">{c.title}</h3>
+              <p className="body-sm mt-8">{c.desc}</p>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'baseline', marginTop: 32}}>
+                <span className="eyebrow-muted">{c.count} ARTICLES · {c.read}</span>
+                <span style={{color:'var(--accent)', fontFamily:'JetBrains Mono, monospace', fontSize: 12}}>→</span>
+              </div>
+            </GlowCard>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ArchiveList() {
+  return (
+    <section className="container" style={{paddingTop: 80, paddingBottom: 80}}>
+      <div className="col gap-16">
+        <div className="eyebrow-muted">ALL ENTRIES</div>
+        <h2 className="h2" style={{fontSize: 32}}>依時間排序的全部文章</h2>
+        <p className="body" style={{maxWidth: 600, margin: 0}}>每篇都標註領域與更新日期，可以挑感興趣的領域慢慢讀。</p>
+      </div>
+
+      <div className="mt-48">
+        <div className="row-wrap">
+          {ARTICLES.map((a, i) => (
+            <GlowRow key={i}>
+              <div className="cat">{a.cat}</div>
+              <div>
+                <div className="row-title">{a.title}</div>
+                <div className="body-sm" style={{margin:'6px 0 0', color:'var(--text-faint)'}}>{a.excerpt}</div>
+              </div>
+              <div className="row-date">{a.date} · {3 + i % 4} min</div>
+            </GlowRow>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <div className="container">
+      <div style={{borderTop:'1px solid var(--border)', padding:'72px 0 56px', display:'grid', gridTemplateColumns:'2.2fr 1.1fr 1.1fr 0.9fr', gap:48}}>
+        <div className="col gap-16">
+          <Logo />
+          <p className="body-sm" style={{margin:'8px 0 0', maxWidth:340}}>
+            一個把製造業 AI 落地經驗、工具方法與生活感受慢慢寫清楚的地方。
+          </p>
+          <div style={{marginTop:16}}>
+            <div className="eyebrow-muted" style={{marginBottom:10}}>SUBSCRIBE · 訂閱新文章</div>
+            <div style={{display:'flex', gap:8, maxWidth:340}}>
+              <input type="email" placeholder="你的 email" className="footer-input" />
+              <button className="footer-subscribe-btn">訂閱</button>
+            </div>
+            <div style={{fontSize:11, fontFamily:'var(--font-mono)', color:'var(--text-faint)', marginTop:10, letterSpacing:'0.06em'}}>
+              每週一封，沒新文章就不寄。隨時退訂。
+            </div>
+          </div>
+        </div>
+        <div className="col gap-12">
+          <div className="eyebrow-muted">EXPLORE</div>
+          <a href="siyulio-mfg.html" className="nav-link" style={{textDecoration:'none'}}>製造業 AI</a>
+          <a href="siyulio-ai-notes.html" className="nav-link" style={{textDecoration:'none'}}>AI 新知</a>
+          <a href="siyulio-coffee.html" className="nav-link" style={{textDecoration:'none'}}>手沖咖啡</a>
+          <a href="siyulio-about.html" className="nav-link" style={{textDecoration:'none'}}>個人經歷</a>
+          <a href="siyulio-sitemap.html" className="nav-link" style={{textDecoration:'none'}}>Curated Signal Map</a>
+        </div>
+        <div className="col gap-12">
+          <div className="eyebrow-muted">ELSEWHERE</div>
+          <span className="nav-link">Twitter / X</span>
+          <span className="nav-link">LinkedIn</span>
+          <span className="nav-link">GitHub</span>
+          <span className="nav-link">RSS</span>
+          <span className="nav-link">Email</span>
+        </div>
+        <div className="col gap-12">
+          <div className="eyebrow-muted">META</div>
+          <div className="body-sm" style={{margin:0}}>最近更新</div>
+          <div style={{fontFamily:'var(--font-mono)', fontSize:12, color:'var(--accent)'}}>2 days ago</div>
+          <div className="body-sm" style={{margin:'12px 0 0'}}>累計文章</div>
+          <div style={{fontFamily:'var(--font-mono)', fontSize:12, color:'var(--text)'}}>37 篇 · 自 2023</div>
+        </div>
+      </div>
+      <div style={{display:'flex', justifyContent:'space-between', padding:'24px 0', borderTop:'1px solid var(--border)', fontSize:12, color:'var(--text-faint)', fontFamily:'var(--font-mono)', letterSpacing:'0.06em'}}>
+        <div>© 2026 JASON LIN · SIYULIO.COM</div>
+        <div>BUILT WITH AI AGENT · LAST DEPLOY 2026 / 04 / 25</div>
+      </div>
+    </div>
+  );
+}
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bgDepth": 75,
+  "borderStrength": 150,
+  "accentHue": 80,
+  "heroSize": 52,
+  "headingWeight": 800,
+  "glowIntensity": 20
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [kbdOpen, setKbdOpen] = React.useState(false);
+  const [theme, setTheme] = React.useState(() => localStorage.getItem('siyulio-theme') || 'dark');
+
+  // Theme toggle — also flips body class so particle field & body bg follow
+  React.useEffect(() => {
+    localStorage.setItem('siyulio-theme', theme);
+    document.body.classList.toggle('theme-light', theme === 'light');
+  }, [theme]);
+
+  // Custom gold cursor
+  React.useEffect(() => {
+    const ring = document.createElement('div');
+    ring.className = 'gold-cursor';
+    document.body.appendChild(ring);
+    const dot = document.createElement('div');
+    dot.className = 'gold-cursor-dot';
+    document.body.appendChild(dot);
+    let rx = window.innerWidth/2, ry = window.innerHeight/2;
+    let dx = rx, dy = ry;
+    const onMove = (e) => {
+      dx = e.clientX; dy = e.clientY;
+      dot.style.left = dx + 'px'; dot.style.top = dy + 'px';
+      const tag = (e.target.tagName || '').toLowerCase();
+      const interactive = e.target.closest('a,button,.card,.row,.nav-cta,input,[role=button]');
+      ring.classList.toggle('hover', !!interactive);
+    };
+    const tick = () => {
+      rx += (dx - rx) * 0.18; ry += (dy - ry) * 0.18;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(tick);
+    };
+    tick();
+    window.addEventListener('mousemove', onMove);
+    return () => { window.removeEventListener('mousemove', onMove); ring.remove(); dot.remove(); };
+  }, []);
+
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    const onKey = (e) => {
+      const tag = (document.activeElement?.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) { e.preventDefault(); setKbdOpen(v => !v); }
+      else if (e.key === 'Escape') setKbdOpen(false);
+      else if (e.key === 'g') { window.location.href = 'siyulio-final.html'; }
+      else if (e.key === 'm') { window.location.href = 'siyulio-mfg.html'; }
+      else if (e.key === 'a') { window.location.href = 'siyulio-ai-notes.html'; }
+      else if (e.key === 'c') { window.location.href = 'siyulio-coffee.html'; }
+      else if (e.key === 'p') { window.location.href = 'siyulio-about.html'; }
+      else if (e.key === 's') { window.location.href = 'siyulio-sitemap.html'; }
+      else if (e.key === 't') { setTheme(v => v === 'dark' ? 'light' : 'dark'); }
+      else if (e.key === 'j') { window.scrollBy({ top: 300, behavior: 'smooth' }); }
+      else if (e.key === 'k') { window.scrollBy({ top: -300, behavior: 'smooth' }); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // Apply tweaks → CSS vars on the .final root
+  const v = Math.round(t.bgDepth * 0.16);
+  const isLight = theme === 'light';
+  const rootStyle = isLight ? {
+    '--bg': '#faf8f3',
+    '--surface-1': '#ffffff',
+    '--surface-2': '#f5f1e8',
+    '--border': 'rgba(0,0,0,0.08)',
+    '--border-strong': 'rgba(0,0,0,0.16)',
+    '--accent': `oklch(0.62 0.14 ${t.accentHue})`,
+    '--text': '#1a1a1a',
+    '--text-muted': 'rgba(26,26,26,0.62)',
+    '--text-faint': 'rgba(26,26,26,0.42)',
+  } : {
+    '--bg': `rgb(${v},${v},${v})`,
+    '--surface-1': `rgb(${v+10},${v+10},${v+10})`,
+    '--surface-2': `rgb(${v+18},${v+18},${v+18})`,
+    '--border': `rgba(255,255,255,${t.borderStrength/1000})`,
+    '--border-strong': `rgba(255,255,255,${(t.borderStrength*2)/1000})`,
+    '--accent': `oklch(0.82 0.13 ${t.accentHue})`,
+  };
+
+  // Inject glow intensity into the card ::before via a runtime style tag
+  React.useEffect(() => {
+    let s = document.getElementById('glow-intensity-style');
+    if (!s) { s = document.createElement('style'); s.id = 'glow-intensity-style'; document.head.appendChild(s); }
+    s.textContent = `.final .card::before{background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(232,200,120,${t.glowIntensity/100}),transparent 55%)}`;
+  }, [t.glowIntensity]);
+
+  return (
+    <>
+      <div className="final" style={rootStyle}>
+        <Nav theme={theme} onToggleTheme={() => setTheme(v => v === 'dark' ? 'light' : 'dark')} />
+        <Hero tweaks={t} />
+        <Categories />
+        <hr className="hr-faint" style={{margin:'0 56px'}} />
+        <ArchiveList />
+        <Footer />
+      </div>
+
+      {/* Floating keyboard hint */}
+      <button onClick={() => setKbdOpen(true)} style={{
+        position:'fixed', bottom:24, left:24, zIndex:100,
+        width:36, height:36, borderRadius:'50%',
+        background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.12)',
+        color:'oklch(0.82 0.13 75)', fontFamily:'JetBrains Mono, monospace', fontSize:14, fontWeight:600,
+        cursor:'pointer', backdropFilter:'blur(8px)'
+      }} title="鍵盤快捷鍵 (Press ?)">?</button>
+
+      {kbdOpen && (
+        <div className="kbd-overlay" onClick={() => setKbdOpen(false)}>
+          <div className="kbd-panel" onClick={e => e.stopPropagation()}>
+            <div style={{fontFamily:'JetBrains Mono, monospace', fontSize:11, letterSpacing:'0.16em', color:'oklch(0.82 0.13 75)', marginBottom:20}}>KEYBOARD SHORTCUTS</div>
+            <div style={{fontSize:14, fontWeight:300}}>
+              <div className="kbd-row"><span>跳到首頁</span><span><span className="kbd-key">G</span></span></div>
+              <div className="kbd-row"><span>製造業 AI</span><span><span className="kbd-key">M</span></span></div>
+              <div className="kbd-row"><span>AI 新知</span><span><span className="kbd-key">A</span></span></div>
+              <div className="kbd-row"><span>手沖咖啡</span><span><span className="kbd-key">C</span></span></div>
+              <div className="kbd-row"><span>個人經歷</span><span><span className="kbd-key">P</span></span></div>
+              <div className="kbd-row"><span>Signal Map</span><span><span className="kbd-key">S</span></span></div>
+              <div className="kbd-row"><span>切換主題</span><span><span className="kbd-key">T</span></span></div>
+              <div className="kbd-row"><span>向下捲動</span><span><span className="kbd-key">J</span></span></div>
+              <div className="kbd-row"><span>向上捲動</span><span><span className="kbd-key">K</span></span></div>
+              <div className="kbd-row"><span>顯示這個面板</span><span><span className="kbd-key">?</span></span></div>
+              <div className="kbd-row"><span>關閉</span><span><span className="kbd-key">Esc</span></span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <TweaksPanel>
+        <TweakSection label="深度 · Depth" />
+        <TweakSlider label="背景深度" value={t.bgDepth} min={0} max={120} step={1}
+          onChange={(v) => setTweak('bgDepth', v)} />
+        <TweakSlider label="邊框強度" value={t.borderStrength} min={20} max={250} step={5}
+          onChange={(v) => setTweak('borderStrength', v)} />
+
+        <TweakSection label="色彩 · Color" />
+        <TweakSlider label="金色色相" value={t.accentHue} min={40} max={120} step={1}
+          onChange={(v) => setTweak('accentHue', v)} />
+        <TweakSlider label="光暈強度" value={t.glowIntensity} min={5} max={45} step={1}
+          onChange={(v) => setTweak('glowIntensity', v)} />
+
+        <TweakSection label="字體 · Type" />
+        <TweakSlider label="Hero 標題大小" value={t.heroSize} min={48} max={96} step={2} unit="px"
+          onChange={(v) => setTweak('heroSize', v)} />
+        <TweakRadio label="標題字重" value={t.headingWeight}
+          options={[{value:700,label:"Bold"},{value:800,label:"Extra"},{value:900,label:"Black"}]}
+          onChange={(v) => setTweak('headingWeight', Number(v))} />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<script src="siyulio-enhancements.js"></script>
+</body>
+</html>
