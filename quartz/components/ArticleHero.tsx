@@ -77,10 +77,15 @@ function sanitizeCoverUrl(value: string): string {
 }
 
 // auto-minimal 推斷規則（spec §4.3 / §5.4）
-function inferHeroStyle(slug: string, frontmatterValue: string | undefined): "themed" | "minimal" {
+// Phase 4：about 頁有 cover frontmatter 時走 themed（顯示 portrait card 變體）
+function inferHeroStyle(
+  slug: string,
+  frontmatterValue: string | undefined,
+  hasCover: boolean,
+): "themed" | "minimal" {
   if (frontmatterValue === "minimal") return "minimal"
   if (slug.startsWith("tags/")) return "minimal"
-  if (slug === "about" || slug.startsWith("about/")) return "minimal"
+  if ((slug === "about" || slug.startsWith("about/")) && !hasCover) return "minimal"
   return "themed"
 }
 
@@ -96,7 +101,7 @@ export default (() => {
     const accentRaw = typeof fm?.accent === "string" ? fm.accent : undefined
     const heroStyleRaw = typeof fm?.["hero-style"] === "string" ? (fm["hero-style"] as string) : undefined
 
-    const heroStyle = inferHeroStyle(slug, heroStyleRaw)
+    const heroStyle = inferHeroStyle(slug, heroStyleRaw, !!coverRaw)
     const cover = coverRaw ? sanitizeCoverUrl(coverRaw) : undefined
     const accent = accentRaw ? sanitizeAccent(accentRaw) : undefined
 
@@ -123,6 +128,7 @@ export default (() => {
         class="article-hero"
         data-section-theme={themeKey}
         data-hero-style={heroStyle}
+        data-has-cover={heroStyle === "themed" && cover ? "true" : undefined}
         style={accentStyle}
       >
         {heroStyle === "themed" && cover && (
