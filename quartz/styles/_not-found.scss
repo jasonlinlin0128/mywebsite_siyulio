@@ -80,14 +80,14 @@
   align-items: center;
   padding: 0.7rem 1.4rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 247, 234, 0.26);
+  border: 1px solid color-mix(in srgb, currentColor 26%, transparent);
   font-weight: 600;
   text-decoration: none;
   color: var(--dark);
   background: transparent;
   transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 
-  &:hover { background: rgba(255, 247, 234, 0.08); }
+  &:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 
   &--primary {
     background: var(--dark);

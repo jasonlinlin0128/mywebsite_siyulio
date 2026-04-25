@@ -9,7 +9,7 @@
   scrollbar-color: transparent transparent;
 
   &:hover {
-    scrollbar-color: rgba(255, 247, 234, 0.18) transparent;
+    scrollbar-color: color-mix(in srgb, currentColor 18%, transparent) transparent;
   }
 }
 
