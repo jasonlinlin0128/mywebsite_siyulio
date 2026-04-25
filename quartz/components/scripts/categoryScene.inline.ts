@@ -86,6 +86,9 @@ async function setupCategoryScene() {
   if (objects.length === 0) return
 
   // 為每個物件建立 scroll-scrub timeline；重新編隊位置 = 隨機偏移依 depth scale
+  // 注意：CSS .category-scene-object 用 transform: translate(-50%, -50%) 置中。
+  // GSAP fromTo({ xPercent: 0 }) 會 overwrite 這個 -50% / -50%，讓物件跳到
+  // 左上角而不是中心。解法：把 -50 baseline 內建進 xPercent / yPercent 值。
   objects.forEach((el) => {
     const depth = Number(el.dataset.depth ?? "1")
     const idx = Number(el.dataset.index ?? "0")
@@ -107,12 +110,12 @@ async function setupCategoryScene() {
 
     tl.fromTo(
       el,
-      { xPercent: 0, yPercent: 0, opacity: 0.6, rotation: 0 },
-      { xPercent: dx1, yPercent: dy1, opacity: 0.85, rotation: 4 * depth, ease: "none" },
+      { xPercent: -50, yPercent: -50, opacity: 0.6, rotation: 0 },
+      { xPercent: -50 + dx1, yPercent: -50 + dy1, opacity: 0.85, rotation: 4 * depth, ease: "none" },
       0,
     )
-      .to(el, { xPercent: dx1 * 0.4, yPercent: dy1 * 0.4, rotation: -2 * depth, ease: "none" }, 0.3)
-      .to(el, { xPercent: dx2, yPercent: dy2, opacity: 0, ease: "none" }, 0.7)
+      .to(el, { xPercent: -50 + dx1 * 0.4, yPercent: -50 + dy1 * 0.4, rotation: -2 * depth, ease: "none" }, 0.3)
+      .to(el, { xPercent: -50 + dx2, yPercent: -50 + dy2, opacity: 0, ease: "none" }, 0.7)
 
     scrollTriggers.push(tl.scrollTrigger)
   })

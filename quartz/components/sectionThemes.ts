@@ -158,8 +158,10 @@ export const sectionThemes: SectionTheme[] = [
     ],
     motionConfig: {
       canvasRenderer: "geometric-lines",
-      glowColorDark: "rgba(160, 160, 160, 0.18)",
-      glowColorLight: "rgba(80, 80, 80, 0.12)",
+      // bump from 0.18/0.12 → 0.45/0.30 對齊其他 3 sections
+      // 顏色搭配新 --section-accent-about token (#b3b8c2 dark / #4a4f5c light)
+      glowColorDark: "rgba(179, 184, 194, 0.45)",
+      glowColorLight: "rgba(74, 79, 92, 0.32)",
       particleDensity: 20,
     },
   },

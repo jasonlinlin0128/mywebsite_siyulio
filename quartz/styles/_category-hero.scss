@@ -19,7 +19,7 @@
   --category-hero-accent: var(--section-accent-manufacturing);
   &[data-section-theme="ai-notes"] { --category-hero-accent: var(--section-accent-ai-notes); }
   &[data-section-theme="coffee"]   { --category-hero-accent: var(--section-accent-coffee); }
-  &[data-section-theme="about"]    { --category-hero-accent: rgba(160, 160, 160, 0.7); }
+  &[data-section-theme="about"]    { --category-hero-accent: var(--section-accent-about); }
 
   @media all and (max-width: 767px) {
     grid-template-columns: 1fr;
@@ -79,7 +79,9 @@
     order: -1;
   }
 
-  // ambient gradient mesh — 給黑色 stage 加層次感
+  // ambient gradient mesh — 給 stage 加層次感
+  // 第三個 radial 用 currentColor 自動 theme（dark→light tint, light→dark tint）
+  // 取代之前的 hardcode rgba(255,247,234,0.04) — 在亮模式下 cream-on-cream 變不可見
   &::before {
     content: "";
     position: absolute;
@@ -97,21 +99,21 @@
       ),
       radial-gradient(
         circle at 60% 40%,
-        rgba(255, 247, 234, 0.04) 0%,
+        color-mix(in srgb, currentColor 5%, transparent) 0%,
         transparent 35%
       );
     pointer-events: none;
     z-index: 0;
   }
 
-  // subtle dashed blueprint grid（Oryzo 風）
+  // subtle dashed blueprint grid（Oryzo 風）— currentColor 自動 theme
   &::after {
     content: "";
     position: absolute;
     inset: 8%;
     background-image:
-      linear-gradient(to right, rgba(255, 247, 234, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 247, 234, 0.04) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, currentColor 5%, transparent) 1px, transparent 1px);
     background-size: 20% 20%;
     pointer-events: none;
     z-index: 0;
@@ -230,10 +232,11 @@
   }
   &[data-variant="core"]      {
     border-radius: 50%;
+    // disc-highlight-1 為 theme-aware 高光：dark mode 用 cream，light mode 用深色
     background:
       radial-gradient(
         circle at 30% 25%,
-        rgba(255, 247, 234, 0.95) 0%,
+        var(--disc-highlight-1) 0%,
         color-mix(in srgb, var(--category-hero-accent) 90%, white) 30%,
         color-mix(in srgb, var(--category-hero-accent) 60%, transparent) 70%,
         transparent 100%
@@ -291,6 +294,32 @@
   .category-scene-object {
     animation: none !important;
     transition: none;
+  }
+}
+
+// spec §8.6：高對比模式下，加強 scene 物件可見度，但收掉 ambient mesh
+// 這層裝飾感（會干擾辨識）。dashed 藍圖格線改為更清楚的 currentColor。
+@media (prefers-contrast: more) {
+  .category-hero__stage {
+    &::before { display: none; }
+    &::after {
+      background-image:
+        linear-gradient(to right, color-mix(in srgb, currentColor 18%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in srgb, currentColor 18%, transparent) 1px, transparent 1px);
+    }
+  }
+
+  .category-scene-object {
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        color-mix(in srgb, var(--category-hero-accent) 100%, white) 0%,
+        color-mix(in srgb, var(--category-hero-accent) 90%, transparent) 50%,
+        transparent 100%
+      );
+    filter:
+      drop-shadow(0 0 16px color-mix(in srgb, var(--category-hero-accent) 70%, transparent))
+      drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
   }
 }
 

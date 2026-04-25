@@ -24,6 +24,17 @@ $section-accent-manufacturing-light: #7a5a20;
 $section-accent-ai-notes-light:      #3a4d8a;
 $section-accent-coffee-light:        #5c3a1c;
 
+// About — solid theme-aware accent（取代 _category-hero.scss 之前 hardcode
+// 的 rgba(160,160,160,0.7)，alpha 會跟 color-mix(...,X%, transparent) 疊加
+// 讓 about-hero 物件變幾乎看不見）
+$section-accent-about-dark:  #b3b8c2;
+$section-accent-about-light: #4a4f5c;
+
+// 3D-disc 特殊高光（core variant）— 在亮模式底色為 cream 時
+// 用 cream 高光會看不見，因此切換為深色高光
+$disc-highlight-1-dark:  rgba(255, 247, 234, 0.95);
+$disc-highlight-1-light: rgba(40, 30, 12, 0.85);
+
 // CSS custom properties for runtime access
 :root {
   --motion-duration-fast: #{$motion-duration-fast};
@@ -35,12 +46,16 @@ $section-accent-coffee-light:        #5c3a1c;
   --section-accent-manufacturing: #{$section-accent-manufacturing-light};
   --section-accent-ai-notes:      #{$section-accent-ai-notes-light};
   --section-accent-coffee:        #{$section-accent-coffee-light};
+  --section-accent-about:         #{$section-accent-about-light};
+  --disc-highlight-1:             #{$disc-highlight-1-light};
 }
 
 html[saved-theme="dark"] {
   --section-accent-manufacturing: #{$section-accent-manufacturing-dark};
   --section-accent-ai-notes:      #{$section-accent-ai-notes-dark};
   --section-accent-coffee:        #{$section-accent-coffee-dark};
+  --section-accent-about:         #{$section-accent-about-dark};
+  --disc-highlight-1:             #{$disc-highlight-1-dark};
 }
 
 // data-reveal entry animation (Phase 1 只有定義，沒元素用)
