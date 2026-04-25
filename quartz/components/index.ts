@@ -24,7 +24,6 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
-import BrandIntro from "./BrandIntro"
 import SiteHeaderNav from "./SiteHeaderNav"
 import HomeLanding from "./HomeLanding"
 import HomeHeroApple from "./HomeHeroApple"
@@ -61,7 +60,6 @@ export {
   Comments,
   Flex,
   ConditionalRender,
-  BrandIntro,
   SiteHeaderNav,
   HomeLanding,
   HomeHeroApple,
