@@ -40,7 +40,9 @@ def write(rel, text):
 
 # ---------------------------------------------------------------- css
 bundle = gen.bundle_css(st)
-imp, bundle = bundle.split("\n", 1) if bundle.startswith("@import") else ("", bundle)
+# fonts load from <head> (preconnect + link), not a render-blocking CSS @import chain
+_, bundle = bundle.split("\n", 1) if bundle.startswith("@import") else ("", bundle)
+FONTS = "https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=VT323&family=Noto+Sans+TC:wght@400;700&display=swap"
 bundle = bundle.replace(st["title"], "siyulio 像素風")
 write(
     "css/palette.css",
@@ -70,16 +72,34 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f
 .about dd { margin: 0; color: var(--ink); font-size: 15px; line-height: 24px; }
 .contact { margin: 0 20px; padding: 28px; background: var(--surface); border: var(--border-width) solid var(--line); border-radius: var(--radius-lg); display: grid; gap: 14px; }
 .contact p { margin: 0; color: var(--ink-muted); }
-.site-foot { padding: 40px 20px; color: var(--ink-muted); font-size: 13px; }
+.site-foot { padding: 40px 20px; color: var(--ink-muted); font-size: 14px; }
+/* review fixes 2026-10-18 */
+/* accent is for links only: the hero highlight is an ink block, not a fake link */
+.sy-hero h1 em { color: var(--on-brand); background: var(--brand); text-decoration: none; padding: 0 .12em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* VT323 reads clearly only from 16px */
+.sy-label { font-size: 16px; line-height: 20px; }
+.sy-hero .sy-kicker { font-size: 18px; }
+/* touch targets >= 44px */
+.sy-logo { display: inline-flex; align-items: center; min-height: 44px; }
+.sy-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
+.theme-btn { height: 44px; min-width: 44px; }
+/* cards are not links yet: no lift on hover */
+.sy-card:hover { transform: none; }
+/* timeline titles are h3 under a section h2 */
+.sy-timeline h3 { font-family: var(--font-display); font-size: 18px; line-height: 24px; margin: 0; font-weight: 700; text-transform: none; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 10; background: var(--brand); color: var(--on-brand); padding: 10px 14px; font-weight: 700; }
+.skip:focus { top: 8px; outline: 2px solid var(--focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 @media (max-width: 720px) {
   .about { grid-template-columns: 1fr; }
   .sy-hero h1 { font-size: clamp(32px, 9vw, 56px) !important; }
   .sy-hero { padding-block: 48px; }
+  .sy-header { position: static; }
   .theme-btn { margin-left: auto; }
   .sy-nav { order: 3; width: 100%; }
 }
 """
-write("css/site.css", imp + "\n" + bundle + SITE)
+write("css/site.css", bundle + SITE)
 
 # ---------------------------------------------------------------- content
 D = json.load(open(os.path.join(TOOLS, "content.json"), encoding="utf-8"))
@@ -90,7 +110,7 @@ cards = "\n".join(
     for w in D["works"]
 )
 li = lambda rows: "\n".join(
-    f"<li><time>{r['date']}</time><div><h4>{r['title']}</h4>"
+    f"<li><time>{r['date']}</time><div><h3>{r['title']}</h3>"
     + (f"<p>{r['text']}</p>" if r.get("text") else "")
     + "</div></li>"
     for r in rows
@@ -113,9 +133,19 @@ html = f"""<!doctype html>
 <meta name="description" content="{D["description"]}">
 <meta property="og:title" content="{D["site_title"]}">
 <meta property="og:description" content="{D["description"]}">
+<link rel="canonical" href="https://siyulio.com/">
 <meta property="og:url" content="https://siyulio.com/">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://siyulio.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{FAV}">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="css/palette.css">
 <link rel="stylesheet" href="css/site.css">
 <script>
@@ -128,11 +158,12 @@ html = f"""<!doctype html>
 </script>
 </head>
 <body>
+<a class="skip" href="#top">跳到主要內容</a>
 <div class="site-wrap">
 <header class="sy-header">
   <a class="sy-logo" href="#top">siyu<b>lio</b></a>
-  <nav class="sy-nav" aria-label="主要導覽"><a href="#works">作品</a><a href="#about">關於</a><a href="#notes">筆記</a><a href="#contact">聯絡</a></nav>
-  <button type="button" class="theme-btn" id="theme" aria-label="切換深淺色">◐</button>
+  <nav class="sy-nav" aria-label="主要導覽"><a href="#works">作品</a><a href="#about">關於</a><a href="#contact">聯絡</a></nav>
+  <button type="button" class="theme-btn" id="theme" aria-label="深色模式" aria-pressed="false">◐</button>
 </header>
 <main id="top">
 <section class="sy-hero">
@@ -161,13 +192,6 @@ html = f"""<!doctype html>
   </div>
 </section>
 
-<section class="sec" id="notes">
-  <header><p class="sy-label">NOTES</p><h2 class="sy-h">筆記</h2><p class="intro">{D["notes_intro"]}</p></header>
-  <ol class="sy-timeline">
-{li(D["notes"])}
-  </ol>
-</section>
-
 <section class="sec" id="contact">
   <header><p class="sy-label">CONTACT</p><h2 class="sy-h">聯絡</h2></header>
   <div class="contact">
@@ -175,20 +199,33 @@ html = f"""<!doctype html>
     <div class="sy-actions"><a class="sy-btn sy-btn-ghost" href="#works">先看作品 →</a></div>
   </div>
 </section>
-<p class="site-foot">© 2026 Jason Lin · siyulio.com</p>
 </main>
+<footer class="site-foot">© 2026 Jason Lin · siyulio.com</footer>
 </div>
 <script>
-document.getElementById('theme').addEventListener('click', function () {{
-  var r = document.documentElement, t = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  r.setAttribute('data-theme', t);
-  try {{ localStorage.setItem('siyulio-theme', t); }} catch (e) {{}}
-}});
+(function () {{
+  var r = document.documentElement, b = document.getElementById('theme');
+  function sync() {{ b.setAttribute('aria-pressed', r.getAttribute('data-theme') === 'dark' ? 'true' : 'false'); }}
+  sync();
+  b.addEventListener('click', function () {{
+    var t = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', t); sync();
+    try {{ localStorage.setItem('siyulio-theme', t); }} catch (e) {{}}
+  }});
+}})();
 </script>
 </body>
 </html>
 """
 write("index.html", html)
+write(
+    "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://siyulio.com/sitemap.xml\n"
+)
+write(
+    "sitemap.xml",
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    "  <url><loc>https://siyulio.com/</loc></url>\n</urlset>\n",
+)
 print(
     f"built redesign/ with palette {pick} ({st['title'].split(' ', 3)[-1]}), themes {themes}"
 )

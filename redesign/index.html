@@ -4,12 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>siyulio · Jason Lin</title>
-<meta name="description" content="Jason Lin 的個人網站：在製造業把 AI 變成每天會跑的產線，收錄作品、筆記與正在進行的實驗。">
+<meta name="description" content="Jason Lin 的個人網站：在製造業把 AI 變成每天會跑的產線，收錄作品與正在進行的實驗。">
 <meta property="og:title" content="siyulio · Jason Lin">
-<meta property="og:description" content="Jason Lin 的個人網站：在製造業把 AI 變成每天會跑的產線，收錄作品、筆記與正在進行的實驗。">
+<meta property="og:description" content="Jason Lin 的個人網站：在製造業把 AI 變成每天會跑的產線，收錄作品與正在進行的實驗。">
+<link rel="canonical" href="https://siyulio.com/">
 <meta property="og:url" content="https://siyulio.com/">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://siyulio.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M2 1h4v1H2zM1 2h1v2H1zM2 4h4v1H2zM6 5h1v2H6zM2 7h4V6H2z'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=VT323&family=Noto+Sans+TC:wght@400;700&display=swap">
 <link rel="stylesheet" href="css/palette.css">
 <link rel="stylesheet" href="css/site.css">
 <script>
@@ -22,22 +32,23 @@
 </script>
 </head>
 <body>
+<a class="skip" href="#top">跳到主要內容</a>
 <div class="site-wrap">
 <header class="sy-header">
   <a class="sy-logo" href="#top">siyu<b>lio</b></a>
-  <nav class="sy-nav" aria-label="主要導覽"><a href="#works">作品</a><a href="#about">關於</a><a href="#notes">筆記</a><a href="#contact">聯絡</a></nav>
-  <button type="button" class="theme-btn" id="theme" aria-label="切換深淺色">◐</button>
+  <nav class="sy-nav" aria-label="主要導覽"><a href="#works">作品</a><a href="#about">關於</a><a href="#contact">聯絡</a></nav>
+  <button type="button" class="theme-btn" id="theme" aria-label="深色模式" aria-pressed="false">◐</button>
 </header>
 <main id="top">
 <section class="sy-hero">
   <p class="sy-kicker">Jason Lin · 林佳賢</p>
   <h1>在製造業裡，<em>把 AI 變成每天會跑的產線</em>。</h1>
-  <p>我設計並維運 24 小時運作的 AI agent：語音助理、第二大腦、本地大模型與自動化報表。這裡收錄我做過的系統、寫下的筆記，以及正在進行的實驗。</p>
+  <p>我設計並維運 24 小時運作的 AI agent：語音助理、第二大腦、本地大模型與自動化報表。這裡收錄我做過的系統，以及正在進行的實驗。</p>
   <div class="sy-actions"><a class="sy-btn sy-btn-primary" href="#works">看作品集</a><a class="sy-btn" href="#contact">聯絡我</a></div>
 </section>
 
 <section class="sec" id="works">
-  <header><p class="sy-label">SELECTED WORK · 2026</p><h2 class="sy-h">作品集</h2><p class="intro">每一項都在實際運作。公司內部系統以代號與示意圖呈現。</p></header>
+  <header><p class="sy-label">SELECTED WORK · 2026</p><h2 class="sy-h">作品集</h2><p class="intro">每一項都在實際運作。公司內部系統以代號與示意圖呈現，各項目的詳細介紹陸續補上。</p></header>
   <div class="sy-cards">
 <article class="sy-card"><div class="sy-media"><span>Jarvis</span></div><h3>Jarvis 語音 OS</h3><p>雙拍喚醒、零 LLM 快路徑，能開檔、搜尋、鍵入的桌面語音助理。</p><div class="sy-tags"><span class="sy-tag">Voice</span><span class="sy-tag">Agent</span><span class="sy-tag sy-tag-accent"><span class="sy-dot"></span>運作中</span></div></article>
 <article class="sy-card"><div class="sy-media"><span>Hub</span></div><h3>第二大腦 Hub</h3><p>跨專案事實源與儀表板：會議、日誌、專案狀態自動匯流成一頁。</p><div class="sy-tags"><span class="sy-tag">Python</span><span class="sy-tag">Vercel</span><span class="sy-tag sy-tag-accent"><span class="sy-dot"></span>運作中</span></div></article>
@@ -58,21 +69,12 @@
 <div><dt class="sy-label">網站</dt><dd>siyulio.com，換工作也不換的個人據點</dd></div>
     </dl>
     <ol class="sy-timeline">
-<li><time>2026.10</time><div><h4>Agent OS 五狀態看板</h4><p>登入自啟、生命週期看板，讓背景 agent 的健康狀態一眼可見。</p></div></li>
-<li><time>2026.07</time><div><h4>Jarvis 語音 OS 上線</h4><p>STT、TTS、HUD 到行動能力，八個階段全數交付。</p></div></li>
-<li><time>2026.07</time><div><h4>第二大腦擷取上線</h4><p>Discord、錄音、筆記三個入口，自動匯進同一個知識庫。</p></div></li>
-<li><time>2026.04</time><div><h4>買下 siyulio.com</h4><p>決定把作品與思考集中在一個屬於自己的地方。</p></div></li>
+<li><time>2026.10</time><div><h3>Agent OS 五狀態看板</h3><p>登入自啟、生命週期看板，讓背景 agent 的健康狀態一眼可見。</p></div></li>
+<li><time>2026.07</time><div><h3>Jarvis 語音 OS 上線</h3><p>STT、TTS、HUD 到行動能力，八個階段全數交付。</p></div></li>
+<li><time>2026.07</time><div><h3>第二大腦擷取上線</h3><p>Discord、錄音、筆記三個入口，自動匯進同一個知識庫。</p></div></li>
+<li><time>2026.04</time><div><h3>買下 siyulio.com</h3><p>決定把作品與思考集中在一個屬於自己的地方。</p></div></li>
     </ol>
   </div>
-</section>
-
-<section class="sec" id="notes">
-  <header><p class="sy-label">NOTES</p><h2 class="sy-h">筆記</h2><p class="intro">實作過才寫。以下是預定的題目。</p></header>
-  <ol class="sy-timeline">
-<li><time>2026.10</time><div><h4>讓 agent 自己上班之前，先讓它會說「我卡住了」</h4></div></li>
-<li><time>2026.09</time><div><h4>本地大模型在工廠裡能做什麼、不能做什麼</h4></div></li>
-<li><time>2026.07</time><div><h4>一個人的 AI 產線：從錄音到報表的流水線</h4></div></li>
-  </ol>
 </section>
 
 <section class="sec" id="contact">
@@ -82,15 +84,20 @@
     <div class="sy-actions"><a class="sy-btn sy-btn-ghost" href="#works">先看作品 →</a></div>
   </div>
 </section>
-<p class="site-foot">© 2026 Jason Lin · siyulio.com</p>
 </main>
+<footer class="site-foot">© 2026 Jason Lin · siyulio.com</footer>
 </div>
 <script>
-document.getElementById('theme').addEventListener('click', function () {
-  var r = document.documentElement, t = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  r.setAttribute('data-theme', t);
-  try { localStorage.setItem('siyulio-theme', t); } catch (e) {}
-});
+(function () {
+  var r = document.documentElement, b = document.getElementById('theme');
+  function sync() { b.setAttribute('aria-pressed', r.getAttribute('data-theme') === 'dark' ? 'true' : 'false'); }
+  sync();
+  b.addEventListener('click', function () {
+    var t = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', t); sync();
+    try { localStorage.setItem('siyulio-theme', t); } catch (e) {}
+  });
+})();
 </script>
 </body>
 </html>
