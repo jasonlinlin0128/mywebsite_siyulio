@@ -1,6 +1,8 @@
-# siyulio.com 像素風改版（草稿）
+# siyulio.com 像素風改版
 
-選定風格：18 一位元／像素風。純靜態檔，不經 Quartz build，不影響現行部署。
+定稿：18 一位元／像素風，配色 18a 黑白原版（2026-10-18）。設計系統：https://claude.ai/artifact/LbKzBG9FMoCdJxiERTf1qC
+
+純靜態檔，不經 Quartz build，不影響現行部署。
 
 - `index.html`、`css/` 由 `tools/build.py` 產生，不要手改。
 - 文字內容改 `tools/content.json`。
