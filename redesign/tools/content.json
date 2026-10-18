@@ -1,0 +1,36 @@
+{
+  "site_title": "siyulio · Jason Lin",
+  "description": "Jason Lin 的個人網站：在製造業把 AI 變成每天會跑的產線，收錄作品、筆記與正在進行的實驗。",
+  "kicker": "Jason Lin · 林佳賢",
+  "hero": "在製造業裡，<em>把 AI 變成每天會跑的產線</em>。",
+  "lead": "我設計並維運 24 小時運作的 AI agent：語音助理、第二大腦、本地大模型與自動化報表。這裡收錄我做過的系統、寫下的筆記，以及正在進行的實驗。",
+  "works_intro": "每一項都在實際運作。公司內部系統以代號與示意圖呈現。",
+  "works": [
+    {"code": "Jarvis", "title": "Jarvis 語音 OS", "desc": "雙拍喚醒、零 LLM 快路徑，能開檔、搜尋、鍵入的桌面語音助理。", "tags": ["Voice", "Agent"], "status": "運作中"},
+    {"code": "Hub", "title": "第二大腦 Hub", "desc": "跨專案事實源與儀表板：會議、日誌、專案狀態自動匯流成一頁。", "tags": ["Python", "Vercel"], "status": "運作中"},
+    {"code": "GB10", "title": "本地模型產線", "desc": "在本地 GPU 主機上跑大模型，批次起草圖表與報告，資料不出內網。", "tags": ["LLM", "On-prem"], "status": "運作中"},
+    {"code": "Brief", "title": "每日晨報", "desc": "每天早上自動整理行程、待辦、專案異常，推到手機。", "tags": ["Automation", "Cron"], "status": "運作中"},
+    {"code": "War Room", "title": "戰情室看板", "desc": "跨部門工作項與稽核鏈集中在一個看板，手機也能看。", "tags": ["Obsidian", "Dashboard"], "status": "維護中"},
+    {"code": "Voice In", "title": "錄音自動入庫", "desc": "會議錄音轉成摘要與待辦，人審過才寫進知識庫。", "tags": ["STT", "Workflow"], "status": "運作中"}
+  ],
+  "about": "我是林佳賢（Jason Lin），在製造業做經營企劃，也自己動手把 AI 接進每天的工作裡。我在意的不是展示，而是系統能不能每天穩定地跑。",
+  "facts": [
+    ["現在", "製造業經營企劃，負責 AI 導入與自動化"],
+    ["擅長", "AI agent、本地大模型、資料自動化、跨部門導入"],
+    ["工具", "Python、Claude、本地 LLM、Vercel、Obsidian"],
+    ["網站", "siyulio.com，換工作也不換的個人據點"]
+  ],
+  "timeline": [
+    {"date": "2026.10", "title": "Agent OS 五狀態看板", "text": "登入自啟、生命週期看板，讓背景 agent 的健康狀態一眼可見。"},
+    {"date": "2026.07", "title": "Jarvis 語音 OS 上線", "text": "STT、TTS、HUD 到行動能力，八個階段全數交付。"},
+    {"date": "2026.07", "title": "第二大腦擷取上線", "text": "Discord、錄音、筆記三個入口，自動匯進同一個知識庫。"},
+    {"date": "2026.04", "title": "買下 siyulio.com", "text": "決定把作品與思考集中在一個屬於自己的地方。"}
+  ],
+  "notes_intro": "實作過才寫。以下是預定的題目。",
+  "notes": [
+    {"date": "2026.10", "title": "讓 agent 自己上班之前，先讓它會說「我卡住了」"},
+    {"date": "2026.09", "title": "本地大模型在工廠裡能做什麼、不能做什麼"},
+    {"date": "2026.07", "title": "一個人的 AI 產線：從錄音到報表的流水線"}
+  ],
+  "contact": "想聊 AI 導入、內訓分享或合作，歡迎來信。正式信箱上線後會放在這裡。"
+}
