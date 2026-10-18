@@ -119,6 +119,15 @@ facts = "\n".join(
     f'<div><dt class="sy-label">{k}</dt><dd>{v}</dd></div>' for k, v in D["facts"]
 )
 themes = [t["id"] for t in st["themes"]]
+# contact: email shown as its own text (copyable even where mailto does nothing), then profile links
+contact_links = (
+    f'<a class="sy-btn sy-btn-primary" href="mailto:{D["email"]}">{D["email"]}</a>'
+    if D.get("email")
+    else ""
+) + "".join(
+    f'<a class="sy-btn" href="{url}" rel="me noopener" target="_blank">{label}</a>'
+    for label, url in D.get("links", [])
+)
 FAV = "data:image/svg+xml," + (
     "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E"
     "%3Crect width='8' height='8' fill='%23000'/%3E%3Cpath fill='%23fff' d='M2 1h4v1H2zM1 2h1v2H1zM2 4h4v1H2zM6 5h1v2H6zM2 7h4V6H2z'/%3E%3C/svg%3E"
@@ -196,7 +205,7 @@ html = f"""<!doctype html>
   <header><p class="sy-label">CONTACT</p><h2 class="sy-h">聯絡</h2></header>
   <div class="contact">
     <p>{D["contact"]}</p>
-    <div class="sy-actions"><a class="sy-btn sy-btn-ghost" href="#works">先看作品 →</a></div>
+    <div class="sy-actions">{contact_links}<a class="sy-btn sy-btn-ghost" href="#works">先看作品 →</a></div>
   </div>
 </section>
 </main>
