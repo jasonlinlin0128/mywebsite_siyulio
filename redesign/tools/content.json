@@ -27,6 +27,7 @@
         "Vercel"
       ],
       "status": "運作中",
+      "metric": "53 個專案",
       "image": "hub",
       "alt": "Hub 畫面節錄：AI 專案調度官把需求派給專責 agent"
     },
@@ -39,6 +40,7 @@
         "On-prem"
       ],
       "status": "運作中",
+      "metric": "42 tok/s",
       "image": "gb10",
       "alt": "本地模型產線示意：需求清單送進本地 GPU 主機，產出圖表與報告草稿"
     },

@@ -88,6 +88,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f
 [data-theme="dark"] .sy-card .sy-media img { filter: invert(1); }
 /* cards are not links yet: no lift on hover */
 .sy-card:hover { transform: none; }
+/* result figure: one ink block per card in the label face */
+.sy-metric { justify-self: start; margin: 0; padding: 2px 8px; background: var(--brand); color: var(--on-brand); font-family: var(--font-label); font-size: 20px; line-height: 26px; }
 /* timeline titles are h3 under a section h2 */
 .sy-timeline h3 { font-family: var(--font-display); font-size: 18px; line-height: 24px; margin: 0; font-weight: 700; text-transform: none; }
 .skip { position: absolute; left: 8px; top: -60px; z-index: 10; background: var(--brand); color: var(--on-brand); padding: 10px 14px; font-weight: 700; }
@@ -123,7 +125,9 @@ cards = "\n".join(
         if w.get("image")
         else f"<span>{w['code']}</span>"
     )
-    + f'</div><h3>{w["title"]}</h3><p>{w["desc"]}</p><div class="sy-tags">'
+    + f"</div><h3>{w['title']}</h3><p>{w['desc']}</p>"
+    + (f'<p class="sy-metric">{w["metric"]}</p>' if w.get("metric") else "")
+    + '<div class="sy-tags">'
     + "".join(f'<span class="sy-tag">{g}</span>' for g in w["tags"])
     + f'<span class="sy-tag sy-tag-accent"><span class="sy-dot"></span>{w["status"]}</span></div></article>'
     for w in D["works"]
