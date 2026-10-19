@@ -14,7 +14,9 @@
         "Voice",
         "Agent"
       ],
-      "status": "運作中"
+      "status": "運作中",
+      "image": "jarvis",
+      "alt": "Jarvis 流程示意：雙拍喚醒、零 LLM 快路徑、執行桌面動作"
     },
     {
       "code": "Hub",
@@ -24,7 +26,9 @@
         "Python",
         "Vercel"
       ],
-      "status": "運作中"
+      "status": "運作中",
+      "image": "hub",
+      "alt": "Hub 畫面節錄：AI 專案調度官把需求派給專責 agent"
     },
     {
       "code": "GB10",
@@ -34,7 +38,9 @@
         "LLM",
         "On-prem"
       ],
-      "status": "運作中"
+      "status": "運作中",
+      "image": "gb10",
+      "alt": "本地模型產線示意：需求清單送進本地 GPU 主機，產出圖表與報告草稿"
     },
     {
       "code": "Brief",
@@ -44,7 +50,9 @@
         "Automation",
         "Cron"
       ],
-      "status": "運作中"
+      "status": "運作中",
+      "image": "brief",
+      "alt": "每日晨報示意：彙整行程與待辦，推播到手機"
     },
     {
       "code": "War Room",
@@ -54,7 +62,9 @@
         "Obsidian",
         "Dashboard"
       ],
-      "status": "維護中"
+      "status": "維護中",
+      "image": "warroom",
+      "alt": "戰情室看板示意：各部門工作項經稽核鏈彙整成一頁看板"
     },
     {
       "code": "Voice In",
@@ -64,7 +74,9 @@
         "STT",
         "Workflow"
       ],
-      "status": "運作中"
+      "status": "運作中",
+      "image": "voicein",
+      "alt": "錄音入庫示意：錄音轉錄摘要，人審通過才入庫"
     }
   ],
   "about": "我是林佳賢（Jason Lin），在製造業做經營企劃，也自己動手把 AI 接進每天的工作裡。我在意的不是展示，而是系統能不能每天穩定地跑。",

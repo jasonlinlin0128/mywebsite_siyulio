@@ -83,6 +83,9 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f
 .sy-logo { display: inline-flex; align-items: center; min-height: 44px; }
 .sy-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
 .theme-btn { height: 44px; min-width: 44px; }
+/* card images are 1-bit; dark theme flips them so they stay ink-on-ground */
+.sy-card .sy-media img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; background: #fff; }
+[data-theme="dark"] .sy-card .sy-media img { filter: invert(1); }
 /* cards are not links yet: no lift on hover */
 .sy-card:hover { transform: none; }
 /* timeline titles are h3 under a section h2 */
@@ -103,8 +106,24 @@ write("css/site.css", bundle + SITE)
 
 # ---------------------------------------------------------------- content
 D = json.load(open(os.path.join(TOOLS, "content.json"), encoding="utf-8"))
+# card images: publish only the reviewed 1-bit versions from tools/shots/
+import shutil
+
+os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
+for w in D["works"]:
+    if w.get("image"):
+        shutil.copyfile(
+            os.path.join(TOOLS, "shots", f"{w['image']}-1bit.png"),
+            os.path.join(OUT, "img", f"{w['image']}.png"),
+        )
 cards = "\n".join(
-    f'<article class="sy-card"><div class="sy-media"><span>{w["code"]}</span></div><h3>{w["title"]}</h3><p>{w["desc"]}</p><div class="sy-tags">'
+    f'<article class="sy-card"><div class="sy-media">'
+    + (
+        f'<img src="img/{w["image"]}.png" alt="{w["alt"]}" width="1000" height="625" loading="lazy">'
+        if w.get("image")
+        else f"<span>{w['code']}</span>"
+    )
+    + f'</div><h3>{w["title"]}</h3><p>{w["desc"]}</p><div class="sy-tags">'
     + "".join(f'<span class="sy-tag">{g}</span>' for g in w["tags"])
     + f'<span class="sy-tag sy-tag-accent"><span class="sy-dot"></span>{w["status"]}</span></div></article>'
     for w in D["works"]
