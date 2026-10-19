@@ -15,6 +15,7 @@
         "Agent"
       ],
       "status": "運作中",
+      "metric": "8 個階段交付",
       "image": "jarvis",
       "alt": "Jarvis 流程示意：雙拍喚醒、零 LLM 快路徑、執行桌面動作"
     },
@@ -53,6 +54,7 @@
         "Cron"
       ],
       "status": "運作中",
+      "metric": "平日 08:30 送達",
       "image": "brief",
       "alt": "每日晨報示意：彙整行程與待辦，推播到手機"
     },
@@ -65,6 +67,7 @@
         "Dashboard"
       ],
       "status": "維護中",
+      "metric": "手機 7 區塊看板",
       "image": "warroom",
       "alt": "戰情室看板示意：各部門工作項經稽核鏈彙整成一頁看板"
     },
@@ -77,6 +80,7 @@
         "Workflow"
       ],
       "status": "運作中",
+      "metric": "131 份錄音入庫",
       "image": "voicein",
       "alt": "錄音入庫示意：錄音轉錄摘要，人審通過才入庫"
     }
